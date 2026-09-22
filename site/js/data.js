@@ -5202,8 +5202,8 @@ window.SITE_DATA = {
       "en": "Waiting for the first seminar upload."
     },
     "seminars_empty_p": {
-      "ko": "세미나-자료 채널에 아래 양식으로 발표 자료를 올려주세요.",
-      "en": "Share your materials in the seminar channel using the format below."
+      "ko": "세미나-자료 채널에 파일을 올리고, 봇의 ‘세미나 정보 입력’ 버튼으로 발표 정보를 작성해 주세요.",
+      "en": "Upload a file to the seminar channel, then select the bot’s ‘세미나 정보 입력’ button to enter the presentation details."
     },
     "seminars_presenter": {
       "ko": "발표자",
@@ -5290,20 +5290,20 @@ window.SITE_DATA = {
       "en": "Upload via Discord"
     },
     "seminars_upload_intro": {
-      "ko": "세미나-자료 채널에 아래 본문과 파일을 하나의 새 메시지로 올려주세요.",
-      "en": "Post the template below and your files together in one new message in the seminar channel."
+      "ko": "세미나-자료 채널에 파일을 올린 뒤, Discord 안에서 발표 정보를 입력하세요.",
+      "en": "Upload your files to the seminar channel, then enter the presentation details directly in Discord."
     },
     "seminars_upload_rules": {
-      "ko": "제목·발표일·요약은 각각 한 줄씩 모두 작성하세요. 발표일은 YYYY-MM-DD 형식입니다. 발표자는 올린 사람의 서버 닉네임으로 표시됩니다.",
-      "en": "Title, presentation date (YYYY-MM-DD) and summary are required, one line each. Keep the Korean field labels. The uploader’s server nickname is shown as the presenter."
+      "ko": "제목 1~180자, 발표일 YYYY-MM-DD, 요약 1~1,000자를 모두 입력하세요. 입력 창의 요약은 여러 줄로 작성할 수 있습니다.",
+      "en": "All fields are required: title (1–180 characters), date (YYYY-MM-DD), and summary (1–1,000 characters). The form supports multiline summaries."
     },
     "seminars_upload_files": {
       "ko": "PDF, PPT/PPTX, DOC/DOCX, XLS/XLSX, ZIP, TXT, MD, PNG/JPG/JPEG/WEBP · 메시지당 합계 100 MiB 이하",
       "en": "PDF, PPT/PPTX, DOC/DOCX, XLS/XLSX, ZIP, TXT, MD, PNG/JPG/JPEG/WEBP · Up to 100 MiB per message"
     },
     "seminars_upload_note": {
-      "ko": "양식이 다르거나 첨부파일이 없으면 등록되지 않습니다. 수정할 때는 새 메시지로 다시 올려주세요.",
-      "en": "Posts without the required format and attachments are not published. Submit corrections as a new message."
+      "ko": "입력 버튼은 파일을 올린 사람만 사용할 수 있습니다. 발표자는 해당 사람의 Discord 서버 닉네임이며, 목록은 파일을 올린 날짜순으로 정렬됩니다.",
+      "en": "Only the uploader can use the form. Their Discord server nickname is shown as the presenter, and materials are sorted by the original upload date."
     },
     "seminars_copy": {
       "ko": "양식 복사",
@@ -5348,6 +5348,38 @@ window.SITE_DATA = {
     "profile_link_empty": {
       "ko": "링크 미등록",
       "en": "Link not added"
+    },
+    "seminars_upload_step1_h": {
+      "ko": "파일 올리기",
+      "en": "Upload your files"
+    },
+    "seminars_upload_step1_p": {
+      "ko": "세미나-자료 채널에 PDF나 발표 파일을 첨부해 전송하세요. 메시지 본문은 비워 두어도 됩니다.",
+      "en": "Attach your PDF or presentation files in the seminar channel. You can leave the message text blank."
+    },
+    "seminars_upload_step2_h": {
+      "ko": "버튼으로 정보 입력",
+      "en": "Open the form"
+    },
+    "seminars_upload_step2_p": {
+      "ko": "약 15초 이내에 봇이 답장합니다. ‘세미나 정보 입력’을 눌러 제목·발표일·요약을 작성하세요.",
+      "en": "The bot replies within about 15 seconds. Select “세미나 정보 입력” to enter the title, date and summary."
+    },
+    "seminars_upload_step3_h": {
+      "ko": "제출 후 자료실 확인",
+      "en": "Submit and view"
+    },
+    "seminars_upload_step3_p": {
+      "ko": "입력 창에서 제출하면 등록 요청이 접수됩니다. 잠시 후 자료실을 새로고침해 확인하세요.",
+      "en": "Submit the form to request publication. Refresh this archive shortly afterwards to view your materials."
+    },
+    "seminars_fallback_h": {
+      "ko": "메시지 양식으로 바로 등록하기",
+      "en": "Publish with a text template instead"
+    },
+    "seminars_fallback_p": {
+      "ko": "아래 네 줄을 각각 한 줄씩 작성하고 파일을 같은 새 메시지에 첨부하면 입력 창 없이 등록됩니다. 첫 줄은 # 세미나이며 기존 #세미나도 지원합니다.",
+      "en": "Write each of the four lines below on its own line and attach your files to the same new message to publish without the form. Keep the Korean labels. Both # 세미나 and #세미나 are supported."
     }
   },
   "researchSupport": [

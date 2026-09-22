@@ -12,14 +12,39 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "dist" / "ailab-seminar-update-20260922.zip"
 
-# Only these backend modules and documents may leave the development checkout.
-# Do not replace this allowlist with recursive package-directory inclusion.
-INCLUDE_FILES = (
+# All addon builders share this complete runtime dependency list. A rebuilt
+# older addon must not ship a newer app.py without its Gateway/modal modules.
+DISCORD_RUNTIME_FILES = (
     "discord_sync/__init__.py",
     "discord_sync/app.py",
+    "discord_sync/interactions.py",
+    "discord_sync/gateway.py",
+    "discord_sync/vendor/__init__.py",
+    "discord_sync/vendor/README.md",
+    "discord_sync/vendor/LICENSE.websocket-client",
+    "discord_sync/vendor/websocket/__init__.py",
+    "discord_sync/vendor/websocket/_abnf.py",
+    "discord_sync/vendor/websocket/_app.py",
+    "discord_sync/vendor/websocket/_cookiejar.py",
+    "discord_sync/vendor/websocket/_core.py",
+    "discord_sync/vendor/websocket/_dispatcher.py",
+    "discord_sync/vendor/websocket/_exceptions.py",
+    "discord_sync/vendor/websocket/_handshake.py",
+    "discord_sync/vendor/websocket/_http.py",
+    "discord_sync/vendor/websocket/_logging.py",
+    "discord_sync/vendor/websocket/_socket.py",
+    "discord_sync/vendor/websocket/_ssl_compat.py",
+    "discord_sync/vendor/websocket/_url.py",
+    "discord_sync/vendor/websocket/_utils.py",
+    "discord_sync/vendor/websocket/py.typed",
+)
+# Only these backend modules and documents may leave the development checkout.
+# Do not replace this allowlist with recursive package-directory inclusion.
+INCLUDE_FILES = DISCORD_RUNTIME_FILES + (
     "seminar_service/app.py",
     "docs/discord-setup.md",
     "docs/seminar-update-20260922.md",
+    "docs/discord-form-update-20260922.md",
 )
 PUBLIC_SITE_SUFFIXES = frozenset({
     ".html", ".css", ".js", ".svg", ".png", ".jpg", ".jpeg", ".webp",
@@ -51,7 +76,7 @@ def public_site_file(path: Path, root: Path) -> bool:
     return path.is_file() and path.suffix.lower() in PUBLIC_SITE_SUFFIXES
 
 
-def source_files(root: Path) -> list[Path]:
+def source_files(root: Path, include_files: tuple[str, ...] | None = None) -> list[Path]:
     site = root / "site"
     reject_symlink(site, root)
     if not site.is_dir():
@@ -63,7 +88,7 @@ def source_files(root: Path) -> list[Path]:
             files.append(path)
     if site / "index.html" not in files:
         raise FileNotFoundError("site/index.html is required")
-    for relative in INCLUDE_FILES:
+    for relative in INCLUDE_FILES if include_files is None else include_files:
         path = root / relative
         reject_symlink(path, root)
         if not path.is_file():
@@ -72,9 +97,9 @@ def source_files(root: Path) -> list[Path]:
     return files
 
 
-def build_bundle(root: Path, output: Path) -> None:
+def build_bundle(root: Path, output: Path, include_files: tuple[str, ...] | None = None) -> None:
     root = root.resolve()
-    files = source_files(root)
+    files = source_files(root, include_files)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(prefix="seminar-update-", suffix=".zip.tmp", dir=output.parent, delete=False) as temporary:
         temporary_path = Path(temporary.name)

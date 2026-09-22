@@ -644,6 +644,15 @@ body[data-page="seminars"] .page-head { background: linear-gradient(120deg, #f1f
 .seminar-guide-formats { color: #718197; font-size: 12px; }
 .seminar-guide-admin { border-top: 1px solid #e0e6ef; padding-top: 18px; margin-top: 20px; font-size: 12px; }
 .seminar-guide-admin a { display: inline-block; margin-top: 8px; }
+.seminar-upload-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 24px 0; }
+.seminar-upload-steps li { padding: 22px; border: 1px solid #e0e7f0; border-radius: 12px; background: #fff; }
+.seminar-step-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-bottom: 18px; border-radius: 9px; background: #e9f2fc; color: #2364a8; font-size: 12px; font-weight: 600; }
+.seminar-upload-steps h3 { margin: 0 0 10px; color: #243f60; font-size: 15px; line-height: 1.5; letter-spacing: -.02em; }
+.seminar-upload-steps p { margin: 0; color: #62748c; font-size: 13px; line-height: 1.75; }
+.seminar-fallback { margin-top: 24px; padding-top: 18px; border-top: 1px solid #e0e6ef; }
+.seminar-fallback > summary { cursor: pointer; color: #34547b; font-size: 13px; font-weight: 600; }
+.seminar-fallback > p { margin: 14px 0 0; font-size: 13px; }
+@media (max-width: 700px) { .seminar-upload-steps { grid-template-columns: 1fr; gap: 10px; } .seminar-upload-steps li { padding: 18px; } .seminar-step-number { margin-bottom: 12px; } }
 @media (max-width: 680px) {
   .seminar-item { grid-template-columns: minmax(0, 1fr); padding: 24px 20px; gap: 0; }
   .seminar-date-tile { display: none; }

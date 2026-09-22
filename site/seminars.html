@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260922-6">
+  <link rel="stylesheet" href="css/styles.css?v=20260922-7">
 </head>
 <body data-page="seminars" data-title="seminars_h">
   <a class="visually-hidden" href="#main">본문 바로가기</a>
@@ -43,17 +43,26 @@
           <summary data-i18n="seminars_upload">Discord 업로드 안내</summary>
           <div class="seminar-guide-body">
             <p data-i18n="seminars_upload_intro"></p>
-            <div class="seminar-template-wrap" data-cms-ignore>
-              <pre id="seminar-template">#세미나
-제목: 시계열 이상 탐지 논문 리뷰
-발표일: 2026-09-22
-요약: Transformer 기반 이상 탐지 방법과 실험 결과를 소개합니다.</pre>
-              <button class="seminar-copy" id="copy-seminar-template" type="button" data-i18n="seminars_copy">양식 복사</button>
-              <span id="seminar-copy-status" role="status"></span>
-            </div>
+            <ol class="seminar-upload-steps">
+              <li><span class="seminar-step-number" aria-hidden="true">01</span><h3 data-i18n="seminars_upload_step1_h">파일 올리기</h3><p data-i18n="seminars_upload_step1_p"></p></li>
+              <li><span class="seminar-step-number" aria-hidden="true">02</span><h3 data-i18n="seminars_upload_step2_h">버튼으로 정보 입력</h3><p data-i18n="seminars_upload_step2_p"></p></li>
+              <li><span class="seminar-step-number" aria-hidden="true">03</span><h3 data-i18n="seminars_upload_step3_h">제출 후 자료실 확인</h3><p data-i18n="seminars_upload_step3_p"></p></li>
+            </ol>
             <p data-i18n="seminars_upload_rules"></p>
             <p class="seminar-guide-formats" data-i18n="seminars_upload_files"></p>
             <p data-i18n="seminars_upload_note"></p>
+            <details class="seminar-fallback">
+              <summary data-i18n="seminars_fallback_h">메시지 양식으로 바로 등록하기</summary>
+              <p data-i18n="seminars_fallback_p"></p>
+              <div class="seminar-template-wrap" data-cms-ignore>
+                <pre id="seminar-template"># 세미나
+제목: 시계열 이상 탐지 논문 리뷰
+발표일: 2026-09-22
+요약: Transformer 기반 이상 탐지 방법과 실험 결과를 소개합니다.</pre>
+                <button class="seminar-copy" id="copy-seminar-template" type="button" data-i18n="seminars_copy">양식 복사</button>
+                <span id="seminar-copy-status" role="status"></span>
+              </div>
+            </details>
             <div class="seminar-guide-admin">
               <p data-i18n="seminars_delete_help"></p>
               <a href="admin.html" data-i18n="seminars_admin">관리자 열기</a>
@@ -65,7 +74,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="js/data.js?v=20260922-6"></script>
+  <script src="js/data.js?v=20260922-7"></script>
   <script src="js/main.js?v=20260922-6"></script>
   <script src="js/seminars.js?v=20260922-4"></script>
   <script src="js/cms.js?v=20260922-4"></script>

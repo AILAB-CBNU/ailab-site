@@ -1,4 +1,4 @@
-"""Discord seminar collector. Standard library only; no Docker or pip required."""
+"""Discord seminar collector and forms. Bundled dependencies; no pip required."""
 from __future__ import annotations
 import getpass
 import json
@@ -17,11 +17,16 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 # Embedded Python and direct script execution must both find the project.
 sys.path.insert(0, str(ROOT))
+# The Windows launcher runs this file directly. Keep one module identity when
+# the interaction worker imports our validation and ingestion helpers.
+if __name__ == "__main__":
+    sys.modules["discord_sync.app"] = sys.modules[__name__]
 from seminar_service.app import _safe_filename, _clean_text, MAX_FILE_BYTES, IngestError
 LOG = logging.getLogger("discord-sync")
 STATE = ROOT / "discord-sync-state"
 CONFIG = STATE / "config.json"
 INBOX = ROOT / "seminar-inbox"
+SEMINAR_HEADINGS = {"# 세미나", "#세미나"}
 
 
 def atomic_json(path, value):
@@ -57,30 +62,42 @@ class Client:
         self.token = token
         self.opener = urllib.request.build_opener(NoRedirect())
 
-    def get(self, route):
-        request = urllib.request.Request("https://discord.com/api/v10" + route, headers={
-            "Authorization": "Bot " + self.token,
-            "User-Agent": "DiscordBot (https://ailab.cbnu.ac.kr, 1.0)",
-        })
-        for attempt in range(5):
+    def request(self, method, route, payload=None, *, timeout=30, retries=5, authenticated=True):
+        headers = {"User-Agent": "DiscordBot (https://ailab.cbnu.ac.kr, 1.2)"}
+        if authenticated:
+            headers["Authorization"] = "Bot " + self.token
+        body = None
+        if payload is not None:
+            body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+            headers["Content-Type"] = "application/json"
+        request = urllib.request.Request("https://discord.com/api/v10" + route,
+                                         data=body, headers=headers, method=method)
+        for attempt in range(retries):
             try:
-                with self.opener.open(request, timeout=30) as response:
-                    payload = json.load(response)
-                    if response.headers.get("X-RateLimit-Remaining") == "0":
-                        time.sleep(max(0, float(response.headers.get("X-RateLimit-Reset-After", "1"))))
-                    return payload
+                with self.opener.open(request, timeout=timeout) as response:
+                    content = response.read()
+                    return json.loads(content) if content else None
             except urllib.error.HTTPError as exc:
-                if exc.code == 429:
+                if exc.code == 429 and attempt + 1 < retries:
                     try:
                         delay = float(json.load(exc).get("retry_after", 5))
                     except (ValueError, TypeError):
                         delay = 5
-                    time.sleep(max(1, delay))
-                elif exc.code >= 500:
+                    time.sleep(max(1, min(60, delay)))
+                elif exc.code >= 500 and attempt + 1 < retries:
                     time.sleep(2 ** attempt)
                 else:
                     raise ApiError(exc.code) from None
         raise RuntimeError("Discord is busy; retry later.")
+
+    def get(self, route):
+        return self.request("GET", route)
+
+    def post(self, route, payload, **options):
+        return self.request("POST", route, payload, **options)
+
+    def patch(self, route, payload, **options):
+        return self.request("PATCH", route, payload, **options)
 
     def download(self, url, path, budget):
         parsed = urllib.parse.urlsplit(url)
@@ -111,6 +128,8 @@ class Client:
 
 def validate(client, channel):
     app = client.get("/oauth2/applications/@me")
+    if app.get("interactions_endpoint_url"):
+        raise RuntimeError("Clear Interactions Endpoint URL in the Discord developer portal to enable Gateway forms.")
     if not int(app.get("flags", 0)) & ((1 << 18) | (1 << 19)):
         raise RuntimeError("Enable Message Content Intent in the Discord developer portal first.")
     info = client.get(f"/channels/{channel}")
@@ -143,10 +162,10 @@ def new_messages(client, channel, cursor):
 def parse_seminar_message(content):
     """Accept the published template only; never guess a title from a filename."""
     if not isinstance(content, str):
-        raise IngestError("FORMAT_REQUIRED: #세미나와 제목, 발표일, 요약을 작성하세요.")
+        raise IngestError("FORMAT_REQUIRED: # 세미나와 제목, 발표일, 요약을 작성하세요.")
     lines = [line.strip() for line in content.splitlines() if line.strip()]
-    if not lines or lines[0] != "#세미나":
-        raise IngestError("FORMAT_REQUIRED: 첫 줄은 #세미나여야 합니다.")
+    if not lines or lines[0] not in SEMINAR_HEADINGS:
+        raise IngestError("FORMAT_REQUIRED: 첫 줄은 # 세미나여야 합니다.")
     fields = {}
     for line in lines[1:]:
         key, separator, value = line.partition(":")
@@ -156,39 +175,63 @@ def parse_seminar_message(content):
         fields[key] = value.strip()
     if set(fields) != {"제목", "발표일", "요약"} or not all(fields.values()):
         raise IngestError("FORMAT_FIELDS: 제목, 발표일, 요약은 모두 필수입니다.")
-    if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", fields["발표일"]):
-        raise IngestError("FORMAT_DATE: 발표일은 YYYY-MM-DD 형식이어야 합니다.")
-    try:
-        date.fromisoformat(fields["발표일"])
-    except ValueError:
-        raise IngestError("FORMAT_DATE: 실제 달력에 있는 발표일을 입력하세요.") from None
-    title = _clean_text(fields["제목"], "title", 180)
-    summary = _clean_text(fields["요약"], "summary", 1000)
+    return validate_seminar_fields(fields["제목"], fields["발표일"], fields["요약"])
+
+
+def validate_seminar_fields(title, presented_on, summary):
+    """Validate both the one-line message template and the native modal."""
+    title = _clean_text(title, "title", 180)
+    summary = _clean_text(summary, "summary", 1000)
     if not title or not summary:
         raise IngestError("FORMAT_FIELDS: 제목과 요약은 비어 있을 수 없습니다.")
-    return {"title": title, "summary": summary, "presented_on": fields["발표일"]}
+    if not isinstance(presented_on, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", presented_on):
+        raise IngestError("FORMAT_DATE: 발표일은 YYYY-MM-DD 형식이어야 합니다.")
+    try:
+        date.fromisoformat(presented_on)
+    except ValueError:
+        raise IngestError("FORMAT_DATE: 실제 달력에 있는 발표일을 입력하세요.") from None
+    return {"title": title, "summary": summary, "presented_on": presented_on}
 
 
-def queue_message(client, guild, channel, message, inbox=INBOX):
+def validate_attachments(attachments):
+    if not isinstance(attachments, list) or not attachments:
+        raise IngestError("FORMAT_ATTACHMENT: 같은 메시지에 발표 자료를 첨부하세요.")
+    if len(attachments) > 10:
+        raise IngestError("FORMAT_ATTACHMENT: 한 메시지에는 파일을 10개까지 첨부하세요.")
+    names, total = [], 0
+    for attachment in attachments:
+        if not isinstance(attachment, dict):
+            raise IngestError("FORMAT_ATTACHMENT: 올바른 첨부파일이 필요합니다.")
+        names.append(_safe_filename(attachment.get("filename")))
+        size = attachment.get("size", 0)
+        if not isinstance(size, int) or isinstance(size, bool) or size <= 0:
+            raise IngestError("FORMAT_ATTACHMENT: 빈 파일은 등록할 수 없습니다.")
+        total += size
+    if total > MAX_FILE_BYTES:
+        raise IngestError("FORMAT_ATTACHMENT: 첨부파일의 합계 용량이 서버 제한을 초과했습니다.")
+    return names
+
+
+def queue_message(client, guild, channel, message, inbox=INBOX, *, fields=None):
     author = message.get("author", {})
     attachments = message.get("attachments", [])
     if author.get("bot") or message.get("webhook_id"):
         return False
     content = message.get("content", "")
     # Ignore ordinary conversation; a file or explicit seminar marker is an upload attempt.
-    if not attachments and not str(content).lstrip().startswith("#세미나"):
+    heading = next((line.strip() for line in content.splitlines() if line.strip()), "") if isinstance(content, str) else ""
+    if fields is None and not attachments and heading not in SEMINAR_HEADINGS:
         return False
-    fields = parse_seminar_message(content)
-    if not attachments:
-        raise IngestError("FORMAT_ATTACHMENT: 같은 메시지에 발표 자료를 첨부하세요.")
+    if fields is None:
+        fields = parse_seminar_message(content)
+    else:
+        fields = validate_seminar_fields(fields.get("title"), fields.get("presented_on"), fields.get("summary"))
+    names = validate_attachments(attachments)
     message_id = message["id"]
     base = f"discord-{channel}-{message_id}"
     manifest = inbox / (base + ".json")
     if manifest.exists() or (inbox / ".processed" / manifest.name).exists():
         return False
-    names = [_safe_filename(a["filename"]) for a in attachments]
-    if sum(int(a.get("size", 0)) for a in attachments) > MAX_FILE_BYTES:
-        raise IngestError("Attachment size limit exceeded")
     try:
         member = client.get(f"/guilds/{guild}/members/{author['id']}")
     except ApiError as exc:
@@ -221,6 +264,18 @@ def queue_message(client, guild, channel, message, inbox=INBOX):
     return True
 
 
+def collect_message(client, guild, channel, message, forms, inbox=INBOX):
+    """Offer a form for attachments, while keeping complete text uploads working."""
+    if message.get("author", {}).get("bot") or message.get("webhook_id"):
+        return "ignored"
+    if message.get("attachments"):
+        try:
+            parse_seminar_message(message.get("content", ""))
+        except IngestError:
+            return "prompted" if forms.offer(message) else "ignored"
+    return "queued" if queue_message(client, guild, channel, message, inbox) else "ignored"
+
+
 def setup():
     print("Discord setup. Token input is hidden. Do not paste it into chat.")
     token = getpass.getpass("Bot token: ").strip()
@@ -236,7 +291,7 @@ def setup():
     atomic_json(STATE / f"{channel}.json", {"cursor": cursor})
     atomic_json(CONFIG, {"token": token, "channel": channel, "guild": info["guild_id"]})
     CONFIG.chmod(0o600)
-    print("Setup complete. Start 10-START-DISCORD-SYNC.bat, then post a NEW seminar using the template in docs/discord-setup.md.")
+    print("Setup complete. Start 10-START-DISCORD-SYNC.bat, then attach a NEW seminar file and click the bot's form button.")
 
 
 def main():
@@ -265,33 +320,56 @@ def main():
     if not checkpoint.exists():
         raise RuntimeError("Missing checkpoint; run setup again to choose a new starting point.")
     cursor = json.loads(checkpoint.read_text(encoding="utf-8"))["cursor"]
-    LOG.info("Collector ready for channel %s. Website must run separately. Checking every 15 seconds.", channel)
-    while True:
-        try:
-            for message in new_messages(client, channel, cursor):
-                try:
-                    queued = queue_message(client, config["guild"], channel, message)
-                except IngestError as exc:
-                    # Persistent rejection record; an invalid file must not block subsequent uploads.
-                    atomic_json(STATE / ("rejected-" + message["id"] + ".json"), {"id": message["id"], "reason": str(exc)})
-                    # Fixed validation messages contain no message body, token or attachment URL.
-                    LOG.warning("Rejected message %s: %s See docs/discord-setup.md; repost as a NEW message.", message["id"], exc)
-                else:
-                    if queued:
-                        LOG.info("Queued message %s for website ingestion", message["id"])
-                cursor = message["id"]
-                atomic_json(checkpoint, {"cursor": cursor})
-        except AttachmentError as exc:
-            LOG.warning("Attachment download failed: HTTP %s, host=%s; checkpoint retained. "
-                        "Retrying with freshly fetched message URLs in 15 seconds.", exc.status, exc.host)
-        except ApiError as exc:
-            if exc.status in (401, 403):
-                raise
-            LOG.warning("Discord request failed; retrying in 15 seconds (HTTP %s).", exc.status)
-        except Exception as exc:
-            # Never log token, signed URL, response content or user message.
-            LOG.warning("Collection failed (%s); checkpoint retained, retrying in 15 seconds.", type(exc).__name__)
-        time.sleep(15)
+    from discord_sync.gateway import Gateway
+    from discord_sync.interactions import InteractiveSeminars
+    forms = InteractiveSeminars(Client(config["token"]), config["guild"], channel)
+    gateway = Gateway(config["token"], forms.handle)
+    gateway.start()
+    LOG.info("Connecting Discord forms. Website must run separately; checking uploads every 15 seconds.")
+    was_ready = False
+    try:
+        while True:
+            if gateway.failed:
+                raise RuntimeError(gateway.failed)
+            if not gateway.ready.is_set():
+                if was_ready:
+                    LOG.warning("Discord forms disconnected; uploads will resume after reconnection.")
+                was_ready = False
+                time.sleep(2)
+                continue
+            if not was_ready:
+                LOG.info("Collector ready for channel %s. Forms ready: upload a file, then click the bot's button.", channel)
+                was_ready = True
+            try:
+                for message in new_messages(client, channel, cursor):
+                    try:
+                        result = collect_message(client, config["guild"], channel, message, forms)
+                    except IngestError as exc:
+                        # An invalid file must not block subsequent uploads.
+                        atomic_json(STATE / ("rejected-" + message["id"] + ".json"), {"id": message["id"], "reason": str(exc)})
+                        LOG.warning("Rejected message %s: %s See docs/discord-setup.md.", message["id"], exc)
+                    else:
+                        if result == "queued":
+                            LOG.info("Queued message %s for website ingestion", message["id"])
+                        elif result == "prompted":
+                            LOG.info("Sent form prompt for message %s", message["id"])
+                    cursor = message["id"]
+                    atomic_json(checkpoint, {"cursor": cursor})
+            except AttachmentError as exc:
+                LOG.warning("Attachment download failed: HTTP %s, host=%s; checkpoint retained. "
+                            "Retrying with freshly fetched message URLs in 15 seconds.", exc.status, exc.host)
+            except ApiError as exc:
+                if exc.status in (401, 403):
+                    raise RuntimeError(f"Discord HTTP {exc.status}. Check the bot token and View Channel, Read Message History, Send Messages permissions.") from None
+                LOG.warning("Discord request failed; retrying in 15 seconds (HTTP %s).", exc.status)
+            except Exception as exc:
+                # Never log token, signed URL, response content or user message.
+                LOG.warning("Collection failed (%s); checkpoint retained, retrying in 15 seconds.", type(exc).__name__)
+            time.sleep(15)
+    finally:
+        gateway.close()
+        forms.close()
+        instance_lock.close()
 
 
 if __name__ == "__main__":

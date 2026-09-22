@@ -7,6 +7,7 @@
 - `site/`: 웹사이트 화면과 이관된 콘텐츠
 - `seminar_service/`: 정적 사이트, 세미나 목록 API, 인증된 업로드 API, 로컬 inbox 감시
 - `teams_sync/`: Microsoft Graph로 지정한 Teams 채널을 읽는 선택형 수집기
+- `discord_sync/`: Discord 첨부 수집, 작성자 전용 세미나 입력창, Gateway 연결
 - `seminar-data/`: 공개할 세미나 메타데이터와 파일
 - `seminar-inbox/`: Hermes 또는 Teams 수집기가 완료된 파일을 넘기는 폴더
 - `seminar_service/config/presenter-map.json`: Teams 사용자와 Discord 서버 닉네임의 대응표
@@ -39,7 +40,13 @@ Teams 설정 전에 홈페이지부터 공개하려면 무설치 ZIP에서 `01-A
 관리자 페이지는 `/admin.html`입니다. 서버 PC에서 `08-SET-ADMIN-PASSWORD.bat`를 실행해 12자 이상의 비밀번호를 최초 설정한 뒤 로그인합니다. 페이지별 본문과 링크, 공통 헤더·푸터의 한국어·영어 텍스트를 미리보기와 함께 수정할 수 있습니다. 비밀번호는 PBKDF2-SHA256 해시로 `seminar-data/admin-auth.json`에 저장되며 원문은 저장하지 않습니다. 편집 결과는 `seminar-data/site-content-overrides.json`에 보관됩니다.
 
 
-## 비공개 GitHub 저장소와 서버 업데이트
+## Discord 세미나 입력창
+
+`세미나-자료` 채널에 파일을 올리면 봇이 **세미나 정보 입력** 버튼으로 답합니다. 작성자가 버튼을 눌러 제목·발표일·요약을 제출하면 홈페이지에 등록합니다. 기존 `# 세미나` 텍스트 양식도 지원합니다.
+
+기존 Windows 서버는 [입력창 업데이트 안내](docs/discord-form-update-20260922.md)를 따라 패키지를 덮어쓰고 06·10번을 다시 실행합니다. 토큰 재설정이나 pip 설치, 인바운드 포트 추가는 필요 없습니다. 봇에는 채널 보기·메시지 기록 보기·메시지 보내기 권한이 필요합니다. [전체 설정과 사용법](docs/discord-setup.md)
+
+## GitHub 저장소와 서버 업데이트
 
 이 저장소에는 코드와 이미 공개된 연구실 콘텐츠만 포함합니다. `.env`, 봇 토큰, 관리자 인증 해시, Teams 토큰 캐시, 실제 사용자 매핑, 세미나 파일/목록, 관리자 편집값, 로그, 인증서와 원본 DB는 포함하지 않습니다. 비공개 저장소에서도 이러한 파일을 커밋하지 마십시오.
 

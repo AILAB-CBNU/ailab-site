@@ -7,6 +7,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts import build_people_addon as people_build
+from scripts import build_discord_addon as discord_build
+from scripts import build_seminar_addon as seminar_build
 
 SPEC = importlib.util.spec_from_file_location('portable_build', Path(__file__).resolve().parents[1] / 'scripts/build_windows_portable.py')
 build = importlib.util.module_from_spec(SPEC)
@@ -93,6 +95,80 @@ class PortablePrivacyTests(unittest.TestCase):
             (root / 'site/photo.png').symlink_to(private)
             with self.assertRaisesRegex(ValueError, 'Symbolic links'):
                 people_build.build_bundle(root, root / 'dist/people-update.zip')
+
+    def test_discord_addon_contains_gateway_vendor_without_private_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            public = {
+                'site/index.html': '<h1>Public</h1>',
+                'site/seminars.html': '<h1>Seminars</h1>',
+                'site/js/seminars.js': '// client code',
+            }
+            public.update({name: '# required source or license' for name in discord_build.INCLUDE_FILES})
+            private = {
+                'discord-sync-state/config.json': 'PRIVATE_BOT_TOKEN',
+                'discord-sync-state/forms/123.json': 'PRIVATE_FORM_STATE',
+                'discord-sync-state/checkpoint.json': 'PRIVATE_CHECKPOINT',
+                'discord_sync/config.json': 'PRIVATE_UNLISTED_CONFIG',
+                'discord_sync/vendor/websocket/unlisted.py': 'PRIVATE_UNLISTED_MODULE',
+                'discord_sync/vendor/websocket/__pycache__/_core.pyc': 'PRIVATE_CACHE',
+                'discord_sync/vendor/websocket/local.key': 'PRIVATE_KEY',
+                'seminar-data/index.json': 'PRIVATE_SEMINAR_METADATA',
+                'seminar-data/items/private.pdf': 'PRIVATE_UPLOAD',
+                'seminar-data/people/photos/private.png': 'PRIVATE_PROFILE_PHOTO',
+                'seminar-inbox/pending.json': 'PRIVATE_PENDING_UPLOAD',
+                'seminar_service/config/presenter-map.json': 'PRIVATE_MAPPING',
+                'site/discord-sync-state/forms/private.js': 'PRIVATE_NESTED_FORM',
+                'site/config/token.js': 'PRIVATE_NESTED_CONFIG',
+                'site/__pycache__/private.pyc': 'PRIVATE_SITE_CACHE',
+                'runtime/python/python.exe': 'PRIVATE_RUNTIME',
+                '.env': 'PRIVATE_ENV',
+            }
+            for name, content in (public | private).items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding='utf-8')
+            output = root / 'dist/discord-update.zip'
+            discord_build.build_bundle(root, output)
+            with zipfile.ZipFile(output) as archive:
+                self.assertEqual(set(archive.namelist()), set(public))
+                self.assertIn('discord_sync/gateway.py', archive.namelist())
+                self.assertIn('discord_sync/vendor/websocket/_core.py', archive.namelist())
+                self.assertIn('discord_sync/vendor/LICENSE.websocket-client', archive.namelist())
+                self.assertEqual(len(archive.namelist()), len(set(archive.namelist())))
+                for name in archive.namelist():
+                    self.assertNotIn(b'PRIVATE_', archive.read(name), name)
+
+    def test_discord_addon_rejects_symlinked_vendor_file_or_parent(self):
+        for linked_parent in (False, True):
+            with self.subTest(linked_parent=linked_parent), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                for name in discord_build.INCLUDE_FILES + ('site/index.html',):
+                    path = root / name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text('public', encoding='utf-8')
+                private = root / 'discord-sync-state/config.json'
+                private.parent.mkdir()
+                private.write_text('PRIVATE_BOT_TOKEN', encoding='utf-8')
+                linked = root / 'discord_sync/vendor/websocket/_core.py'
+                if linked_parent:
+                    vendor = root / 'discord_sync/vendor'
+                    moved = root / 'discord-sync-state/vendor'
+                    vendor.rename(moved)
+                    vendor.symlink_to(moved, target_is_directory=True)
+                else:
+                    linked.unlink()
+                    linked.symlink_to(private)
+                with self.assertRaisesRegex(ValueError, 'Symbolic links'):
+                    discord_build.build_bundle(root, root / 'dist/discord-update.zip')
+
+    def test_all_addons_share_complete_discord_runtime_allowlist(self):
+        required = set(seminar_build.DISCORD_RUNTIME_FILES)
+        for addon in (seminar_build, people_build, discord_build):
+            with self.subTest(builder=addon.__name__):
+                self.assertTrue(required.issubset(addon.INCLUDE_FILES))
+                self.assertIn('docs/discord-form-update-20260922.md', addon.INCLUDE_FILES)
+                self.assertEqual(len(addon.INCLUDE_FILES), len(set(addon.INCLUDE_FILES)))
 
 
 if __name__ == '__main__':
