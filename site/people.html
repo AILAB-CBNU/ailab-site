@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>구성원 — 인공지능 연구실 · 충북대학교 소프트웨어학부</title>
+  <meta name="description" content="인공지능 연구실 구성원: 이건명 교수, 박사·석사과정, 학부연구생, 졸업생.">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="css/styles.css?v=20260916-1">
+</head>
+<body data-page="people" data-title="people_h">
+  <a class="visually-hidden" href="#main">본문 바로가기</a>
+  <div id="site-nav"></div>
+
+  <main id="main">
+    <header class="page-head section--frost">
+      <div class="container">
+        <h1 class="heading-lg" data-i18n="people_h">구성원</h1>
+        <p class="subheading" data-i18n="people_p">연구실을 함께 만들어가는 사람들</p>
+      </div>
+    </header>
+    <div class="container"><p class="archive-note" data-archive-note></p></div>
+
+    <section class="section section--white" aria-labelledby="prof-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="prof-h" data-i18n="role_professor">교수</h2>
+        <div class="prof-card" id="prof-card"></div>
+      </div>
+    </section>
+
+    <section class="section section--frost" style="padding-top: var(--sp-24);">
+      <div class="container">
+        <div id="people-groups"></div>
+        <section class="people-group" aria-labelledby="alumni-h">
+          <h2 class="heading-sm" id="alumni-h" data-i18n="alumni_h">졸업생</h2>
+          <ul class="rule-list rule-list--tight alumni-list" id="alumni-list"></ul>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/data.js?v=20260916-1"></script>
+  <script src="js/main.js?v=20260916-1"></script>
+  <script src="js/cms.js?v=20260917-1"></script>
+</body>
+</html>

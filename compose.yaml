@@ -1,0 +1,48 @@
+services:
+  website:
+    build:
+      context: .
+      dockerfile: seminar_service/Dockerfile
+    image: cbnu-ailab-site:latest
+    restart: unless-stopped
+    user: "${AILAB_UID:-1000}:${AILAB_GID:-1000}"
+    ports:
+      - "${AILAB_BIND_ADDRESS:-127.0.0.1}:${AILAB_PORT:-8765}:8000"
+    environment:
+      SEMINAR_UPLOAD_TOKEN: ${SEMINAR_UPLOAD_TOKEN:-}
+      SEMINAR_MAX_FILE_MB: ${SEMINAR_MAX_FILE_MB:-100}
+      SEMINAR_WATCH_INTERVAL: ${SEMINAR_WATCH_INTERVAL:-5}
+      TZ: Asia/Seoul
+    volumes:
+      - ./seminar-data:/data
+      - ./seminar-inbox:/inbox
+      - ./seminar_service/config:/config:ro
+
+  teams-sync:
+    profiles: ["teams"]
+    build:
+      context: .
+      dockerfile: seminar_service/Dockerfile
+    image: cbnu-ailab-site:latest
+    restart: unless-stopped
+    user: "${AILAB_UID:-1000}:${AILAB_GID:-1000}"
+    command: ["python", "/app/teams_sync/app.py"]
+    environment:
+      TEAMS_TENANT_ID: ${TEAMS_TENANT_ID:-}
+      TEAMS_CLIENT_ID: ${TEAMS_CLIENT_ID:-}
+      TEAMS_CLIENT_SECRET: ${TEAMS_CLIENT_SECRET:-}
+      TEAMS_TEAM_ID: ${TEAMS_TEAM_ID:-}
+      TEAMS_CHANNEL_ID: ${TEAMS_CHANNEL_ID:-}
+      TEAMS_POLL_SECONDS: ${TEAMS_POLL_SECONDS:-60}
+      TEAMS_IMPORT_EXISTING: ${TEAMS_IMPORT_EXISTING:-false}
+      TEAMS_REQUIRED_TAG: ${TEAMS_REQUIRED_TAG:-}
+      TEAMS_DELEGATED_SCOPES: ${TEAMS_DELEGATED_SCOPES:-offline_access Files.Read.All User.Read}
+      SEMINAR_MAX_FILE_MB: ${SEMINAR_MAX_FILE_MB:-100}
+      SEMINAR_INBOX_DIR: /inbox
+      TEAMS_SYNC_STATE_DIR: /sync-state
+      TZ: Asia/Seoul
+    volumes:
+      - ./seminar-inbox:/inbox
+      - ./teams-sync-state:/sync-state
+    healthcheck:
+      disable: true

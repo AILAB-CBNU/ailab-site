@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+  "version": "1.0.0",
+  "id": "__APP_ID__",
+  "developer": {
+    "name": "CBNU AI Lab",
+    "websiteUrl": "__PUBLIC_URL__",
+    "privacyUrl": "__PUBLIC_URL__/",
+    "termsOfUseUrl": "__PUBLIC_URL__/"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "AI Lab Seminar",
+    "full": "CBNU AI Lab Seminar Archive"
+  },
+  "description": {
+    "short": "Archive seminar files uploaded to this team.",
+    "full": "Reads seminar posts from the team where this app is installed, downloads their attachments with the server file account, and publishes them to the CBNU AI Lab seminar archive."
+  },
+  "accentColor": "#0071E3",
+  "configurableTabs": [
+    {
+      "configurationUrl": "__PUBLIC_URL__/teams-config.html?team={teamId}&channel={channelId}",
+      "canUpdateConfiguration": false,
+      "scopes": ["team"]
+    }
+  ],
+  "validDomains": ["__PUBLIC_DOMAIN__"],
+  "webApplicationInfo": {
+    "id": "__APP_ID__",
+    "resource": "api://__APP_ID__"
+  },
+  "authorization": {
+    "permissions": {
+      "resourceSpecific": [
+        {
+          "name": "ChannelMessage.Read.Group",
+          "type": "Application"
+        }
+      ]
+    }
+  },
+  "defaultInstallScope": "team"
+}

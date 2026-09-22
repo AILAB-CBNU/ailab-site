@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Lab Seminar 설정</title>
+  <style>
+    :root { color-scheme: light dark; font-family: Inter, "Noto Sans KR", system-ui, sans-serif; }
+    body { margin: 0; padding: 32px; background: Canvas; color: CanvasText; }
+    main { max-width: 560px; margin: 0 auto; }
+    .mark { width: 46px; height: 46px; margin-bottom: 24px; }
+    h1 { margin: 0 0 12px; font-size: 28px; }
+    p { color: GrayText; line-height: 1.7; }
+    .status { margin-top: 24px; padding: 14px 16px; border: 1px solid color-mix(in srgb, CanvasText 16%, transparent); border-radius: 12px; }
+  </style>
+  <script src="https://res.cdn.office.net/teams-js/2.2.0/js/MicrosoftTeams.min.js"
+          integrity="sha384yBjE++eHeBPzIg+IKl9OHFqMbSdrzY2S/LW3qeitc5vqXewEYRWegByWzBN/chRh"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+  <main>
+    <img class="mark" src="assets/favicon.svg" alt="">
+    <h1>세미나 자료실 연결</h1>
+    <p>이 팀의 세미나 게시물을 연구실 자료실에 연결합니다. 저장을 누르면 이 팀의 채널 메시지 읽기 권한이 부여되며, 첨부 파일은 서버에 로그인한 연구실 계정의 읽기 권한으로 저장됩니다.</p>
+    <div class="status" id="status" aria-live="polite">Teams 연결을 확인하고 있습니다.</div>
+  </main>
+  <script>
+    (async function () {
+      var status = document.getElementById("status");
+      try {
+        await microsoftTeams.app.initialize();
+        microsoftTeams.pages.config.registerOnSaveHandler(function (saveEvent) {
+          var origin = window.location.origin;
+          microsoftTeams.pages.config.setConfig({
+            websiteUrl: origin + "/seminars.html",
+            contentUrl: origin + "/seminars.html",
+            entityId: "cbnu-ailab-seminar-archive",
+            suggestedDisplayName: "세미나 자료실"
+          }).then(function () {
+            saveEvent.notifySuccess();
+          }).catch(function (error) {
+            saveEvent.notifyFailure(error && error.message ? error.message : "세미나 자료실 연결에 실패했습니다.");
+          });
+        });
+        microsoftTeams.pages.config.setValidityState(true);
+        status.textContent = "준비되었습니다. Teams의 저장 버튼을 눌러 연결을 완료하세요.";
+      } catch (error) {
+        status.textContent = "이 페이지는 Teams에서 앱을 추가할 때 사용합니다.";
+      }
+    })();
+  </script>
+</body>
+</html>
