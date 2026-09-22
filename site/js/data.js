@@ -1,4 +1,4 @@
-/* Public lab content. Provenance: migration/README.md and docs/content-sources.md. */
+/* Public lab content. Provenance: docs/content-sources.md. */
 window.SITE_DATA = {
   "lab": {
     "name": {
@@ -11,11 +11,11 @@ window.SITE_DATA = {
     },
     "affiliation": {
       "ko": "충북대학교 소프트웨어학부",
-      "en": "School of Software, Chungbuk National University"
+      "en": "School of Computer Science, Chungbuk National University"
     },
     "tagline": {
-      "ko": "데이터에서 지능을 이끌어내는 기계학습을 연구합니다.",
-      "en": "Machine learning that draws intelligence out of data."
+      "ko": "기계학습의 새로운 가능성을 탐구합니다.",
+      "en": "Exploring new possibilities in machine learning."
     },
     "intro": {
       "ko": "기계학습, 소프트컴퓨팅, 데이터마이닝과 지능형 정보시스템을 연구합니다. 데이터의 패턴을 이해하고 실제 문제를 해결하는 인공지능을 만듭니다.",
@@ -31,29 +31,6 @@ window.SITE_DATA = {
     "scholarUrl": "https://scholar.google.com/citations?user=4qj0mIEAAAAJ",
     "deptUrl": "https://software.cbnu.ac.kr/"
   },
-  "stats": [
-    {
-      "value": "268",
-      "label": {
-        "ko": "연구 성과 기록",
-        "en": "Research records"
-      }
-    },
-    {
-      "value": "24",
-      "label": {
-        "ko": "졸업·수료 기록",
-        "en": "Alumni records"
-      }
-    },
-    {
-      "value": "192",
-      "label": {
-        "ko": "공개 강의",
-        "en": "Open lectures"
-      }
-    }
-  ],
   "research": [
     {
       "id": "machine-learning",
@@ -173,7 +150,7 @@ window.SITE_DATA = {
     "career": [
       {
         "ko": "충북대학교 소프트웨어학부 교수",
-        "en": "Professor, School of Software, CBNU"
+        "en": "Professor, School of Computer Science, CBNU"
       },
       {
         "ko": "2025 · 한국지능시스템학회 제29대 회장 선출",
@@ -4278,7 +4255,7 @@ window.SITE_DATA = {
       },
       "body": {
         "ko": "소프트웨어학부는 이건명 교수의 소프트웨어산업인의 날 과학기술정보통신부 장관 표창 수상 소식을 소개했습니다. 날짜는 학과 보도 제목에 기재된 날짜입니다.",
-        "en": "The School of Software reported Professor Lee’s ministerial commendation at Software Industry Day. The date follows the department’s news heading."
+        "en": "The School of Computer Science reported Professor Lee’s ministerial commendation at Software Industry Day. The date follows the department’s news heading."
       },
       "source": "https://software.cbnu.ac.kr/index.php?document_srl=1150599&listStyle=viewer&mid=sub050601&page=5",
       "verifiedAt": "2026-09-22"
@@ -4292,7 +4269,7 @@ window.SITE_DATA = {
       },
       "body": {
         "ko": "충북대학교 소프트웨어학부가 이건명 교수의 한국지능시스템학회 제29대 회장 선출 소식을 발표했습니다.",
-        "en": "The School of Software announced Professor Lee’s election as the 29th president of the Korean Institute of Intelligent Systems."
+        "en": "The School of Computer Science announced Professor Lee’s election as the 29th president of the Korean Institute of Intelligent Systems."
       },
       "source": "https://software.cbnu.ac.kr/sub050601/1150541",
       "verifiedAt": "2026-09-22"
@@ -4521,8 +4498,8 @@ window.SITE_DATA = {
       "en": "Join the lab"
     },
     "home_research_h": {
-      "ko": "무엇을 연구하나요",
-      "en": "What we work on"
+      "ko": "연구 분야",
+      "en": "Research"
     },
     "home_research_p": {
       "ko": "실제 시스템에서 동작하는 기계학습을 네 갈래로 연구합니다.",
@@ -4573,8 +4550,8 @@ window.SITE_DATA = {
       "en": "Research"
     },
     "research_p": {
-      "ko": "데이터에서 지능을 이끌어내는 네 가지 연구 주제",
-      "en": "Four threads of research on drawing intelligence from data"
+      "ko": "",
+      "en": ""
     },
     "related_pubs": {
       "ko": "관련 논문",
@@ -4764,7 +4741,7 @@ window.SITE_DATA = {
     ],
     "dept_site": {
       "ko": "소프트웨어학부 홈페이지",
-      "en": "School of Software website"
+      "en": "School of Computer Science website"
     },
     "footer_lab": {
       "ko": "연구실",
@@ -4881,933 +4858,60 @@ window.SITE_DATA = {
     "source_link": {
       "ko": "출처 보기 ↗",
       "en": "View source ↗"
+    },
+    "scroll_explore": {
+      "ko": "스크롤하여 둘러보기",
+      "en": "Scroll to explore"
+    },
+    "recent_support": {
+      "ko": "최근 연구 지원",
+      "en": "Recent research support"
+    },
+    "support_basis": {
+      "ko": "논문 사사에 기재된 지원 내역",
+      "en": "Funding acknowledged in publications"
+    },
+    "project_history": {
+      "ko": "연구 과제 이력",
+      "en": "Project history"
     }
   },
-  "courses": [
+  "researchSupport": [
     {
-      "id": "algorithm",
+      "id": "nrf-2022R1A5A8026986",
       "title": {
-        "ko": "알고리즘",
-        "en": "알고리즘"
+        "ko": "한국연구재단 지원 연구",
+        "en": "NRF-supported research"
       },
-      "lessons": [
-        {
-          "title": "1. 알고리즘의 소개",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_1.mp4"
-        },
-        {
-          "title": "2. 알고리즘의 분석",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_2.mp4"
-        },
-        {
-          "title": "3. 함수증가의 점근적 표현",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_3.mp4"
-        },
-        {
-          "title": "4. 분할정복",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_4.mp4"
-        },
-        {
-          "title": "5. 확률적분석 및 무작위 알고리즘",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_5.mp4"
-        },
-        {
-          "title": "6. 힙과 힙정렬",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_6.mp4"
-        },
-        {
-          "title": "7. 퀵 정렬",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_7.mp4"
-        },
-        {
-          "title": "8. 선형시간 정렬",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_8.mp4"
-        },
-        {
-          "title": "9. 이진검색트리",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_9.mp4"
-        },
-        {
-          "title": "10. 레드블랙트리",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_10.mp4"
-        },
-        {
-          "title": "11. 동적계획법",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_11.mp4"
-        },
-        {
-          "title": "12. 탐욕 알고리즘",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_12.mp4"
-        },
-        {
-          "title": "13. 기본그래프 알고리즘",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_13.mp4"
-        },
-        {
-          "title": "14. 최소신장트리",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_14.mp4"
-        },
-        {
-          "title": "15. 최단경로 알고리즘",
-          "url": "http://203.255.93.153/SharedDirectory/algorithm/algo_15.mp4"
-        }
-      ]
+      "agency": {
+        "ko": "과학기술정보통신부 · 한국연구재단",
+        "en": "MSIT · National Research Foundation of Korea"
+      },
+      "grant": "2022R1A5A8026986",
+      "publicationYear": "2025–2026",
+      "description": {
+        "ko": "시계열 이상 탐지 및 시계열 예측 연구의 지원 과제로 기재됐습니다.",
+        "en": "Acknowledged in work on time-series anomaly detection and forecasting."
+      },
+      "source": "https://doi.org/10.1016/j.knosys.2026.115978"
     },
     {
-      "id": "basic",
+      "id": "iitp-2024-2020-0-01462",
       "title": {
-        "ko": "C 프로그래밍",
-        "en": "C 프로그래밍"
+        "ko": "정보통신기획평가원 지원 연구",
+        "en": "IITP-supported research"
       },
-      "lessons": [
-        {
-          "title": "1. 컴퓨터 시스템의 소개",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic01.mp4"
-        },
-        {
-          "title": "2. 순서도 및 입출력함수",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic02.mp4"
-        },
-        {
-          "title": "3. 데이터의 표현",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic03.mp4"
-        },
-        {
-          "title": "4. 자료형과 변수",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic04.mp4"
-        },
-        {
-          "title": "5. 수식과 연산자",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic05.mp4"
-        },
-        {
-          "title": "6. 조건문",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic06.mp4"
-        },
-        {
-          "title": "7. 반복문",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic07.mp4"
-        },
-        {
-          "title": "8. 함수",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic08.mp4"
-        },
-        {
-          "title": "9. 배열",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic09.mp4"
-        },
-        {
-          "title": "10. 포인터",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic10.mp4"
-        },
-        {
-          "title": "11. 구조체",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic/basic11.mp4"
-        }
-      ]
-    },
-    {
-      "id": "basic_java",
-      "title": {
-        "ko": "Java 프로그래밍",
-        "en": "Java 프로그래밍"
+      "agency": {
+        "ko": "정보통신기획평가원 (IITP)",
+        "en": "Institute of Information & Communications Technology Planning & Evaluation"
       },
-      "lessons": [
-        {
-          "title": "1. 컴퓨터시스템 및 Java 소개",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java01.mp4"
-        },
-        {
-          "title": "2. Java 프로그래밍 기초",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java02.mp4"
-        },
-        {
-          "title": "3. 자료형과 입출력",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java03.mp4"
-        },
-        {
-          "title": "4. 연산자와 조건문",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java04.mp4"
-        },
-        {
-          "title": "5. 반복문",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java05.mp4"
-        },
-        {
-          "title": "6. 배열과 예외처리",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java06.mp4"
-        },
-        {
-          "title": "7. 객체지향 프로그래밍과 클래스",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java07.mp4"
-        },
-        {
-          "title": "8. 클래스 활용",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java08.mp4"
-        },
-        {
-          "title": "9. 상속과 다형성",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java09.mp4"
-        },
-        {
-          "title": "10. 추상클래스와 인터페이스",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java10.mp4"
-        },
-        {
-          "title": "11. 패키지",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java11.mp4"
-        },
-        {
-          "title": "12. 자바 클래스",
-          "url": "http://203.255.93.153/jwplayer_sdb1/basic_java/Java12.mp4"
-        }
-      ]
-    },
-    {
-      "id": "ds",
-      "title": {
-        "ko": "자료구조",
-        "en": "자료구조"
+      "grant": "IITP-2024-2020-0-01462",
+      "publicationYear": "2025",
+      "description": {
+        "ko": "Transformer 기반 시계열 이상 탐지 논문의 연구 지원 내역입니다.",
+        "en": "Acknowledged in the study of Transformer-based time-series anomaly detection."
       },
-      "lessons": [
-        {
-          "title": "1. C언어 복습",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds1.mp4"
-        },
-        {
-          "title": "2. 자료구조의 기초",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds2.mp4"
-        },
-        {
-          "title": "3. 배열과 큐",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds3.mp4"
-        },
-        {
-          "title": "4. 스택",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds4.mp4"
-        },
-        {
-          "title": "5. 연결리스트",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds5.mp4"
-        },
-        {
-          "title": "6. 트리",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds6.mp4"
-        },
-        {
-          "title": "7-1. 그래프(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds7_1.mp4"
-        },
-        {
-          "title": "7-2. 그래프(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds7_2.mp4"
-        },
-        {
-          "title": "8-1. 정렬(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds8_1.mp4"
-        },
-        {
-          "title": "8-2. 정렬(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds8_2.mp4"
-        },
-        {
-          "title": "9. 검색",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds9.mp4"
-        },
-        {
-          "title": "10. 심볼테이블",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ds/ds10.mp4"
-        }
-      ]
-    },
-    {
-      "id": "al",
-      "title": {
-        "ko": "알고리즘 · 보충 강의",
-        "en": "알고리즘 · 보충 강의"
-      },
-      "lessons": [
-        {
-          "title": "16. NP-completeness",
-          "url": "http://203.255.93.153/SharedDirectory/al/np.mp4"
-        }
-      ]
-    },
-    {
-      "id": "os",
-      "title": {
-        "ko": "운영체제",
-        "en": "운영체제"
-      },
-      "lessons": [
-        {
-          "title": "1. 운영체제 소개",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os1.mp4"
-        },
-        {
-          "title": "2. 하드웨어 및 소프트웨어",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os2.mp4"
-        },
-        {
-          "title": "3-1. 프로세스(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os3-1.mp4"
-        },
-        {
-          "title": "3-2. 프로세스(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os3-2.mp4"
-        },
-        {
-          "title": "4. 쓰레드",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os4.mp4"
-        },
-        {
-          "title": "5. 비동기병행실행",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os5.mp4"
-        },
-        {
-          "title": "6. 교착상태와 무기한 연기",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os6.mp4"
-        },
-        {
-          "title": "7. 프로세서 스케줄링",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os7.mp4"
-        },
-        {
-          "title": "8. 메모리 관리",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os8.mp4"
-        },
-        {
-          "title": "9. 가상 메모리 관리",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os9.mp4"
-        },
-        {
-          "title": "10. 보조기억장치",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os10.mp4"
-        },
-        {
-          "title": "11. 파일 시스템",
-          "url": "http://203.255.93.153/jwplayer_sdb1/os/os11.mp4"
-        }
-      ]
-    },
-    {
-      "id": "linear_algebra",
-      "title": {
-        "ko": "선형대수학",
-        "en": "선형대수학"
-      },
-      "lessons": [
-        {
-          "title": "1. 선형대수학의 개요",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear01.mp4"
-        },
-        {
-          "title": "2. 선형시스템의 행렬 표현 및 해법",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear02.mp4"
-        },
-        {
-          "title": "3. 벡터공간과 선형시스템 표현",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear03.mp4"
-        },
-        {
-          "title": "4. 선형독립과 선형변환",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear04.mp4"
-        },
-        {
-          "title": "5. 행렬 연산과 역행렬",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear05.mp4"
-        },
-        {
-          "title": "6. 분할 행렬",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear06.mp4"
-        },
-        {
-          "title": "7. LU 행렬분해",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear07.mp4"
-        },
-        {
-          "title": "8. 선형변환과 부분공간",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear08.mp4"
-        },
-        {
-          "title": "9-1. 행렬식",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear09_1.mp4"
-        },
-        {
-          "title": "9-2. 행렬식의 성질",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear09_2.mp4"
-        },
-        {
-          "title": "9-3. Cramer의 공식 행렬식의 기하학적 의미",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear09_3.mp4"
-        },
-        {
-          "title": "10. 고유값과 고유벡터",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear10.mp4"
-        },
-        {
-          "title": "11. 직교성",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear11.mp4"
-        },
-        {
-          "title": "12. 대각화와 고유값 분해",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear12.mp4"
-        },
-        {
-          "title": "13. Gram-Schmidt 과정과 최소제곱법 문제",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear13.mp4"
-        },
-        {
-          "title": "14. 이차 형식과 정부호 행렬",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear14.mp4"
-        },
-        {
-          "title": "15. 특이값 분해",
-          "url": "http://203.255.93.153/jwplayer_sdb1/linear_algebra/linear15.mp4"
-        }
-      ]
-    },
-    {
-      "id": "ai",
-      "title": {
-        "ko": "인공지능",
-        "en": "인공지능"
-      },
-      "lessons": [
-        {
-          "title": "1. 인공지능의 소개",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-1.mp4"
-        },
-        {
-          "title": "2. 탐색과 최적화(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-2.mp4"
-        },
-        {
-          "title": "3. 탐색과 최적화(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-3.mp4"
-        },
-        {
-          "title": "4. 지식표현과 추론(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-4.mp4"
-        },
-        {
-          "title": "5. 지식표현과 추론(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-5.mp4"
-        },
-        {
-          "title": "6. 지식표현과 추론(3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-6.mp4"
-        },
-        {
-          "title": "7. 지식표현과 추론(4)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-7.mp4"
-        },
-        {
-          "title": "8. 기계학습(1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-8.mp4"
-        },
-        {
-          "title": "9. 기계학습(2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-9.mp4"
-        },
-        {
-          "title": "10. 기계학습 (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-10.mp4"
-        },
-        {
-          "title": "11. 기계학습 (4)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-11.mp4"
-        },
-        {
-          "title": "12.기계학습 (5)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-12.mp4"
-        },
-        {
-          "title": "13. 계획수립",
-          "url": "http://203.255.93.153/jwplayer_sdb1/ai/ai-13.mp4"
-        }
-      ]
-    },
-    {
-      "id": "pgm",
-      "title": {
-        "ko": "확률 그래프 모델",
-        "en": "확률 그래프 모델"
-      },
-      "lessons": [
-        {
-          "title": "1-1. Discrete Random Variables (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/drv01.mp4"
-        },
-        {
-          "title": "1-2. Discrete Random Variables (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/drv02.mp4"
-        },
-        {
-          "title": "2-1. Gaussian Distribution (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/gaussian01.mp4"
-        },
-        {
-          "title": "2-2. Gaussian Distribution (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/gaussian02.mp4"
-        },
-        {
-          "title": "3-1. Dynamic Models (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/dynamic01.mp4"
-        },
-        {
-          "title": "3-2. Dynamic Models (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/dynamic02.mp4"
-        },
-        {
-          "title": "3-3. Dynamic Models (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/dynamic03.mp4"
-        },
-        {
-          "title": "4. Linear Dynamical Systems",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/LDS.mp4"
-        },
-        {
-          "title": "5. Support Vector Machine",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/svm.mp4"
-        },
-        {
-          "title": "1. Introduction to PGM",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM01.mp4"
-        },
-        {
-          "title": "2-1. Bayesian Network (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM02.mp4"
-        },
-        {
-          "title": "2-2. Bayesian Network (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM03.mp4"
-        },
-        {
-          "title": "3. Local Probabilistic Models",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM04.mp4"
-        },
-        {
-          "title": "4. Undirected Models",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM05.mp4"
-        },
-        {
-          "title": "5. Conversion between BN and MN",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/PGM06.mp4"
-        },
-        {
-          "title": "6. Learning Bayesian Networks",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/Learning_Bayesian_Networks.mp4"
-        },
-        {
-          "title": "7. Overview of PGM Learning",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/Overview_of_PGM_Learning.mp4"
-        },
-        {
-          "title": "8. Inference: Variable Elimination",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/Inference_Variable_Elimination.mp4"
-        },
-        {
-          "title": "9-1. Exact Inference: Clique Trees and Belief Propagation (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/Exact_Inference_Clique_Trees_and_Belief_Propagation.mp4"
-        },
-        {
-          "title": "9-2. Exact Inference: Clique Trees and Belief Propagation (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/pgm/last_pgm.mp4"
-        }
-      ]
-    },
-    {
-      "id": "topic",
-      "title": {
-        "ko": "토픽 모델링",
-        "en": "토픽 모델링"
-      },
-      "lessons": [
-        {
-          "title": "1. LSI & LSA",
-          "url": "http://203.255.93.153/jwplayer_sdb1/topic/LSI_LSA.mp4"
-        },
-        {
-          "title": "2. Probabilistic Topic Models",
-          "url": "http://203.255.93.153/jwplayer_sdb1/topic/Probabilistic_Topic_Models.mp4"
-        },
-        {
-          "title": "3. LDA",
-          "url": "http://203.255.93.153/jwplayer_sdb1/topic/LDA.mp4"
-        },
-        {
-          "title": "4. Gibbs Sampling",
-          "url": "http://203.255.93.153/jwplayer_sdb1/topic/Gibbs_Sampling.mp4"
-        }
-      ]
-    },
-    {
-      "id": "outlier",
-      "title": {
-        "ko": "이상치 탐지",
-        "en": "이상치 탐지"
-      },
-      "lessons": [
-        {
-          "title": "1. Outlier detection (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/outlier/outlier1.mp4"
-        },
-        {
-          "title": "2. Outlier detection (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/outlier/outlier2.mp4"
-        },
-        {
-          "title": "3. Outlier detection (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/outlier/outlier3.mp4"
-        }
-      ]
-    },
-    {
-      "id": "hadoop",
-      "title": {
-        "ko": "Hadoop",
-        "en": "Hadoop"
-      },
-      "lessons": [
-        {
-          "title": "1. Hadoop (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/hadoop/hadoop.mp4"
-        },
-        {
-          "title": "2. Hadoop (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/hadoop/hadoop2.mp4"
-        }
-      ]
-    },
-    {
-      "id": "it",
-      "title": {
-        "ko": "컴퓨터 개론",
-        "en": "컴퓨터 개론"
-      },
-      "lessons": [
-        {
-          "title": "1. 서론",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it01.mp4"
-        },
-        {
-          "title": "2-1. 데이터 저장 (부울연산, 주기억장치)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it02_1.mp4"
-        },
-        {
-          "title": "2-2. 데이터 저장 (대용량 저장장치)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it02_2.mp4"
-        },
-        {
-          "title": "3-1. 데이터 저장 (문자,정수,분수,영상,소리)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it03_1.mp4"
-        },
-        {
-          "title": "3-2. 데이터 저장 (데이터 압축, 통신오류)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it03_2.mp4"
-        },
-        {
-          "title": "4-1. 데이터 조작 (컴퓨터구조, 기계어)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it04_1.mp4"
-        },
-        {
-          "title": "4-2. 데이터 조작 (프로그램 실행)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it04_2.mp4"
-        },
-        {
-          "title": "5-1. 데이터 조작 (연산명령)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it05_1.mp4"
-        },
-        {
-          "title": "5-2. 데이터 조작 (외부통신, 컴퓨터 성능향상)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it05_2.mp4"
-        },
-        {
-          "title": "6-1. 운영체제 (발전)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it06_1.mp4"
-        },
-        {
-          "title": "6-2. 운영체제(구조)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it06_2.mp4"
-        },
-        {
-          "title": "6-3. 운영체제 (컴퓨터 활동의 조정)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it06_3.mp4"
-        },
-        {
-          "title": "6-4. 운영체제 (프로세스간의 경쟁, 보안)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it06_4.mp4"
-        },
-        {
-          "title": "7-1. 네트워크와 인터넷 (기초)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it07_1.mp4"
-        },
-        {
-          "title": "7-2. 네트워크와 인터넷 (인터넷)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it07_2.mp4"
-        },
-        {
-          "title": "8-1. 네트워크와 인터넷 (WWW)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it08_1.mp4"
-        },
-        {
-          "title": "8-2. 네트워크와 인터넷 (인터넷 프로토콜)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it08_2.mp4"
-        },
-        {
-          "title": "8-3. 네트워크와 인터넷 (보안)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it08_3.mp4"
-        },
-        {
-          "title": "9-1. 알고리즘 (개념, 표현)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it09_1.mp4"
-        },
-        {
-          "title": "9-2. 알고리즘 (알고리즘 발견)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it09_2.mp4"
-        },
-        {
-          "title": "9-3. 알고리즘 (반복구조)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it09_3.mp4"
-        },
-        {
-          "title": "9-4. 알고리즘 (재귀구조, 효율성)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it09_4.mp4"
-        },
-        {
-          "title": "10-1. PL (역사적 고찰)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it10_1.mp4"
-        },
-        {
-          "title": "10-2. PL (프로그래밍 개념)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it10_2.mp4"
-        },
-        {
-          "title": "11-1. PL (프로시저)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it11_1.mp4"
-        },
-        {
-          "title": "11-2. PL (언어의 구현)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it11_2.mp4"
-        },
-        {
-          "title": "12-1. SE (개관, 생명주기)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it12_1.mp4"
-        },
-        {
-          "title": "12-2. SE (방법론, 모듈화)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it12_2.mp4"
-        },
-        {
-          "title": "12-3. SE (설계도구, 품질보증)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it12_3.mp4"
-        },
-        {
-          "title": "13-1. 데이터 추상화 (기본 데이터구조, 관련개념)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it13_1.mp4"
-        },
-        {
-          "title": "13-2. 데이터 추상화 (데이터구조의 구현)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it13_2.mp4"
-        },
-        {
-          "title": "13-3. 데이터 추상화 (맞춤형 데이터 타입)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it13_3.mp4"
-        },
-        {
-          "title": "13-4. 데이터 추상화 (기계어에서의 포인터)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it13_4.mp4"
-        },
-        {
-          "title": "14-1. 데이터베이스 시스템 (데이터베이스 기초)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it14_1.mp4"
-        },
-        {
-          "title": "14-2. 데이터베이스 시스템 (데이터베이스 모델, 데이터 무결성)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it14_2.mp4"
-        },
-        {
-          "title": "15. 데이터베이스 시스템 (파일구조)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/it/it15.mp4"
-        }
-      ]
-    },
-    {
-      "id": "cs",
-      "title": {
-        "ko": "컴퓨터 구조",
-        "en": "컴퓨터 구조"
-      },
-      "lessons": [
-        {
-          "title": "1-1. Digital System (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs1.mp4"
-        },
-        {
-          "title": "1-2. Digital System (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs2.mp4"
-        },
-        {
-          "title": "2-1. Boolean Algebra (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs3.mp4"
-        },
-        {
-          "title": "2-2. Boolean Algebra (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs4.mp4"
-        },
-        {
-          "title": "2-3. Boolean Algebra (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs5.mp4"
-        },
-        {
-          "title": "3-1. Combinational (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs6.mp4"
-        },
-        {
-          "title": "3-2. Combinational (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs7.mp4"
-        },
-        {
-          "title": "4-1. Sequential (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs8.mp4"
-        },
-        {
-          "title": "4-2. Sequential (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs9.mp4"
-        },
-        {
-          "title": "4-3. Sequential (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs10.mp4"
-        },
-        {
-          "title": "5. Introduction",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs11.mp4"
-        },
-        {
-          "title": "6-1. CPU (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs12.mp4"
-        },
-        {
-          "title": "6-2. CPU (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs13.mp4"
-        },
-        {
-          "title": "7. ALU",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs14.mp4"
-        },
-        {
-          "title": "8-1. ISA (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs15.mp4"
-        },
-        {
-          "title": "8-2. ISA (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs16.mp4"
-        },
-        {
-          "title": "9-1. Scscmem (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs17.mp4"
-        },
-        {
-          "title": "9-2. Scscmem (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs18.mp4"
-        },
-        {
-          "title": "9-3. Scscmem (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs19.mp4"
-        },
-        {
-          "title": "10. ScscCU",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs20.mp4"
-        },
-        {
-          "title": "11. Input/Output",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs21.mp4"
-        },
-        {
-          "title": "12-1. Hperformance (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs22.mp4"
-        },
-        {
-          "title": "12-2. Hperformance (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs23.mp4"
-        },
-        {
-          "title": "13. Parallel Processor",
-          "url": "http://203.255.93.153/jwplayer_sdb1/cs/cs24.mp4"
-        }
-      ]
-    },
-    {
-      "id": "gpu",
-      "title": {
-        "ko": "GPU 프로그래밍",
-        "en": "GPU 프로그래밍"
-      },
-      "lessons": [
-        {
-          "title": "1. GPU (1)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU01.mp4"
-        },
-        {
-          "title": "2. GPU (2)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU02.mp4"
-        },
-        {
-          "title": "3. GPU (3)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU03.mp4"
-        },
-        {
-          "title": "4. GPU (4)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU04.mp4"
-        },
-        {
-          "title": "5. GPU (5)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU05.mp4"
-        },
-        {
-          "title": "6. GPU (6)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU06.mp4"
-        },
-        {
-          "title": "7. GPU (7)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU07.mp4"
-        },
-        {
-          "title": "8. GPU (8)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU08.mp4"
-        },
-        {
-          "title": "9. GPU (9)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU09.mp4"
-        },
-        {
-          "title": "10. GPU (10)",
-          "url": "http://203.255.93.153/jwplayer_sdb1/gpu/GPU10.mp4"
-        }
-      ]
+      "source": "https://pubmed.ncbi.nlm.nih.gov/40285200/"
     }
-  ],
-  "archiveNote": {
-    "ko": "기존 웹사이트의 기록을 옮겼습니다. 구성원은 2021년 명단이며, 연구 이력과 연락처는 원본 작성 시점 기준입니다.",
-    "en": "Migrated from the original website. The roster is dated 2021; research history and contact information reflect their original publication dates."
-  },
-  "archiveNotes": {
-    "people": {
-      "ko": "구성원과 졸업·수료 명단은 기존 웹사이트의 2021년 기록입니다.",
-      "en": "Researchers and alumni reflect the 2021 roster on the original website."
-    },
-    "publications": {
-      "ko": "기존 1991–2021년 기록에 공개 출처로 확인한 2023–2026년 연구 8편을 보완했습니다. 전체 실적 목록은 아니며, 프리프린트는 심사 전 원고로 구분합니다. 출처 확인: 2026. 9. 22.",
-      "en": "The 1991–2021 archive is supplemented with eight verified 2023–2026 works. This is not a complete bibliography. Preprints are labeled separately. Sources checked: 22 September 2026."
-    },
-    "projects": {
-      "ko": "기존 교수 소개의 연구 이력을 보존했습니다. 당시 진행 중인 과제를 현재 진행 과제로 표시하지 않았습니다.",
-      "en": "Research history preserved from the original faculty page. Historical ongoing projects are not presented as currently active."
-    },
-    "contact": {
-      "ko": "주소와 전화번호는 기존 웹사이트의 안내를 반영했습니다. 방문 전 이메일로 확인해 주세요.",
-      "en": "Address and telephone numbers follow the original website. Please confirm by email before visiting."
-    }
-  }
+  ]
 };

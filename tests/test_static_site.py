@@ -78,7 +78,6 @@ class StaticSiteTests(unittest.TestCase):
             "projects.html",
             "news.html",
             "seminars.html",
-            "resources.html",
             "contact.html",
         ):
             self.assertIn("js/cms.js", (SITE / name).read_text(encoding="utf-8"), name)

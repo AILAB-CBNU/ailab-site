@@ -39,7 +39,7 @@
     ["index.html", "nav_home"], ["research.html", "nav_research"], ["people.html", "nav_people"],
     ["publications.html", "nav_publications"], ["projects.html", "nav_projects"],
     ["news.html", "nav_news"], ["seminars.html", "nav_seminars"],
-    ["resources.html", "nav_resources"], ["contact.html", "nav_contact"]
+    ["contact.html", "nav_contact"]
   ];
   function currentFile() {
     if (window.__AILAB_PAGE) return window.__AILAB_PAGE; // 단일 파일 미리보기용
@@ -99,7 +99,7 @@
           col(t("footer_lab"), [["index.html", t("nav_home")], ["seminars.html", t("nav_seminars")], ["contact.html", t("nav_contact")], ["news.html", t("nav_news")]]) +
           col(t("footer_research"), D.research.map(function (r) { return ["research.html#" + r.id, L(r.title)]; })) +
           col(t("footer_people"), [["people.html", t("nav_people")], ["publications.html", t("nav_publications")], ["projects.html", t("nav_projects")]]) +
-          col(t("footer_more"), [["resources.html", t("nav_resources")], [D.lab.deptUrl, t("dept_site"), 1], [D.lab.scholarUrl, t("view_scholar"), 1], ["mailto:" + D.lab.email, t("email_us")], ["admin.html", lang === "ko" ? "관리자" : "Admin"]]) +
+          col(t("footer_more"), [[D.lab.deptUrl, t("dept_site"), 1], [D.lab.scholarUrl, t("view_scholar"), 1], ["mailto:" + D.lab.email, t("email_us")], ["admin.html", lang === "ko" ? "관리자" : "Admin"]]) +
         "</div>" +
         '<div class="footer-fine">' +
           "<p>" + esc(L(D.lab.address)) + " · " + esc(D.lab.phone) + "</p>" +
@@ -165,10 +165,6 @@
         '<h3 class="heading-sm">' + esc(L(r.title)) + "</h3>" +
         "<p>" + esc(L(r.summary)) + "</p>" +
         '<a class="link" href="research.html#' + r.id + '">' + esc(t("learn_more")) + "</a></li>";
-    }).join("");
-    var s = document.getElementById("home-stats");
-    if (s) s.innerHTML = D.stats.map(function (x) {
-      return '<div class="hero-stat"><span class="value">' + esc(x.value) + '</span><span class="label">' + esc(L(x.label)) + "</span></div>";
     }).join("");
     var n = document.getElementById("home-news");
     if (n) n.innerHTML = sortedNews().slice(0, 3).map(newsItem).join("");
@@ -308,6 +304,12 @@
   };
 
   pages.projects = function () {
+    var support = document.getElementById("research-support");
+    if (support) support.innerHTML = (D.researchSupport || []).map(function (p) {
+      return '<li class="support-card" id="' + esc(p.id) + '"><p class="eyebrow">' + esc(p.publicationYear) +
+        (lang === "ko" ? ' · 논문' : ' · Publications') + '</p><h3>' + esc(L(p.title)) + '</h3><p>' + esc(L(p.agency)) +
+        '</p><code>' + esc(p.grant) + '</code><p>' + esc(L(p.description)) + '</p>' + sourceLink(p.source) + '</li>';
+    }).join("");
     var el = document.getElementById("project-list");
     if (!el) return;
     el.innerHTML = D.projects.map(function (p) {
@@ -355,18 +357,6 @@
     }
     draw();
   };
-
-  pages.resources = function () {
-    var el = document.getElementById("lecture-list");
-    if (el) el.innerHTML = D.courses.map(function(c) {
-      return '<details class="resource-group" id="course-' + esc(c.id) + '"><summary>' + esc(L(c.title)) + ' <span class="muted">(' + c.lessons.length + ')</span></summary><ul>' + c.lessons.map(function(l) {
-        return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.title) + ' ↗</a></li>';
-      }).join('') + '</ul></details>';
-    }).join('');
-    var hash = location.hash.slice(1), target = hash && document.getElementById(hash);
-    if(target && target.tagName === 'DETAILS') target.open = true;
-  };
-  window.addEventListener('hashchange', function(){var el=document.getElementById(location.hash.slice(1));if(el && el.tagName==='DETAILS') el.open=true;});
 
   pages.contact = function () {
     var el = document.getElementById("contact-info");
@@ -429,7 +419,6 @@
 
   /* ---------- 실행 ---------- */
   function renderAll() {
-    document.querySelectorAll("[data-archive-note]").forEach(function(el){el.textContent=L((D.archiveNotes || {})[document.body.getAttribute("data-page")] || D.archiveNote);});
     document.body.classList.remove("menu-open");
     document.documentElement.lang = lang;
     renderNav();

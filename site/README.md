@@ -7,7 +7,6 @@
 - `js/main.js`: 화면 렌더링, 한·영 전환, 메뉴, 검색과 필터.
 - `js/hero3d.js`: 외부 라이브러리 없이 표시하는 입체 곡면 애니메이션.
 - `css/styles.css`: 반응형 레이아웃과 스타일.
-- `resources.html`: 공개 강의와 원본 자료 보관함.
 - `seminars.html`: Teams/Hermes가 올린 자료를 업로드 날짜 최신순으로 표시하는 세미나 자료실.
 - `assets/`: 교수 사진, 약도, 파비콘.
 

@@ -10,7 +10,6 @@
     { id: "projects", label: "과제", file: "projects.html", eyebrow: "PROJECTS", description: "연구 과제명, 기간, 지원기관과 역할을 편집합니다." },
     { id: "news", label: "소식", file: "news.html", eyebrow: "NEWS", description: "연구실 소식의 제목, 내용과 분류를 편집합니다." },
     { id: "seminars", label: "세미나", file: "seminars.html", eyebrow: "SEMINARS", description: "세미나 자료실의 안내 문구와 표시된 자료 정보를 편집합니다." },
-    { id: "resources", label: "강의·자료", file: "resources.html", eyebrow: "RESOURCES", description: "강의명, 자료명과 연결 주소를 편집합니다." },
     { id: "contact", label: "연락처", file: "contact.html", eyebrow: "CONTACT", description: "주소, 연락처, 지원 안내와 연결 주소를 편집합니다." }
   ];
 

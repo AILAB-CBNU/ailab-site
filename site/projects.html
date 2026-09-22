@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260916-1">
+  <link rel="stylesheet" href="css/styles.css?v=20260922-3">
 </head>
 <body data-page="projects" data-title="projects_h">
   <a class="visually-hidden" href="#main">본문 바로가기</a>
@@ -24,18 +24,23 @@
         <p class="subheading" data-i18n="projects_p">정부·산업체 지원으로 수행한 연구</p>
       </div>
     </header>
-    <div class="container"><p class="archive-note" data-archive-note></p></div>
 
     <section class="section section--white" style="padding-top: var(--sp-48);">
       <div class="container">
-        <ul class="rule-list" id="project-list"></ul>
+        <h2 class="heading-sm" data-i18n="recent_support">최근 연구 지원</h2>
+        <p class="support-caption" data-i18n="support_basis">논문 사사에 기재된 지원 내역</p>
+        <ul class="support-grid" id="research-support"></ul>
+        <details class="project-history">
+          <summary data-i18n="project_history">연구 과제 이력</summary>
+          <ul class="rule-list" id="project-list"></ul>
+        </details>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
-  <script src="js/data.js?v=20260916-1"></script>
-  <script src="js/main.js?v=20260916-1"></script>
-  <script src="js/cms.js?v=20260917-1"></script>
+  <script src="js/data.js?v=20260922-3"></script>
+  <script src="js/main.js?v=20260922-3"></script>
+  <script src="js/cms.js?v=20260922-3"></script>
 </body>
 </html>
