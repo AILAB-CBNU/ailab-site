@@ -22,7 +22,7 @@ import shutil
 import threading
 import time
 import unicodedata
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from http.cookies import SimpleCookie
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -82,6 +82,10 @@ class IngestError(ValueError):
     pass
 
 
+class DeletedSeminarError(IngestError):
+    pass
+
+
 def _ensure_layout() -> None:
     ITEMS_DIR.mkdir(parents=True, exist_ok=True)
     INBOX_DIR.mkdir(parents=True, exist_ok=True)
@@ -89,6 +93,7 @@ def _ensure_layout() -> None:
         _atomic_json(INDEX_PATH, [])
     if not CONTENT_OVERRIDES_PATH.exists():
         _atomic_json(CONTENT_OVERRIDES_PATH, {"version": 1, "global": {"ko": {}, "en": {}}, "pages": {}})
+    _recover_deletions()
 
 
 def configure_admin_password(password: str) -> None:
@@ -183,7 +188,10 @@ def _normalize_content_overrides(value: Any) -> dict[str, Any]:
 def _atomic_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix(path.suffix + ".tmp")
-    temp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    with temp.open("w", encoding="utf-8") as handle:
+        handle.write(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
     temp.replace(path)
 
 
@@ -233,6 +241,18 @@ def _normalize_datetime(value: Any) -> str:
     return parsed.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
+def _normalize_presented_on(value: Any) -> str:
+    if value in (None, ""):
+        return ""
+    raw = str(value).strip()
+    try:
+        if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", raw):
+            raise ValueError
+        return date.fromisoformat(raw).isoformat()
+    except ValueError:
+        raise IngestError("presented_on은 YYYY-MM-DD 형식의 유효한 날짜여야 합니다.") from None
+
+
 def _load_presenter_map() -> dict[str, dict[str, str]]:
     mapping = _load_json(PRESENTER_MAP_PATH, {})
     return {
@@ -256,11 +276,68 @@ def _resolve_presenter(payload: dict[str, Any]) -> str:
     return _clean_text(presenter, "presenter", 80)
 
 
-def _read_index() -> list[dict[str, Any]]:
+def _deletion_path(source_message_id: str) -> Path:
+    digest = hashlib.sha256(source_message_id.encode("utf-8")).hexdigest()
+    return DATA_DIR / "deleted" / f"{digest}.json"
+
+
+def _read_index(include_deleted: bool = False) -> list[dict[str, Any]]:
     rows = _load_json(INDEX_PATH, [])
     if not isinstance(rows, list):
         raise IngestError("index.json은 배열이어야 합니다.")
-    return rows
+    if include_deleted:
+        return rows
+    # A tombstone is the deletion commit. Hide it even if a process stopped
+    # before index/trash cleanup, or Windows temporarily held an open PDF.
+    return [row for row in rows if not _deletion_path(str(row.get("source_message_id", ""))).is_file()]
+
+
+def _finalize_deletion(record: dict[str, Any]) -> None:
+    item_id = record["id"]
+    if not re.fullmatch(r"[0-9]{8}-[a-f0-9]{10}", item_id):
+        raise IngestError("올바르지 않은 자료 ID입니다.")
+    rows = [row for row in _read_index(include_deleted=True)
+            if row.get("id") != item_id and row.get("source_message_id") != record["source_message_id"]]
+    _atomic_json(INDEX_PATH, rows)
+    item_dir = ITEMS_DIR / item_id
+    if item_dir.exists():
+        trash = DATA_DIR / "trash"
+        trash.mkdir(parents=True, exist_ok=True)
+        destination = trash / item_id
+        if destination.exists():
+            # Never overwrite a previous recovery copy.
+            destination = trash / f"{item_id}-{secrets.token_hex(4)}"
+        item_dir.replace(destination)
+
+
+def _recover_deletions() -> None:
+    with LOCK:
+        for path in (DATA_DIR / "deleted").glob("*.json"):
+            try:
+                record = _load_json(path, {})["record"]
+                _finalize_deletion(record)
+            except Exception:
+                LOG.warning("Deleted seminar cleanup deferred: %s", path.name)
+
+
+def delete_seminar(item_id: str) -> bool:
+    if not re.fullmatch(r"[0-9]{8}-[a-f0-9]{10}", item_id):
+        return False
+    with LOCK:
+        record = next((row for row in _read_index() if row.get("id") == item_id), None)
+        if record is None:
+            return False
+        _atomic_json(_deletion_path(record["source_message_id"]), {
+            "deleted_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "record": record,
+        })
+        try:
+            _finalize_deletion(record)
+        except Exception:
+            # The durable marker already prevents reads and replay. Recover on
+            # next startup rather than restoring a publicly deleted item.
+            LOG.warning("Seminar %s hidden; private trash cleanup deferred until restart", item_id)
+        return True
 
 
 def _decode_files(payload: dict[str, Any], manifest_dir: Path | None = None) -> list[tuple[str, bytes]]:
@@ -306,14 +383,20 @@ def ingest(payload: dict[str, Any], manifest_dir: Path | None = None) -> tuple[d
     source_message_id = _clean_text(payload.get("source_message_id"), "source_message_id", 200)
     if not source_message_id:
         raise IngestError("중복 업로드 방지를 위해 source_message_id가 필요합니다.")
+    with LOCK:
+        if _deletion_path(source_message_id).is_file():
+            raise DeletedSeminarError("관리자가 삭제한 원본 메시지는 다시 등록하지 않습니다. 새 메시지로 업로드하세요.")
     title = _clean_text(payload.get("title"), "title", 180)
     summary = _clean_text(payload.get("summary"), "summary", 1000)
     presenter = _resolve_presenter(payload)
     uploaded_at = _normalize_datetime(payload.get("uploaded_at"))
+    presented_on = _normalize_presented_on(payload.get("presented_on"))
     source = _clean_text(payload.get("source") or "hermes", "source", 40)
     files = _decode_files(payload, manifest_dir)
 
     with LOCK:
+        if _deletion_path(source_message_id).is_file():
+            raise DeletedSeminarError("관리자가 삭제한 원본 메시지는 다시 등록하지 않습니다. 새 메시지로 업로드하세요.")
         rows = _read_index()
         for existing in rows:
             if existing.get("source_message_id") == source_message_id:
@@ -351,6 +434,7 @@ def ingest(payload: dict[str, Any], manifest_dir: Path | None = None) -> tuple[d
                 "title": title or Path(saved_files[0]["name"]).stem,
                 "presenter": presenter,
                 "uploaded_at": uploaded_at,
+                "presented_on": presented_on,
                 "summary": summary,
                 "source": source,
                 "source_message_id": source_message_id,
@@ -370,14 +454,20 @@ def ingest(payload: dict[str, Any], manifest_dir: Path | None = None) -> tuple[d
 
 def _process_inbox_manifest(path: Path) -> None:
     payload = _load_json(path, {})
-    record, created = ingest(payload, path.parent)
+    try:
+        record, created = ingest(payload, path.parent)
+    except DeletedSeminarError:
+        record = None
     processed = INBOX_DIR / ".processed"
     processed.mkdir(exist_ok=True)
     target = processed / path.name
     if target.exists():
         target = processed / f"{path.stem}-{int(time.time())}.json"
     path.replace(target)
-    LOG.info("inbox %s: %s (%s)", "saved" if created else "duplicate", record["title"], record["id"])
+    if record is None:
+        LOG.info("inbox ignored previously deleted seminar: %s", path.name)
+    else:
+        LOG.info("inbox %s: %s (%s)", "saved" if created else "duplicate", record["title"], record["id"])
 
 
 def _watch_inbox() -> None:
@@ -468,7 +558,10 @@ class Handler(SimpleHTTPRequestHandler):
         origin = self.headers.get("Origin", "")
         if not origin:
             return True
-        return urlsplit(origin).netloc.lower() == self.headers.get("Host", "").lower()
+        parsed = urlsplit(origin)
+        scheme = self.headers.get("X-Forwarded-Proto", "http").split(",", 1)[0].strip().lower()
+        return (parsed.scheme in {"http", "https"} and parsed.scheme == scheme
+                and parsed.netloc.lower() == self.headers.get("Host", "").lower())
 
     def _set_admin_cookie(self, token: str, max_age: int) -> None:
         cookie = SimpleCookie()
@@ -525,18 +618,25 @@ class Handler(SimpleHTTPRequestHandler):
             except ValueError:
                 self.send_error(HTTPStatus.NOT_FOUND)
                 return
-            if not candidate.is_file() or candidate.name == "metadata.json":
-                self.send_error(HTTPStatus.NOT_FOUND)
-                return
+            with LOCK:
+                parts = Path(relative).parts
+                record = next((row for row in _read_index() if len(parts) == 2 and row.get("id") == parts[0]), None)
+                if (record is None or not any(f.get("name") == candidate.name for f in record.get("files", []))
+                        or not candidate.is_file() or candidate.name == "metadata.json"):
+                    self.send_error(HTTPStatus.NOT_FOUND)
+                    return
+                handle = candidate.open("rb")
+                size = os.fstat(handle.fileno()).st_size
             content_type = mimetypes.guess_type(candidate.name)[0] or "application/octet-stream"
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", content_type)
-            self.send_header("Content-Length", str(candidate.stat().st_size))
-            self.send_header("X-Content-Type-Options", "nosniff")
-            if content_type not in {"application/pdf"} and not content_type.startswith("image/"):
-                self.send_header("Content-Disposition", f"attachment; filename*=UTF-8''{quote(candidate.name)}")
-            self.end_headers()
-            with candidate.open("rb") as handle:
+            with handle:
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Content-Length", str(size))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                if content_type not in {"application/pdf"} and not content_type.startswith("image/"):
+                    self.send_header("Content-Disposition", f"attachment; filename*=UTF-8''{quote(candidate.name)}")
+                self.end_headers()
                 shutil.copyfileobj(handle, self.wfile)
             return
         super().do_GET()
@@ -631,6 +731,26 @@ class Handler(SimpleHTTPRequestHandler):
             self._json(HTTPStatus.UNPROCESSABLE_ENTITY, {"error": str(exc)})
         except Exception:
             LOG.exception("unexpected admin content failure")
+            self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error"})
+
+    def do_DELETE(self) -> None:  # noqa: N802
+        path = unquote(urlsplit(self.path).path)
+        if not path.startswith("/api/admin/seminars/"):
+            self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+            return
+        if not self._origin_allowed():
+            self._json(HTTPStatus.FORBIDDEN, {"error": "origin_not_allowed"})
+            return
+        if not self._require_admin():
+            return
+        try:
+            deleted = delete_seminar(path.removeprefix("/api/admin/seminars/"))
+            if not deleted:
+                self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+                return
+            self._json(HTTPStatus.OK, {"ok": True})
+        except Exception:
+            LOG.exception("unexpected seminar deletion failure")
             self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error"})
 
     def log_message(self, fmt: str, *args: Any) -> None:

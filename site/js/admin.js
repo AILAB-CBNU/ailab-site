@@ -9,7 +9,8 @@
     { id: "publications", label: "논문", file: "publications.html", eyebrow: "PUBLICATIONS", description: "논문 제목, 저자, 학술지와 관련 링크를 편집합니다." },
     { id: "projects", label: "과제", file: "projects.html", eyebrow: "PROJECTS", description: "연구 과제명, 기간, 지원기관과 역할을 편집합니다." },
     { id: "news", label: "소식", file: "news.html", eyebrow: "NEWS", description: "연구실 소식의 제목, 내용과 분류를 편집합니다." },
-    { id: "seminars", label: "세미나", file: "seminars.html", eyebrow: "SEMINARS", description: "세미나 자료실의 안내 문구와 표시된 자료 정보를 편집합니다." },
+    { id: "seminars", label: "세미나 안내", file: "seminars.html", eyebrow: "SEMINARS", description: "세미나 자료실의 안내 문구를 편집합니다. 업로드된 자료는 ‘세미나 자료 관리’에서 관리하세요." },
+    { id: "seminar-files", label: "세미나 자료 관리", file: "seminars.html", eyebrow: "SEMINAR MATERIALS", description: "업로드 날짜순으로 자료를 확인하고 잘못 올린 자료를 삭제합니다.", manage: true },
     { id: "contact", label: "연락처", file: "contact.html", eyebrow: "CONTACT", description: "주소, 연락처, 지원 안내와 연결 주소를 편집합니다." }
   ];
 
@@ -18,7 +19,11 @@
     lang: "ko",
     content: null,
     items: [],
-    dirty: false
+    dirty: false,
+    seminars: [],
+    seminarRequest: 0,
+    confirmDelete: null,
+    deleting: false
   };
 
   var loginView = document.getElementById("login-view");
@@ -33,6 +38,10 @@
   var search = document.getElementById("field-search");
   var saveButton = document.getElementById("save-button");
   var saveStatus = document.getElementById("save-status");
+  var seminarManager = document.getElementById("seminar-manager");
+  var seminarList = document.getElementById("seminar-management-list");
+  var seminarMessage = document.getElementById("seminar-manager-message");
+  var refreshSeminars = document.getElementById("refresh-seminars");
 
   function api(url, options) {
     options = options || {};
@@ -83,6 +92,11 @@
   }
 
   function loadPreview() {
+    if (state.page.manage) {
+      document.getElementById("open-page").href = "seminars.html?lang=ko";
+      loadSeminars();
+      return;
+    }
     state.items = [];
     fieldList.innerHTML = "";
     loading.hidden = false;
@@ -101,6 +115,11 @@
     document.getElementById("section-eyebrow").textContent = next.eyebrow;
     document.getElementById("section-title").textContent = next.label;
     document.getElementById("section-description").textContent = next.description;
+    document.getElementById("text-editor-grid").hidden = !!next.manage;
+    document.querySelector(".save-area").hidden = !!next.manage;
+    document.querySelector(".language-box").hidden = !!next.manage;
+    seminarManager.hidden = !next.manage;
+    state.confirmDelete = null;
     setDirty(false);
     loadPreview();
   }
@@ -109,10 +128,6 @@
     pageList.innerHTML = PAGES.map(function (page, index) {
       return '<button type="button" data-page="' + page.id + '" aria-current="' + (index === 0 ? "page" : "false") + '">' + page.label + "</button>";
     }).join("");
-    pageList.addEventListener("click", function (event) {
-      var button = event.target.closest("button[data-page]");
-      if (button) selectPage(button.dataset.page);
-    });
   }
 
   function labelFor(item, index) {
@@ -128,6 +143,7 @@
     var seen = {};
     var rows = state.items.filter(function (item) {
       if (item.scope !== wantedScope) return false;
+      if (state.page.id === "seminars" && /^#seminar-(list|status)(?:\/|@|$)/.test(item.key)) return false;
       var id = item.scope + ":" + item.key;
       if (seen[id]) return false;
       seen[id] = true;
@@ -162,6 +178,121 @@
   function escapeAttr(value) {
     return escapeHtml(value).replace(/"/g, "&quot;");
   }
+
+  function seminarDate(value) {
+    var date = new Date(value);
+    if (isNaN(date.getTime())) return "업로드 날짜 없음";
+    return new Intl.DateTimeFormat("ko-KR", {
+      timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit"
+    }).format(date) + " KST";
+  }
+
+  function setSeminarMessage(message, error) {
+    seminarMessage.textContent = message;
+    seminarMessage.classList.toggle("is-error", !!error);
+  }
+
+  function renderSeminars() {
+    if (!state.seminars.length) {
+      seminarList.innerHTML = '<div class="empty-fields">등록된 세미나 자료가 없습니다.</div>';
+      return;
+    }
+    seminarList.innerHTML = state.seminars.map(function (row) {
+      var id = String(row.id || "");
+      var title = row.title || "제목 없는 자료";
+      var files = Array.isArray(row.files) ? row.files : [];
+      var confirming = state.confirmDelete === id;
+      return '<article class="managed-seminar" data-seminar-id="' + escapeAttr(id) + '">' +
+        '<div class="managed-seminar-heading"><div><p class="managed-seminar-date">' + escapeHtml(seminarDate(row.uploaded_at)) + '</p>' +
+        '<h2>' + escapeHtml(title) + '</h2><p class="managed-seminar-presenter">발표자 ' + escapeHtml(row.presenter || "미지정") + '</p></div>' +
+        '<button class="danger-outline" data-seminar-action="prepare" type="button"' + (!id || state.deleting ? ' disabled' : '') +
+        ' aria-label="' + escapeAttr(title + " 자료 삭제") + '">자료 삭제</button></div>' +
+        '<ul class="managed-seminar-files">' + files.map(function (file) {
+          return '<li>' + escapeHtml(file.name || "첨부파일") + '</li>';
+        }).join("") + '</ul>' +
+        (confirming ? '<div class="seminar-delete-confirm" role="group" aria-label="자료 삭제 확인"><p><strong>' + escapeHtml(title) +
+          '</strong> 자료와 첨부파일을 웹사이트에서 삭제할까요?</p><p class="delete-detail">삭제한 자료는 자동으로 다시 수집되지 않습니다. Discord 원본 메시지는 삭제되지 않습니다.</p>' +
+          '<div class="seminar-delete-actions"><button class="quiet" data-seminar-action="cancel" type="button"' + (state.deleting ? ' disabled' : '') + '>취소</button>' +
+          '<button class="danger" data-seminar-action="confirm" type="button"' + (state.deleting ? ' disabled' : '') + '>' + (state.deleting ? '삭제 중…' : '삭제 확인') + '</button></div></div>' : '') + '</article>';
+    }).join("");
+  }
+
+  function loadSeminars(keepMessage) {
+    var request = ++state.seminarRequest;
+    refreshSeminars.disabled = true;
+    if (!keepMessage) setSeminarMessage("세미나 자료를 불러오는 중입니다.");
+    return api("/api/seminars", { cache: "no-store" }).then(function (rows) {
+      if (request !== state.seminarRequest) return;
+      if (!Array.isArray(rows)) throw new Error("invalid_seminar_list");
+      state.seminars = rows.slice().sort(function (a, b) {
+        return String(b.uploaded_at || "").localeCompare(String(a.uploaded_at || ""));
+      });
+      state.confirmDelete = null;
+      renderSeminars();
+      if (!keepMessage) setSeminarMessage("총 " + rows.length + "개의 세미나 자료");
+    }).catch(function () {
+      if (request === state.seminarRequest) setSeminarMessage("자료 목록을 불러오지 못했습니다. 웹 서버 연결을 확인하고 새로고침하세요.", true);
+    }).finally(function () {
+      if (request === state.seminarRequest) refreshSeminars.disabled = false;
+    });
+  }
+
+  function deleteSeminar(id) {
+    var row = state.seminars.find(function (item) { return String(item.id) === id; });
+    if (!row || state.deleting || state.confirmDelete !== id) return;
+    state.deleting = true;
+    refreshSeminars.disabled = true;
+    renderSeminars();
+    api("/api/admin/seminars/" + encodeURIComponent(id), { method: "DELETE" })
+      .then(function (result) {
+        if (result.ok !== true) throw new Error("delete_not_confirmed");
+        setSeminarMessage('“' + (row.title || "제목 없는 자료") + '” 자료를 삭제했습니다.');
+        state.confirmDelete = null;
+        if (iframe.src.indexOf("seminars.html") !== -1) iframe.src = "seminars.html?cms-edit=1&lang=" + state.lang + "&v=" + Date.now();
+        return loadSeminars(true);
+      })
+      .catch(function (error) {
+        var message = "삭제하지 못했습니다. 서버 연결을 확인한 뒤 다시 시도하세요.";
+        if (error.status === 401) {
+          loginMessage.textContent = "로그인이 만료되었습니다. 다시 로그인해 주세요.";
+          showLogin(true);
+        } else if (error.status === 403) {
+          message = "삭제 권한 또는 접속 주소를 확인할 수 없습니다. 홈페이지와 같은 주소의 관리자 페이지에서 다시 로그인하세요.";
+        } else if (error.status === 404) {
+          message = "자료를 찾을 수 없거나 서버가 삭제 기능을 지원하지 않습니다. 목록을 새로고침한 뒤에도 자료가 남아 있으면 서버 업데이트를 적용하세요.";
+        } else if (error.status === 405 || error.status === 501) {
+          message = "현재 서버는 자료 삭제 기능을 지원하지 않습니다. 서버 업데이트를 적용하고 홈페이지 서버를 다시 실행하세요.";
+        }
+        setSeminarMessage(message, true);
+      }).finally(function () {
+        state.deleting = false;
+        refreshSeminars.disabled = false;
+        renderSeminars();
+      });
+  }
+
+  pageList.addEventListener("click", function (event) {
+    var button = event.target.closest("button[data-page]");
+    if (button) selectPage(button.dataset.page);
+  });
+
+  refreshSeminars.addEventListener("click", function () { if (!state.deleting) loadSeminars(); });
+
+  seminarList.addEventListener("click", function (event) {
+    var button = event.target.closest("button[data-seminar-action]");
+    if (!button || state.deleting) return;
+    var card = button.closest("[data-seminar-id]");
+    var id = card.dataset.seminarId;
+    if (button.dataset.seminarAction === "confirm") { deleteSeminar(id); return; }
+    state.confirmDelete = button.dataset.seminarAction === "prepare" ? id : null;
+    renderSeminars();
+    var cards = seminarList.querySelectorAll("[data-seminar-id]");
+    Array.prototype.forEach.call(cards, function (node) {
+      if (node.dataset.seminarId !== id) return;
+      var focusTarget = node.querySelector('[data-seminar-action="' + (state.confirmDelete ? "cancel" : "prepare") + '"]');
+      if (focusTarget) focusTarget.focus();
+    });
+  });
 
   function openEditor() {
     return api("/api/admin/content").then(function (content) {
@@ -243,6 +374,7 @@
 
   window.addEventListener("message", function (event) {
     if (event.origin !== location.origin || event.source !== iframe.contentWindow || !event.data || event.data.type !== "ailab-cms-ready") return;
+    if (state.page.manage) return;
     if (event.data.page !== state.page.file || event.data.lang !== state.lang) return;
     state.items = event.data.items || [];
     if (!state.dirty) renderFields();

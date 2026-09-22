@@ -145,7 +145,7 @@
     return '<a class="link" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("source_link")) + '</a>';
   }
   function newsItem(n) {
-    return '<li><article class="news-item">' +
+    return '<li><article class="news-item"' + (n.id ? ' id="' + esc(n.id) + '"' : '') + '>' +
       '<time class="date" datetime="' + esc(n.date) + '">' + esc(fmtDate(n.date)) + "</time>" +
       "<div>" +
         '<h3 class="title">' + esc(L(n.title)) + '<span class="pill pill--outline cat">' + esc(t("cat_" + n.category)) + "</span></h3>" +
@@ -211,7 +211,7 @@
     if (pc) {
       var list = function (title, items, withYear) {
         return "<div><h3>" + esc(title) + "</h3><ul>" + items.map(function (i) {
-          return "<li>" + (withYear && i.year ? '<span class="y">' + i.year + "</span>" : "") + esc(L(i)) + (i.source ? ' · ' + sourceLink(i.source) : '') + "</li>";
+          return '<li' + (i.id ? ' id="' + esc(i.id) + '"' : '') + '>' + (withYear && i.year ? '<span class="y">' + i.year + "</span>" : "") + esc(L(i)) + (i.source ? ' · ' + sourceLink(i.source) : '') + "</li>";
         }).join("") + "</ul></div>";
       };
       pc.innerHTML = avatar(P) +
@@ -232,12 +232,12 @@
     }
     var groups = document.getElementById("people-groups");
     if (groups) {
-      var order = ["researcher", "phd", "ms", "intern"];
+      var order = ["researcher", "combined", "phd", "ms", "intern"];
       groups.innerHTML = order.map(function (role) {
         var ms = D.members.filter(function (m) { return m.role === role; });
         if (!ms.length) return "";
         return '<section class="people-group"><h2 class="heading-sm">' + esc(t("role_" + role)) + '</h2><ul class="people-grid">' + ms.map(function (m) {
-          return '<li class="person" data-reveal>' + avatar(m) +
+          return '<li class="person" id="member-' + esc(m.id || L(m.name)) + '" data-reveal>' + avatar(m) +
             '<div class="name">' + esc(L(m.name)) + "</div>" +
             '<div class="year">' + esc(L(m.year)) + "</div>" +
             (m.topic ? '<div class="topic">' + esc(L(m.topic)) + "</div>" : "") +

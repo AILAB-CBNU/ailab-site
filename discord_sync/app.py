@@ -9,6 +9,7 @@ import re
 import sys
 import socket
 import time
+from datetime import date
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -139,11 +140,47 @@ def new_messages(client, channel, cursor):
     return sorted(rows.values(), key=lambda item: int(item["id"]))
 
 
+def parse_seminar_message(content):
+    """Accept the published template only; never guess a title from a filename."""
+    if not isinstance(content, str):
+        raise IngestError("FORMAT_REQUIRED: #세미나와 제목, 발표일, 요약을 작성하세요.")
+    lines = [line.strip() for line in content.splitlines() if line.strip()]
+    if not lines or lines[0] != "#세미나":
+        raise IngestError("FORMAT_REQUIRED: 첫 줄은 #세미나여야 합니다.")
+    fields = {}
+    for line in lines[1:]:
+        key, separator, value = line.partition(":")
+        key = key.strip()
+        if not separator or key not in {"제목", "발표일", "요약"} or key in fields:
+            raise IngestError("FORMAT_FIELDS: 제목, 발표일, 요약을 각각 한 줄씩 작성하세요.")
+        fields[key] = value.strip()
+    if set(fields) != {"제목", "발표일", "요약"} or not all(fields.values()):
+        raise IngestError("FORMAT_FIELDS: 제목, 발표일, 요약은 모두 필수입니다.")
+    if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", fields["발표일"]):
+        raise IngestError("FORMAT_DATE: 발표일은 YYYY-MM-DD 형식이어야 합니다.")
+    try:
+        date.fromisoformat(fields["발표일"])
+    except ValueError:
+        raise IngestError("FORMAT_DATE: 실제 달력에 있는 발표일을 입력하세요.") from None
+    title = _clean_text(fields["제목"], "title", 180)
+    summary = _clean_text(fields["요약"], "summary", 1000)
+    if not title or not summary:
+        raise IngestError("FORMAT_FIELDS: 제목과 요약은 비어 있을 수 없습니다.")
+    return {"title": title, "summary": summary, "presented_on": fields["발표일"]}
+
+
 def queue_message(client, guild, channel, message, inbox=INBOX):
     author = message.get("author", {})
     attachments = message.get("attachments", [])
-    if author.get("bot") or message.get("webhook_id") or not attachments:
+    if author.get("bot") or message.get("webhook_id"):
         return False
+    content = message.get("content", "")
+    # Ignore ordinary conversation; a file or explicit seminar marker is an upload attempt.
+    if not attachments and not str(content).lstrip().startswith("#세미나"):
+        return False
+    fields = parse_seminar_message(content)
+    if not attachments:
+        raise IngestError("FORMAT_ATTACHMENT: 같은 메시지에 발표 자료를 첨부하세요.")
     message_id = message["id"]
     base = f"discord-{channel}-{message_id}"
     manifest = inbox / (base + ".json")
@@ -171,15 +208,12 @@ def queue_message(client, guild, channel, message, inbox=INBOX):
         finally:
             part.unlink(missing_ok=True)
         files.append({"name": name, "path": f"{base}/{index}"})
-    content = message.get("content", "").strip()
-    title = (content.splitlines()[0] if content else Path(names[0]).stem)
     payload = {
         "source": "discord",
         "source_message_id": f"discord:{guild}:{channel}:{message_id}",
         "presenter_discord": _clean_text(presenter, "presenter", 80),
         "uploaded_at": message["timestamp"],
-        "title": _clean_text(title[:170], "title", 180),
-        "summary": _clean_text(content[:950], "summary", 1000),
+        **fields,
         "files": files,
     }
     # Commit only after every file is complete. Existing website watcher ingests it.
@@ -202,7 +236,7 @@ def setup():
     atomic_json(STATE / f"{channel}.json", {"cursor": cursor})
     atomic_json(CONFIG, {"token": token, "channel": channel, "guild": info["guild_id"]})
     CONFIG.chmod(0o600)
-    print("Setup complete. Start 10-START-DISCORD-SYNC.bat, then upload a NEW file.")
+    print("Setup complete. Start 10-START-DISCORD-SYNC.bat, then post a NEW seminar using the template in docs/discord-setup.md.")
 
 
 def main():
@@ -240,7 +274,8 @@ def main():
                 except IngestError as exc:
                     # Persistent rejection record; an invalid file must not block subsequent uploads.
                     atomic_json(STATE / ("rejected-" + message["id"] + ".json"), {"id": message["id"], "reason": str(exc)})
-                    LOG.warning("Rejected message %s: unsupported, empty or oversized file. See discord-sync-state.", message["id"])
+                    # Fixed validation messages contain no message body, token or attachment URL.
+                    LOG.warning("Rejected message %s: %s See docs/discord-setup.md; repost as a NEW message.", message["id"], exc)
                 else:
                     if queued:
                         LOG.info("Queued message %s for website ingestion", message["id"])

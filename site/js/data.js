@@ -183,135 +183,177 @@ window.SITE_DATA = {
         "year": 2025,
         "ko": "소프트웨어산업인의 날 · 과학기술정보통신부 장관 표창",
         "en": "Ministerial Commendation, Ministry of Science and ICT, Software Industry Day",
-        "source": "https://software.cbnu.ac.kr/index.php?document_srl=1150599&listStyle=viewer&mid=sub050601&page=5"
+        "source": "https://software.cbnu.ac.kr/index.php?document_srl=1150599&listStyle=viewer&mid=sub050601&page=5",
+        "id": "award-1e37de8c72b3"
+      },
+      {
+        "year": 2022,
+        "ko": "2022 SW R&D 우수성과 · 정보통신기획평가원장상",
+        "en": "IITP President’s Award for Outstanding Software R&D, 2022",
+        "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=549&nttNo=34102&pageIndex=1&pageUnit=10&searchCnd=all&searchCtgry=%EA%B5%90%EC%9C%A1",
+        "id": "award-d66fd9da6cf6"
       },
       {
         "year": 2021,
         "ko": "『응용이 보이는 선형대수학』 · 세종도서 학술부문 우수도서 선정",
         "en": "Applied Linear Algebra selected for the Sejong Academic Books program",
-        "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=551&nttNo=33909"
+        "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=551&nttNo=33909",
+        "id": "award-02e9d56ea673"
       },
       {
         "year": 2019,
         "ko": "이건명, \"제1회 변증남학술상\", 한국지능시스템학회, 2019.11",
-        "en": "이건명, \"제1회 변증남학술상\", 한국지능시스템학회, 2019.11"
+        "en": "이건명, \"제1회 변증남학술상\", 한국지능시스템학회, 2019.11",
+        "id": "award-4da5006457fa"
       },
       {
         "year": 2019,
         "ko": "이건명, 유상록, 윤영선, 홍지만, \"제19-624호 최우수논문상\", 한국정보과학회, 2019.06",
-        "en": "이건명, 유상록, 윤영선, 홍지만, \"제19-624호 최우수논문상\", 한국정보과학회, 2019.06"
+        "en": "이건명, 유상록, 윤영선, 홍지만, \"제19-624호 최우수논문상\", 한국정보과학회, 2019.06",
+        "id": "award-e66bb106e382"
       },
       {
         "year": 2019,
         "ko": "『인공지능: 튜링테스트에서 딥러닝까지』 · 대한민국학술원 우수학술도서 선정",
         "en": "Artificial Intelligence: From the Turing Test to Deep Learning selected as an outstanding academic book by the National Academy of Sciences",
-        "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=551&nttNo=33909"
+        "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=551&nttNo=33909",
+        "id": "award-d42b478e3600"
       },
       {
         "year": 2018,
         "ko": "이건명, \"ACM RACS 2018 Best Paper Award\", 2018.10",
-        "en": "이건명, \"ACM RACS 2018 Best Paper Award\", 2018.10"
+        "en": "이건명, \"ACM RACS 2018 Best Paper Award\", 2018.10",
+        "id": "award-f5a0d14cc976"
       },
       {
         "year": 2015,
         "ko": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04",
-        "en": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04"
+        "en": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04",
+        "id": "award-8e57483542de"
       },
       {
         "year": 2014,
         "ko": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10",
-        "en": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10"
+        "en": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10",
+        "id": "award-4e281fb62bc0"
       },
       {
         "year": 2014,
         "ko": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07",
-        "en": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07"
+        "en": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07",
+        "id": "award-33a2cc9a26a5"
       },
       {
         "year": 2014,
         "ko": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04",
-        "en": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04"
+        "en": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04",
+        "id": "award-f83bbd725f94"
       },
       {
         "year": 2014,
         "ko": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04",
-        "en": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04"
+        "en": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04",
+        "id": "award-d6a9a1334a55"
       },
       {
         "year": 2004,
         "ko": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10",
-        "en": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10"
+        "en": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10",
+        "id": "award-0da0fca9282b"
       }
     ]
   },
   "members": [
     {
+      "id": "han-chan-sik",
       "name": {
-        "ko": "이용주",
-        "en": "이용주"
+        "ko": "한찬식",
+        "en": "Chan Sik Han"
       },
       "role": "researcher",
       "year": {
-        "ko": "박사후연구원 · 2021년 명단",
-        "en": "Postdoctoral researcher · 2021 roster"
+        "ko": "박사후연구원",
+        "en": "Postdoctoral researcher"
       },
       "topic": "",
       "email": "",
       "photo": ""
     },
     {
+      "id": "jeong-sun-woo",
       "name": {
-        "ko": "Viet Ngu Huynh Cong",
-        "en": "Viet Ngu Huynh Cong"
+        "ko": "정선우",
+        "en": "Sun Woo Jeong"
       },
-      "role": "phd",
+      "role": "combined",
       "year": {
-        "ko": "박사과정 · 2021년 명단",
-        "en": "Ph.D. student · 2021 roster"
+        "ko": "석박통합과정",
+        "en": "Integrated M.S./Ph.D. student"
       },
       "topic": "",
       "email": "",
       "photo": ""
     },
     {
+      "id": "jeon-jong-hoon",
       "name": {
-        "ko": "유상록",
-        "en": "유상록"
+        "ko": "전종훈",
+        "en": "전종훈"
       },
-      "role": "phd",
+      "role": "ms",
       "year": {
-        "ko": "박사과정 · 2021년 명단",
-        "en": "Ph.D. student · 2021 roster"
+        "ko": "석사과정",
+        "en": "M.S. student"
       },
       "topic": "",
       "email": "",
       "photo": ""
     },
     {
+      "id": "ahn-dong-ju",
       "name": {
-        "ko": "한찬식",
-        "en": "한찬식"
+        "ko": "안동주",
+        "en": "안동주"
       },
-      "role": "phd",
+      "role": "ms",
       "year": {
-        "ko": "박사과정 · 2021년 명단",
-        "en": "Ph.D. student · 2021 roster"
+        "ko": "석사과정",
+        "en": "M.S. student"
       },
       "topic": "",
       "email": "",
       "photo": ""
     },
     {
+      "id": "lee-gyu-min",
       "name": {
-        "ko": "주정현",
-        "en": "주정현"
+        "ko": "이규민",
+        "en": "이규민"
       },
-      "role": "phd",
+      "role": "intern",
       "year": {
-        "ko": "박사과정 · 2021년 명단",
-        "en": "Ph.D. student · 2021 roster"
+        "ko": "학부연구생",
+        "en": "Undergraduate researcher"
       },
       "topic": "",
+      "email": "",
+      "photo": ""
+    },
+    {
+      "id": "song-yong-hwi",
+      "name": {
+        "ko": "송용휘",
+        "en": "송용휘"
+      },
+      "role": "intern",
+      "year": {
+        "ko": "학부연구생",
+        "en": "Undergraduate researcher"
+      },
+      "topic": {
+        "ko": "정보통신공학부",
+        "en": "School of Information and Communication Engineering"
+      },
       "email": "",
       "photo": ""
     }
@@ -647,6 +689,48 @@ window.SITE_DATA = {
       "degree": {
         "ko": "석사 졸업",
         "en": "M.S. graduate"
+      },
+      "now": {
+        "ko": "",
+        "en": ""
+      }
+    },
+    {
+      "name": {
+        "ko": "Viet Ngu Huynh Cong",
+        "en": "Viet Ngu Huynh Cong"
+      },
+      "degree": {
+        "ko": "박사과정 참여",
+        "en": "Former Ph.D. student"
+      },
+      "now": {
+        "ko": "",
+        "en": ""
+      }
+    },
+    {
+      "name": {
+        "ko": "유상록",
+        "en": "유상록"
+      },
+      "degree": {
+        "ko": "박사과정 참여",
+        "en": "Former Ph.D. student"
+      },
+      "now": {
+        "ko": "",
+        "en": ""
+      }
+    },
+    {
+      "name": {
+        "ko": "주정현",
+        "en": "주정현"
+      },
+      "degree": {
+        "ko": "박사과정 참여",
+        "en": "Former Ph.D. student"
       },
       "now": {
         "ko": "",
@@ -4240,11 +4324,12 @@ window.SITE_DATA = {
         "en": "Two time-series forecasting papers published in Biomimetics and Knowledge-Based Systems"
       },
       "body": {
-        "ko": "Jaemoo Hong·이건명 연구진의 Mixture of TSMixer Experts와 Moment Learning 논문을 논문 목록에 추가했습니다. 두 논문은 각각 전문가 혼합 모델과 데이터에 따라 가중치를 생성하는 방법으로 시계열 예측을 다룹니다.",
+        "ko": "이건명 교수 공동 연구진의 MixtureTSMixer와 MomentLearning 연구가 발표됐습니다. 서로 다른 시계열 예측 접근을 다루는 학술지 논문 2편입니다.",
         "en": "Two papers by Jaemoo Hong and Keon Myung Lee study time-series forecasting through mixtures of experts and data-dependent weight sampling. Bibliographic details and links are available on the Publications page."
       },
       "source": "https://doi.org/10.3390/biomimetics11060426",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-8fd24a46b3ec"
     },
     {
       "date": "2025-12-02",
@@ -4258,7 +4343,8 @@ window.SITE_DATA = {
         "en": "The School of Computer Science reported Professor Lee’s ministerial commendation at Software Industry Day. The date follows the department’s news heading."
       },
       "source": "https://software.cbnu.ac.kr/index.php?document_srl=1150599&listStyle=viewer&mid=sub050601&page=5",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-0479c0a83733"
     },
     {
       "date": "2025-12-02",
@@ -4272,7 +4358,8 @@ window.SITE_DATA = {
         "en": "The School of Computer Science announced Professor Lee’s election as the 29th president of the Korean Institute of Intelligent Systems."
       },
       "source": "https://software.cbnu.ac.kr/sub050601/1150541",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-1a37a5458517"
     },
     {
       "date": "2025-09-16",
@@ -4282,11 +4369,12 @@ window.SITE_DATA = {
         "en": "Preprint explores intermediate representations for time-series anomaly detection"
       },
       "body": {
-        "ko": "Chan Sik Han·이건명 연구진의 TimeRep 연구가 arXiv에 공개됐습니다. 학술지 게재 논문과 구분해 프리프린트로 표시했습니다.",
+        "ko": "한찬식·이건명 연구진의 TimeRep 연구가 arXiv에 공개됐습니다. 학술지 게재 논문과 구분해 프리프린트로 표시했습니다.",
         "en": "Chan Sik Han and Keon Myung Lee shared their TimeRep study on arXiv. It is listed separately as a preprint."
       },
       "source": "https://arxiv.org/abs/2509.12650",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-15f478e062ee"
     },
     {
       "date": "2025-07-01",
@@ -4300,7 +4388,8 @@ window.SITE_DATA = {
         "en": "Professor Lee joined fellow authors at CBNU’s Human Rights Center book event to discuss diversity and bias in AI."
       },
       "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=548&nttNo=159443",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-c5ac6484f5b2"
     },
     {
       "date": "2025-04-16",
@@ -4310,11 +4399,87 @@ window.SITE_DATA = {
         "en": "Transformer-based time-series anomaly detection study published in Sensors"
       },
       "body": {
-        "ko": "Chan Sik Han·HyungWon Kim·이건명 연구진은 기본 Transformer 인코더의 설계 선택을 점검하는 비지도 이상 탐지 연구를 발표했습니다.",
+        "ko": "한찬식·김형원·이건명 연구진은 기본 Transformer 인코더의 설계 선택을 점검하는 비지도 이상 탐지 연구를 발표했습니다.",
         "en": "Chan Sik Han, HyungWon Kim and Keon Myung Lee published a study of design choices for unsupervised anomaly detection using a vanilla Transformer encoder."
       },
       "source": "https://doi.org/10.3390/s25082510",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-69bdc6d9592a"
+    },
+    {
+      "date": "2024-10-15",
+      "category": "general",
+      "title": {
+        "ko": "AI·SW 인재 양성 및 젠더 혁신 협력 협약",
+        "en": "Cooperation agreement on AI education and gender innovation"
+      },
+      "body": {
+        "ko": "이건명 교수가 SW중심대학사업단장으로 한국과학기술젠더혁신센터와의 협약식에 참석했습니다. 두 기관은 AI·SW 교육 공유, 인재 양성 및 성차 연구 협력을 추진하기로 했습니다.",
+        "en": "Professor Keon Myung Lee attended the agreement ceremony as director of CBNU’s SW-centered University project. The partners agreed to cooperate on AI and software education, talent development and research on gender differences."
+      },
+      "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=548&nttNo=152744&pageIndex=68&pageUnit=10&searchCnd=all",
+      "verifiedAt": "2026-09-22",
+      "id": "news-7e9f6fbc61e7"
+    },
+    {
+      "date": "2024-08-29",
+      "category": "event",
+      "title": {
+        "ko": "데이터 형평성과 젠더 혁신 주제 기조강연",
+        "en": "Keynote on data equity and gender innovation"
+      },
+      "body": {
+        "ko": "이건명 교수가 제137차 양성평등정책포럼에서 데이터 형평성의 역할을 주제로 발표했습니다. 데이터의 수집·관리·분석 단계에서 편향을 점검할 필요성을 다뤘습니다.",
+        "en": "Professor Keon Myung Lee presented the role of data equity at the 137th Gender Equality Policy Forum. He discussed the need to examine bias in data collection, management and analysis."
+      },
+      "source": "https://www.kwdi.re.kr/plaza/pressView.do?idx=132441",
+      "verifiedAt": "2026-09-22",
+      "id": "news-1d8955c1feb2"
+    },
+    {
+      "date": "2023-11-08",
+      "category": "event",
+      "title": {
+        "ko": "인공지능 딥러닝의 젠더 편향성 토론",
+        "en": "Discussion paper on gender bias in deep learning"
+      },
+      "body": {
+        "ko": "제134차 양성평등정책포럼 자료집에 이건명 교수의 「인공지능 딥러닝 기술의 젠더 편향성」 토론문이 수록됐습니다. 포럼은 한국여성정책연구원에서 개최됐습니다.",
+        "en": "Professor Keon Myung Lee’s discussion paper on gender bias in deep learning was included in the proceedings of the 134th Gender Equality Policy Forum, held at the Korean Women’s Development Institute."
+      },
+      "source": "https://nsp.nanet.go.kr/plan/subject/detail.do?nationalPlanControlNo=PLAN0000051265",
+      "verifiedAt": "2026-09-22",
+      "id": "news-d23b653d863e"
+    },
+    {
+      "date": "2023-01-17",
+      "category": "event",
+      "title": {
+        "ko": "「인공지능의 시대 — 우리의 미래는?」 특강 안내",
+        "en": "Lecture announcement: The age of AI — what is our future?"
+      },
+      "body": {
+        "ko": "충북대학교 뇌인지공학 융합전공 콜로키움에 이건명 교수의 「인공지능의 시대 — 우리의 미래는?」 특강이 안내됐습니다.",
+        "en": "CBNU’s Brain and Cognitive Engineering program announced a colloquium lecture by Professor Keon Myung Lee on the age of AI and our future."
+      },
+      "source": "https://sites.google.com/g.cbnu.ac.kr/bce/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD/%EC%BD%9C%EB%A1%9C%ED%82%A4%EC%9B%80",
+      "verifiedAt": "2026-09-22",
+      "id": "news-5e8c30d4b010"
+    },
+    {
+      "date": "2022-12-05",
+      "category": "award",
+      "title": {
+        "ko": "이건명 교수, SW R&D 우수성과 정보통신기획평가원장상",
+        "en": "Professor Lee receives an IITP award for outstanding software R&D"
+      },
+      "body": {
+        "ko": "이건명 교수가 2022 SW R&D 우수성과 시상식에서 정보통신기획평가원장상을 수상했습니다. 뉴로모픽 딥러닝 학습 기술과 자율형 IoT 응용 통합개발환경 연구 성과를 인정받았습니다.",
+        "en": "Professor Keon Myung Lee received the IITP President’s Award at the 2022 software R&D awards. The award recognized research on neuromorphic deep-learning training and an integrated development environment for autonomous IoT applications."
+      },
+      "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=549&nttNo=34102&pageIndex=1&pageUnit=10&searchCnd=all&searchCtgry=%EA%B5%90%EC%9C%A1",
+      "verifiedAt": "2026-09-22",
+      "id": "news-3fe5f33f2a0e"
     },
     {
       "date": "2021",
@@ -4328,19 +4493,53 @@ window.SITE_DATA = {
         "en": "Professor Lee’s book was selected for the 2021 Sejong Academic Books program, as reported by CBNU."
       },
       "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=551&nttNo=33909",
-      "verifiedAt": "2026-09-22"
+      "verifiedAt": "2026-09-22",
+      "id": "news-f768fe82434a"
     },
     {
-      "date": "2019-11",
-      "category": "award",
+      "date": "2020-07-06",
+      "category": "general",
       "title": {
-        "ko": "이건명, \"제1회 변증남학술상\", 한국지능시스템학회, 2019.11",
-        "en": "이건명, \"제1회 변증남학술상\", 한국지능시스템학회, 2019.11"
+        "ko": "이건명 교수, 『응용이 보이는 선형대수학』 출간",
+        "en": "Professor Lee publishes a book on applied linear algebra"
       },
       "body": {
-        "ko": "",
-        "en": ""
-      }
+        "ko": "이건명 교수의 『응용이 보이는 선형대수학』이 한빛아카데미에서 출간됐습니다. 선형대수학 이론과 응용을 파이썬 실습과 함께 다룹니다.",
+        "en": "Professor Keon Myung Lee’s book on applied linear algebra was published by Hanbit Academy. It covers linear algebra theory and applications alongside Python exercises."
+      },
+      "source": "https://www.hanbit.co.kr/store/books/series_detail_list.html?seri_idx=49",
+      "verifiedAt": "2026-09-22",
+      "id": "news-25d8c8fa26f9"
+    },
+    {
+      "date": "2019-11-02",
+      "category": "award",
+      "title": {
+        "ko": "이건명 교수, 제1회 변증남학술상 수상",
+        "en": "Professor Lee receives the inaugural Z. Z. Bien Academic Award"
+      },
+      "body": {
+        "ko": "이건명 교수가 한국지능시스템학회 정기총회에서 제1회 변증남학술상을 수상했습니다. 지능시스템·인공지능·데이터마이닝 분야의 학술 기여를 인정받았습니다.",
+        "en": "Professor Keon Myung Lee received the inaugural Z. Z. Bien Academic Award at the Korean Institute of Intelligent Systems’ annual general meeting, recognizing his contributions to intelligent systems, AI and data mining."
+      },
+      "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=549&nttNo=33464&pageIndex=1&pageUnit=10&searchCnd=all&searchCtgry=%EA%B5%90%EC%9C%A1",
+      "verifiedAt": "2026-09-22",
+      "id": "news-867fa8868439"
+    },
+    {
+      "date": "2019-07-08",
+      "category": "award",
+      "title": {
+        "ko": "『인공지능: 튜링 테스트에서 딥러닝까지』, 대한민국학술원 우수학술도서 선정",
+        "en": "Professor Lee’s AI book selected as an outstanding academic book"
+      },
+      "body": {
+        "ko": "이건명 교수의 저서가 2019 대한민국학술원 우수학술도서로 선정됐습니다. 인공지능 이론, 응용 분야 및 개발 도구를 폭넓게 다룬 책입니다.",
+        "en": "Professor Keon Myung Lee’s book, Artificial Intelligence: From the Turing Test to Deep Learning, was selected for the National Academy of Sciences’ 2019 outstanding academic books program. It covers AI theory, applications and development tools."
+      },
+      "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=549&nttNo=33361&pageIndex=190&pageUnit=10&searchCnd=all",
+      "verifiedAt": "2026-09-22",
+      "id": "news-4f1ff497c75a"
     },
     {
       "date": "2019-06",
@@ -4352,7 +4551,8 @@ window.SITE_DATA = {
       "body": {
         "ko": "",
         "en": ""
-      }
+      },
+      "id": "news-40bae1598c24"
     },
     {
       "date": "2018-10",
@@ -4364,79 +4564,8 @@ window.SITE_DATA = {
       "body": {
         "ko": "",
         "en": ""
-      }
-    },
-    {
-      "date": "2015-04",
-      "category": "award",
-      "title": {
-        "ko": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04",
-        "en": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04"
       },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
-    },
-    {
-      "date": "2014-10",
-      "category": "award",
-      "title": {
-        "ko": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10",
-        "en": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10"
-      },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
-    },
-    {
-      "date": "2014-07",
-      "category": "award",
-      "title": {
-        "ko": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07",
-        "en": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07"
-      },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
-    },
-    {
-      "date": "2014-04",
-      "category": "award",
-      "title": {
-        "ko": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04",
-        "en": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04"
-      },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
-    },
-    {
-      "date": "2014-04",
-      "category": "award",
-      "title": {
-        "ko": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04",
-        "en": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04"
-      },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
-    },
-    {
-      "date": "2004-10",
-      "category": "award",
-      "title": {
-        "ko": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10",
-        "en": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10"
-      },
-      "body": {
-        "ko": "",
-        "en": ""
-      }
+      "id": "news-29bf9168d6ea"
     },
     {
       "date": "2016-08-20",
@@ -4449,7 +4578,86 @@ window.SITE_DATA = {
         "ko": "2016년 정부의 인공지능 육성 정책을 소개한 기사입니다. 기존 연구실 사이트에 게시된 기록을 보존했습니다.",
         "en": "An archived 2016 news item on Korea’s AI development policy, retained from the original lab website."
       },
-      "source": "https://n.news.naver.com/mnews/article/001/0008601641"
+      "source": "https://n.news.naver.com/mnews/article/001/0008601641",
+      "id": "news-7be0396f6b8b"
+    },
+    {
+      "date": "2015-04",
+      "category": "award",
+      "title": {
+        "ko": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04",
+        "en": "이건명, 강솔지, \"제 2015-036 호 우수논문상\", 한국지능시스템학회, 2015.04"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-976c6c85d2eb"
+    },
+    {
+      "date": "2014-10",
+      "category": "award",
+      "title": {
+        "ko": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10",
+        "en": "이건명, 이상연, \"제 2014-075 호 우수논문상\", 한국지능시스템학회, 2014.10"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-e11adea19624"
+    },
+    {
+      "date": "2014-07",
+      "category": "award",
+      "title": {
+        "ko": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07",
+        "en": "이건명, 강솔지, 김고우, 한상훈, \"2014 BEST PAPER AWARD\", 한국콘텐츠학회, 2014.07"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-f00ce5024978"
+    },
+    {
+      "date": "2014-04",
+      "category": "award",
+      "title": {
+        "ko": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04",
+        "en": "이건명, 강솔지, 김고우, \"제 2014-039 호 우수논문상\", 한국지능시스템학회, 2014.04"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-e080ca53485d"
+    },
+    {
+      "date": "2014-04",
+      "category": "award",
+      "title": {
+        "ko": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04",
+        "en": "이건명, 이경미, \"Best Paper Award\", 중소기업융합학회, 2014.04"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-208c0d433960"
+    },
+    {
+      "date": "2004-10",
+      "category": "award",
+      "title": {
+        "ko": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10",
+        "en": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10"
+      },
+      "body": {
+        "ko": "",
+        "en": ""
+      },
+      "id": "news-e5a8809299c3"
     }
   ],
   "i18n": {
@@ -4566,8 +4774,8 @@ window.SITE_DATA = {
       "en": "People"
     },
     "people_p": {
-      "ko": "연구실을 함께 만들어온 사람들 · 원본 명단 기준",
-      "en": "The people behind our research · original roster"
+      "ko": "인공지능 연구실의 교수와 연구 구성원",
+      "en": "Faculty and researchers at AI Lab"
     },
     "role_professor": {
       "ko": "교수",
@@ -4586,11 +4794,11 @@ window.SITE_DATA = {
       "en": "Undergraduate researchers"
     },
     "role_researcher": {
-      "ko": "연구원",
-      "en": "Researchers"
+      "ko": "박사후연구원",
+      "en": "Postdoctoral researchers"
     },
     "alumni_h": {
-      "ko": "졸업생",
+      "ko": "Alumni",
       "en": "Alumni"
     },
     "education": {
@@ -4784,8 +4992,8 @@ window.SITE_DATA = {
       "en": "Latest seminars"
     },
     "seminars_order": {
-      "ko": "업로드 날짜가 최신인 자료부터 표시됩니다.",
-      "en": "Materials are ordered by upload date, newest first."
+      "ko": "업로드 날짜순 · 최신 자료부터",
+      "en": "Sorted by upload date · Newest first"
     },
     "seminars_loading": {
       "ko": "자료를 불러오는 중입니다.",
@@ -4796,8 +5004,8 @@ window.SITE_DATA = {
       "en": "Waiting for the first seminar upload."
     },
     "seminars_empty_p": {
-      "ko": "Teams와 Hermes 연동이 완료되면 업로드된 자료가 이곳에 자동으로 표시됩니다.",
-      "en": "Once Teams and Hermes are connected, uploaded materials will appear here automatically."
+      "ko": "세미나-자료 채널에 아래 양식으로 발표 자료를 올려주세요.",
+      "en": "Share your materials in the seminar channel using the format below."
     },
     "seminars_presenter": {
       "ko": "발표자",
@@ -4874,6 +5082,66 @@ window.SITE_DATA = {
     "project_history": {
       "ko": "연구 과제 이력",
       "en": "Project history"
+    },
+    "role_combined": {
+      "ko": "석박통합과정",
+      "en": "Integrated M.S./Ph.D. students"
+    },
+    "seminars_upload": {
+      "ko": "Discord 업로드 안내",
+      "en": "Upload via Discord"
+    },
+    "seminars_upload_intro": {
+      "ko": "세미나-자료 채널에 아래 본문과 파일을 하나의 새 메시지로 올려주세요.",
+      "en": "Post the template below and your files together in one new message in the seminar channel."
+    },
+    "seminars_upload_rules": {
+      "ko": "제목·발표일·요약은 각각 한 줄씩 모두 작성하세요. 발표일은 YYYY-MM-DD 형식입니다. 발표자는 올린 사람의 서버 닉네임으로 표시됩니다.",
+      "en": "Title, presentation date (YYYY-MM-DD) and summary are required, one line each. Keep the Korean field labels. The uploader’s server nickname is shown as the presenter."
+    },
+    "seminars_upload_files": {
+      "ko": "PDF, PPT/PPTX, DOC/DOCX, XLS/XLSX, ZIP, TXT, MD, PNG/JPG/JPEG/WEBP · 메시지당 합계 100 MiB 이하",
+      "en": "PDF, PPT/PPTX, DOC/DOCX, XLS/XLSX, ZIP, TXT, MD, PNG/JPG/JPEG/WEBP · Up to 100 MiB per message"
+    },
+    "seminars_upload_note": {
+      "ko": "양식이 다르거나 첨부파일이 없으면 등록되지 않습니다. 수정할 때는 새 메시지로 다시 올려주세요.",
+      "en": "Posts without the required format and attachments are not published. Submit corrections as a new message."
+    },
+    "seminars_copy": {
+      "ko": "양식 복사",
+      "en": "Copy template"
+    },
+    "seminars_copied": {
+      "ko": "복사했습니다. 내용을 바꾸고 파일을 첨부해 주세요.",
+      "en": "Copied. Replace the example text and attach your files."
+    },
+    "seminars_copy_fail": {
+      "ko": "아래 양식을 선택해 직접 복사해 주세요.",
+      "en": "Please select and copy the template below."
+    },
+    "seminars_presented": {
+      "ko": "발표일",
+      "en": "Presented"
+    },
+    "seminars_uploaded": {
+      "ko": "업로드",
+      "en": "Uploaded"
+    },
+    "seminars_materials": {
+      "ko": "발표 자료",
+      "en": "Materials"
+    },
+    "seminars_delete_help": {
+      "ko": "잘못 등록한 자료는 관리자 → 세미나 자료 관리에서 삭제할 수 있습니다. Discord 메시지 삭제만으로는 홈페이지 자료가 지워지지 않습니다.",
+      "en": "Remove incorrect uploads through Admin → Seminar materials. Deleting a Discord message does not remove the website copy."
+    },
+    "seminars_admin": {
+      "ko": "관리자 열기",
+      "en": "Open admin"
+    },
+    "seminars_count_one": {
+      "ko": "개의 자료",
+      "en": "item"
     }
   },
   "researchSupport": [
@@ -4890,7 +5158,7 @@ window.SITE_DATA = {
       "grant": "2022R1A5A8026986",
       "publicationYear": "2025–2026",
       "description": {
-        "ko": "시계열 이상 탐지 및 시계열 예측 연구의 지원 과제로 기재됐습니다.",
+        "ko": "시계열 이상 탐지 및 시계열 예측 연구의 지원 과제로 기재",
         "en": "Acknowledged in work on time-series anomaly detection and forecasting."
       },
       "source": "https://doi.org/10.1016/j.knosys.2026.115978"
@@ -4908,7 +5176,7 @@ window.SITE_DATA = {
       "grant": "IITP-2024-2020-0-01462",
       "publicationYear": "2025",
       "description": {
-        "ko": "Transformer 기반 시계열 이상 탐지 논문의 연구 지원 내역입니다.",
+        "ko": "Transformer 기반 시계열 이상 탐지 논문의 연구 지원 내역",
         "en": "Acknowledged in the study of Transformer-based time-series anomaly detection."
       },
       "source": "https://pubmed.ncbi.nlm.nih.gov/40285200/"

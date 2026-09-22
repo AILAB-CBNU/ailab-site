@@ -111,6 +111,7 @@
   function applyAttributes(rootInfo) {
     var map = mapFor(rootInfo.scope);
     rootInfo.node.querySelectorAll("a[href]").forEach(function (anchor) {
+      if (anchor.closest("[data-cms-ignore]")) return;
       var key = elementPath(anchor, rootInfo.node) + "@href";
       anchor.setAttribute("data-cms-link-key", key);
       anchor.setAttribute("data-cms-scope", rootInfo.scope);

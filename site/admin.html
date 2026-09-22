@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="css/admin.css?v=20260922-3">
+  <link rel="stylesheet" href="css/admin.css?v=20260922-4">
 </head>
 <body>
   <main class="login-wrap" id="login-view">
@@ -17,7 +17,7 @@
       <a class="admin-brand" href="index.html"><span class="brand-mark">✦</span> CBNU AI Lab</a>
       <p class="eyebrow">WEBSITE ADMIN</p>
       <h1 id="login-title">관리자 로그인</h1>
-      <p class="login-copy">연구실 홈페이지의 텍스트와 링크를 관리합니다.</p>
+      <p class="login-copy">홈페이지의 텍스트, 링크와 세미나 자료를 관리합니다.</p>
       <div class="setup-note" id="setup-note" hidden>
         서버 PC에서 <strong>08-SET-ADMIN-PASSWORD.bat</strong>를 먼저 실행해 관리자 비밀번호를 설정하세요.
       </div>
@@ -69,7 +69,16 @@
           </div>
         </div>
 
-        <div class="editor-grid">
+        <section class="seminar-manager" id="seminar-manager" aria-label="세미나 자료 관리" hidden>
+          <div class="seminar-manager-tools">
+            <p>잘못 올린 자료는 이곳에서 삭제하세요. Discord 원본 메시지는 그대로 남습니다.</p>
+            <button class="quiet" id="refresh-seminars" type="button">목록 새로고침</button>
+          </div>
+          <p class="seminar-manager-message" id="seminar-manager-message" role="status" aria-live="polite"></p>
+          <div id="seminar-management-list"></div>
+        </section>
+
+        <div class="editor-grid" id="text-editor-grid">
           <section class="fields-pane" aria-label="텍스트 편집 필드">
             <div class="field-tools">
               <input id="field-search" type="search" placeholder="현재 텍스트나 링크 검색">
@@ -86,6 +95,6 @@
       </section>
     </div>
   </div>
-  <script src="js/admin.js?v=20260922-3"></script>
+  <script src="js/admin.js?v=20260922-4"></script>
 </body>
 </html>

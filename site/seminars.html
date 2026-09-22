@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260922-3">
+  <link rel="stylesheet" href="css/styles.css?v=20260922-4">
 </head>
 <body data-page="seminars" data-title="seminars_h">
   <a class="visually-hidden" href="#main">본문 바로가기</a>
@@ -23,6 +23,7 @@
         <p class="eyebrow">LAB SEMINAR ARCHIVE</p>
         <h1 class="heading-lg" data-i18n="seminars_h">세미나 자료실</h1>
         <p class="subheading" data-i18n="seminars_p">연구실 구성원이 함께 나눈 발표와 자료를 모았습니다.</p>
+        <a class="seminar-guide-link" href="#upload-guide" data-i18n="seminars_upload">Discord 업로드 안내</a>
       </div>
     </header>
 
@@ -33,19 +34,40 @@
             <h2 class="heading" id="seminar-list-h" data-i18n="seminars_latest">최근 세미나</h2>
             <p class="archive-note" data-i18n="seminars_order">업로드 날짜가 최신인 자료부터 표시됩니다.</p>
           </div>
-          <span class="seminar-live" id="seminar-status" aria-live="polite"></span>
+          <span class="seminar-live" id="seminar-status" aria-live="polite" data-cms-ignore></span>
         </div>
-        <div class="seminar-list" id="seminar-list" aria-live="polite">
+        <div class="seminar-list" id="seminar-list" aria-live="polite" data-cms-ignore>
           <p class="seminar-loading" data-i18n="seminars_loading">자료를 불러오는 중입니다.</p>
         </div>
+        <details class="seminar-guide" id="upload-guide">
+          <summary data-i18n="seminars_upload">Discord 업로드 안내</summary>
+          <div class="seminar-guide-body">
+            <p data-i18n="seminars_upload_intro"></p>
+            <div class="seminar-template-wrap" data-cms-ignore>
+              <pre id="seminar-template">#세미나
+제목: 시계열 이상 탐지 논문 리뷰
+발표일: 2026-09-22
+요약: Transformer 기반 이상 탐지 방법과 실험 결과를 소개합니다.</pre>
+              <button class="seminar-copy" id="copy-seminar-template" type="button" data-i18n="seminars_copy">양식 복사</button>
+              <span id="seminar-copy-status" role="status"></span>
+            </div>
+            <p data-i18n="seminars_upload_rules"></p>
+            <p class="seminar-guide-formats" data-i18n="seminars_upload_files"></p>
+            <p data-i18n="seminars_upload_note"></p>
+            <div class="seminar-guide-admin">
+              <p data-i18n="seminars_delete_help"></p>
+              <a href="admin.html" data-i18n="seminars_admin">관리자 열기</a>
+            </div>
+          </div>
+        </details>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
-  <script src="js/data.js?v=20260922-3"></script>
-  <script src="js/main.js?v=20260922-3"></script>
-  <script src="js/seminars.js?v=20260922-3"></script>
-  <script src="js/cms.js?v=20260922-3"></script>
+  <script src="js/data.js?v=20260922-4"></script>
+  <script src="js/main.js?v=20260922-4"></script>
+  <script src="js/seminars.js?v=20260922-4"></script>
+  <script src="js/cms.js?v=20260922-4"></script>
 </body>
 </html>
