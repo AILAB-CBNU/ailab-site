@@ -8,3 +8,6 @@
 @media(max-width:1100px){.people-manager-grid{grid-template-columns:210px minmax(0,1fr)}.profile-photo-section{grid-template-columns:1fr}.profile-details{padding:22px}}
 @media(max-width:800px){.people-manager-grid{grid-template-columns:1fr}.profile-person-list{max-height:200px;grid-template-columns:repeat(2,minmax(0,1fr))}.profile-photo-section{grid-template-columns:148px minmax(0,1fr)}}
 @media(max-width:700px){.people-manager{padding:0 16px 32px}.profile-storage-note{padding:14px}.profile-details{padding:20px}.people-manager-status{align-items:flex-start;padding:16px 0}.people-manager-status p{margin:0}.profile-photo-section{grid-template-columns:1fr;gap:18px}.profile-links-actions{align-items:flex-start;flex-direction:column}.profile-links-actions button{width:100%}}
+
+/* Match the 3×4 framing used by formal portrait photos. */
+.profile-photo-preview{width:135px;aspect-ratio:3 / 4;height:auto}
