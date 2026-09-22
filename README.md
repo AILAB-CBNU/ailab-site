@@ -48,3 +48,7 @@ Teams 설정 전에 홈페이지부터 공개하려면 무설치 ZIP에서 `01-A
 신규 설치에는 로컬 설정이 필요합니다. Discord는 09번 설정에서 토큰과 세미나 채널 ID를 입력합니다. Teams는 Entra 앱 ID와 테넌트 ID를 입력합니다. ZIP은 저장소에 넣지 않으며 Python이 설치된 개발 PC에서 `python scripts/build_windows_portable.py`로 만듭니다. 생성된 ZIP에는 운영 자료나 비밀번호를 포함하지 않습니다.
 
 최근 수상·소식·논문의 확인 기준과 링크: [콘텐츠 출처](docs/content-sources.md).
+
+## Windows 홈페이지 자동 업데이트
+
+공개 저장소의 `main`에 올라온 `site/` 변경을 5분마다 적용할 수 있습니다. 기존 무설치 서버에서 `11-INSTALL-AUTO-UPDATE.bat`를 한 번 실행하십시오. 추가 Git 설치와 GitHub 로그인은 필요하지 않습니다. Windows 로그인 중 동작하며, 수동 실행은 12번, 자동 실행 중단은 13번입니다. 최근 홈페이지 백업 3개를 유지합니다. [설치·복구 안내](docs/windows-auto-update.md)

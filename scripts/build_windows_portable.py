@@ -44,6 +44,9 @@ INCLUDE_FILES = (
     "08-SET-ADMIN-PASSWORD.bat",
     "09-SETUP-DISCORD.bat",
     "10-START-DISCORD-SYNC.bat",
+    "11-INSTALL-AUTO-UPDATE.bat",
+    "12-UPDATE-WEBSITE-NOW.bat",
+    "13-STOP-AUTO-UPDATE.bat",
     "scripts/build_teams_app.py",
     "scripts/ingest_seminar.py",
 )

@@ -40,3 +40,5 @@ migration/*
 .DS_Store
 
 .git
+
+website-update-state/

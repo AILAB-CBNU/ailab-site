@@ -38,3 +38,5 @@ seminar_service/config/*
 migration/*
 !migration/README.md
 .DS_Store
+
+website-update-state/
