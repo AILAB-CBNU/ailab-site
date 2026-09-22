@@ -13,7 +13,7 @@
     var q = new URLSearchParams(location.search).get("lang");
     if (q && LANGS.indexOf(q) > -1) return q;
     try { var s = localStorage.getItem("ailab-lang"); if (s && LANGS.indexOf(s) > -1) return s; } catch (e) {}
-    return "ko";
+    return "en";
   }
   var lang = readLang();
   function L(v) { // {ko,en} → 문자열
