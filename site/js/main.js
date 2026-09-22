@@ -116,10 +116,85 @@
   }
 
   /* ---------- 유틸 렌더 ---------- */
-  function avatar(person, size) {
+  var peopleProfiles = {};
+  var profilesRequest = null;
+  var profileIcons = {
+    github: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.54v-2.1c-3.1.67-3.75-1.31-3.75-1.31-.51-1.28-1.24-1.62-1.24-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.23.92.1-.72.39-1.21.7-1.49-2.47-.28-5.06-1.23-5.06-5.49 0-1.22.44-2.22 1.14-3-.11-.28-.5-1.42.11-2.95 0 0 .94-.3 3.05 1.14a10.6 10.6 0 0 1 5.56 0c2.11-1.43 3.04-1.14 3.04-1.14.61 1.53.23 2.67.11 2.95.71.78 1.14 1.78 1.14 3 0 4.27-2.6 5.2-5.08 5.48.4.35.76 1.02.76 2.06v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="7" cy="8" r="1.15" fill="currentColor"/><path d="M7 11v6M11 11v6m0-3.5c0-3.2 6-3.4 6 .1V17" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    website: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5c4 2 10 2 14 0M5 17.5c4-2 10-2 14 0"/></g></svg>'
+  };
+  function profileFor(person) {
+    return Object.prototype.hasOwnProperty.call(peopleProfiles, person.id) ? peopleProfiles[person.id] : {};
+  }
+  function profilePhoto(person) {
+    var uploaded = profileFor(person).photo;
+    return typeof uploaded === "string" && /^\/people-photos\/[a-f0-9]{32,64}\.png$/.test(uploaded) ? uploaded : person.photo || "";
+  }
+  function safeProfileLink(value, kind) {
+    try {
+      if (typeof value !== "string" || !/^https?:\/\//i.test(value) || /[\x00-\x20\x7f]/.test(value)) return "";
+      var url = new URL(value);
+      if (url.username || url.password) return "";
+      var host = url.hostname.toLowerCase();
+      if (kind === "github" && host !== "github.com" && host !== "www.github.com") return "";
+      if (kind === "linkedin" && host !== "linkedin.com" && !host.endsWith(".linkedin.com")) return "";
+      return url.href;
+    } catch (e) { return ""; }
+  }
+  function profileLinkContent(person) {
+    var links = profileFor(person).links || person.links || {};
+    return ["github", "linkedin", "website"].map(function (kind) {
+      var service = kind === "website" ? t("profile_website") : kind === "github" ? "GitHub" : "LinkedIn";
+      var label = L(person.name) + " · " + service;
+      var href = safeProfileLink(links[kind], kind);
+      if (href) return '<a class="profile-link" href="' + esc(href) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(label) + '" title="' + esc(service) + '">' + profileIcons[kind] + '</a>';
+      return '<span class="profile-link is-unset" role="link" aria-disabled="true" aria-label="' + esc(label + " · " + t("profile_link_empty")) + '" title="' + esc(service + " · " + t("profile_link_empty")) + '">' + profileIcons[kind] + '</span>';
+    }).join("");
+  }
+  function profileLinks(person) {
+    return '<span class="profile-links" data-person-links="' + esc(person.id) + '" data-cms-ignore>' + profileLinkContent(person) + '</span>';
+  }
+  function avatarContent(person) {
     var name = L(person.name);
-    if (person.photo) return '<div class="avatar"><img src="' + esc(person.photo) + '" alt="' + esc(name) + '" loading="lazy"></div>';
-    return '<div class="avatar" aria-hidden="true">' + esc(name.charAt(0)) + "</div>";
+    var photo = profilePhoto(person);
+    if (photo) return '<img src="' + esc(photo) + '" alt="' + esc(name) + '" loading="lazy">';
+    return '<span aria-hidden="true">' + esc(Array.from(name)[0] || "") + '</span>';
+  }
+  function avatar(person) {
+    return '<div class="avatar" data-person-photo="' + esc(person.id) + '" data-cms-ignore>' + avatarContent(person) + '</div>';
+  }
+  function updateProfileNodes() {
+    var persons = [D.professor].concat(D.members || [], D.alumni || []);
+    function findPerson(node, attr) {
+      return persons.find(function (person) { return person.id === node.getAttribute(attr); });
+    }
+    document.querySelectorAll("[data-person-links]").forEach(function (node) {
+      var person = findPerson(node, "data-person-links");
+      if (person) node.innerHTML = profileLinkContent(person);
+    });
+    document.querySelectorAll("[data-person-photo]").forEach(function (node) {
+      var person = findPerson(node, "data-person-photo");
+      if (!person) return;
+      node.innerHTML = avatarContent(person);
+      if (node.classList.contains("alumni-photo")) node.hidden = !profilePhoto(person);
+      var img = node.querySelector("img");
+      if (img) img.addEventListener("error", function () {
+        node.innerHTML = '<span aria-hidden="true">' + esc(Array.from(L(person.name))[0] || "") + '</span>';
+        if (node.classList.contains("alumni-photo")) node.hidden = true;
+      }, { once: true });
+    });
+  }
+  function loadPeopleProfiles() {
+    if (profilesRequest || ["home", "people"].indexOf(document.body.getAttribute("data-page")) < 0) return;
+    profilesRequest = fetch("/api/people-profiles", { cache: "no-store", headers: { Accept: "application/json" } })
+      .then(function (response) { if (!response.ok) throw new Error("profiles_unavailable"); return response.json(); })
+      .then(function (data) {
+        if (data && data.version === 1 && data.profiles && typeof data.profiles === "object" && !Array.isArray(data.profiles)) {
+          peopleProfiles = data.profiles;
+          updateProfileNodes();
+        }
+      }).catch(function () { /* Static previews retain the bundled profiles. */ })
+      .finally(function () { profilesRequest = null; });
   }
   function fmtDate(iso) {
     if (/^\d{4}$/.test(iso)) return iso;
@@ -175,7 +250,7 @@
       var P = D.professor;
       pr.innerHTML = avatar(P) +
         "<div>" +
-          '<h3 class="name">' + esc(L(P.name)) + "</h3>" +
+          '<h3 class="name">' + esc(L(P.name)) + profileLinks(P) + "</h3>" +
           '<p class="role">' + esc(L(P.title)) + "</p>" +
           '<p class="bio">' + esc(L(P.bio)) + "</p>" +
           '<div class="prof-contact"><a class="link" href="people.html">' + esc(t("learn_more")) + '</a><a href="' + esc(D.lab.scholarUrl) + '" target="_blank" rel="noopener">' + esc(t("view_scholar")) + "</a></div>" +
@@ -216,7 +291,7 @@
       };
       pc.innerHTML = avatar(P) +
         "<div>" +
-          '<h2 class="name">' + esc(L(P.name)) + "</h2>" +
+          '<h2 class="name">' + esc(L(P.name)) + profileLinks(P) + "</h2>" +
           '<p class="role">' + esc(L(P.title)) + "</p>" +
           '<div class="prof-contact">' +
             '<a href="mailto:' + esc(P.email) + '">' + esc(P.email) + "</a>" +
@@ -238,7 +313,7 @@
         if (!ms.length) return "";
         return '<section class="people-group"><h2 class="heading-sm">' + esc(t("role_" + role)) + '</h2><ul class="people-grid">' + ms.map(function (m) {
           return '<li class="person" id="member-' + esc(m.id || L(m.name)) + '" data-reveal>' + avatar(m) +
-            '<div class="name">' + esc(L(m.name)) + "</div>" +
+            '<div class="name">' + esc(L(m.name)) + profileLinks(m) + "</div>" +
             '<div class="year">' + esc(L(m.year)) + "</div>" +
             (m.topic ? '<div class="topic">' + esc(L(m.topic)) + "</div>" : "") +
             (m.email ? '<a class="mail" href="mailto:' + esc(m.email) + '">' + esc(m.email) + "</a>" : "") +
@@ -248,7 +323,7 @@
     }
     var al = document.getElementById("alumni-list");
     if (al) al.innerHTML = D.alumni.map(function (a) {
-      return '<li><span class="n">' + esc(L(a.name)) + '</span><span><span class="m">' + esc(L(a.degree)) + "</span>" + (L(a.now) ? " · " + esc(L(a.now)) : "") + "</span></li>";
+      return '<li id="' + esc(a.id) + '"><div class="alumni-identity"><span class="avatar alumni-photo" data-person-photo="' + esc(a.id) + '" data-cms-ignore' + (profilePhoto(a) ? '' : ' hidden') + '>' + avatarContent(a) + '</span><span class="n">' + esc(L(a.name)) + profileLinks(a) + '</span></div><span><span class="m">' + esc(L(a.degree)) + "</span>" + (L(a.now) ? " · " + esc(L(a.now)) : "") + "</span></li>";
     }).join("");
   };
 
@@ -426,10 +501,14 @@
     applyI18n();
     var page = document.body.getAttribute("data-page");
     if (page && pages[page]) pages[page]();
+    updateProfileNodes();
     setupReveal();
     document.dispatchEvent(new CustomEvent("ailab:rendered", { detail: { lang: lang } }));
   }
   renderAll();
   setupTransitions();
   window.AILAB = { t: t, L: L, get lang() { return lang; }, setLang: setLang, render: renderAll };
+  loadPeopleProfiles();
+  window.addEventListener("focus", loadPeopleProfiles);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) loadPeopleProfiles(); });
 })();

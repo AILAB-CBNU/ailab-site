@@ -654,3 +654,25 @@ body[data-page="seminars"] .page-head { background: linear-gradient(120deg, #f1f
   .seminar-template-wrap { padding: 15px; }
   .seminar-toolbar { gap: 12px; }
 }
+
+/* Editable profile links stay beside each person's name. */
+.prof-card .name, .person .name, .alumni-list .n { display: flex; align-items: center; flex-wrap: wrap; column-gap: 10px; row-gap: 6px; }
+.profile-links { display: inline-flex; align-items: center; gap: 3px; flex: none; vertical-align: middle; line-height: 1; }
+.profile-link { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 29px; border: 1px solid transparent; border-radius: 7px; color: #4f6481; transition: color .15s ease, background .15s ease; }
+.profile-link svg { display: block; width: 16px; height: 16px; flex: none; }
+a.profile-link:hover { color: #075eb9; background: #e7f0fb; text-decoration: none; }
+a.profile-link:focus-visible { outline: 2px solid #147ce5; outline-offset: 2px; }
+.profile-link.is-unset { color: #9aa6b7; opacity: .66; cursor: default; }
+.prof-card .profile-links { margin-left: 4px; }
+.prof-card .profile-link { width: 31px; height: 32px; }
+.prof-card .profile-link svg { width: 18px; height: 18px; }
+.person .name { margin-top: 8px; }
+.alumni-list li { grid-template-columns: minmax(240px, .8fr) minmax(0, 1fr); align-items: center; }
+.alumni-identity { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.alumni-list .n { min-width: 0; overflow-wrap: anywhere; }
+.alumni-photo { width: 44px; height: 44px; border-radius: 9px; flex: none; font-size: 16px; }
+.alumni-photo[hidden] { display: none; }
+@media (max-width: 600px) {
+  .alumni-list li { grid-template-columns: minmax(0, 1fr); gap: 5px; padding-block: 14px; }
+  .profile-link { width: 29px; height: 30px; }
+}

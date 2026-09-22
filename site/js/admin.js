@@ -6,6 +6,7 @@
     { id: "home", label: "홈", file: "index.html", eyebrow: "HOME", description: "첫 화면의 소개, 연구 분야, 소식, 논문과 참여 안내를 편집합니다." },
     { id: "research", label: "연구", file: "research.html", eyebrow: "RESEARCH", description: "연구 분야와 관련 설명을 편집합니다." },
     { id: "people", label: "구성원", file: "people.html", eyebrow: "PEOPLE", description: "교수, 연구원, 학생과 졸업생 정보를 편집합니다." },
+    { id: "people-profiles", label: "구성원 사진·링크", file: "people.html", eyebrow: "PEOPLE PROFILES", description: "교수·구성원·Alumni의 사진과 GitHub, LinkedIn, 개인 홈페이지 주소를 관리합니다.", manage: "people" },
     { id: "publications", label: "논문", file: "publications.html", eyebrow: "PUBLICATIONS", description: "논문 제목, 저자, 학술지와 관련 링크를 편집합니다." },
     { id: "projects", label: "과제", file: "projects.html", eyebrow: "PROJECTS", description: "연구 과제명, 기간, 지원기관과 역할을 편집합니다." },
     { id: "news", label: "소식", file: "news.html", eyebrow: "NEWS", description: "연구실 소식의 제목, 내용과 분류를 편집합니다." },
@@ -42,6 +43,10 @@
   var seminarList = document.getElementById("seminar-management-list");
   var seminarMessage = document.getElementById("seminar-manager-message");
   var refreshSeminars = document.getElementById("refresh-seminars");
+  var peopleManager = window.AILAB_ADMIN_PEOPLE.create({ api: api, onUnauthorized: function () {
+    loginMessage.textContent = "로그인이 만료되었습니다. 다시 로그인해 주세요.";
+    showLogin(true);
+  } });
 
   function api(url, options) {
     options = options || {};
@@ -60,6 +65,7 @@
   }
 
   function showLogin(configured) {
+    peopleManager.reset();
     loginView.hidden = false;
     editorView.hidden = true;
     setupNote.hidden = configured !== false;
@@ -92,6 +98,11 @@
   }
 
   function loadPreview() {
+    if (state.page.manage === "people") {
+      document.getElementById("open-page").href = "people.html?lang=ko";
+      peopleManager.open();
+      return;
+    }
     if (state.page.manage) {
       document.getElementById("open-page").href = "seminars.html?lang=ko";
       loadSeminars();
@@ -118,7 +129,8 @@
     document.getElementById("text-editor-grid").hidden = !!next.manage;
     document.querySelector(".save-area").hidden = !!next.manage;
     document.querySelector(".language-box").hidden = !!next.manage;
-    seminarManager.hidden = !next.manage;
+    seminarManager.hidden = next.manage !== true;
+    document.getElementById("people-manager").hidden = next.manage !== "people";
     state.confirmDelete = null;
     setDirty(false);
     loadPreview();

@@ -261,7 +261,13 @@ window.SITE_DATA = {
         "en": "이건명, \"학술상\", (사)한국퍼지및지능시스템학회, 2004.10",
         "id": "award-0da0fca9282b"
       }
-    ]
+    ],
+    "id": "keon-myung-lee",
+    "links": {
+      "github": "",
+      "linkedin": "",
+      "website": ""
+    }
   },
   "members": [
     {
@@ -277,7 +283,12 @@ window.SITE_DATA = {
       },
       "topic": "",
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     },
     {
       "id": "jeong-sun-woo",
@@ -292,7 +303,12 @@ window.SITE_DATA = {
       },
       "topic": "",
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     },
     {
       "id": "jeon-jong-hoon",
@@ -307,7 +323,12 @@ window.SITE_DATA = {
       },
       "topic": "",
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     },
     {
       "id": "ahn-dong-ju",
@@ -322,7 +343,12 @@ window.SITE_DATA = {
       },
       "topic": "",
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     },
     {
       "id": "lee-gyu-min",
@@ -337,7 +363,12 @@ window.SITE_DATA = {
       },
       "topic": "",
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     },
     {
       "id": "song-yong-hwi",
@@ -355,7 +386,12 @@ window.SITE_DATA = {
         "en": "School of Information and Communication Engineering"
       },
       "email": "",
-      "photo": ""
+      "photo": "",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
+      }
     }
   ],
   "alumni": [
@@ -371,6 +407,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-fc11220c4a15",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -385,6 +427,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-fab42cbe3012",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -399,6 +447,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-379999df98f2",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -413,6 +467,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-35e515b8552d",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -427,6 +487,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-2439bd9ec1df",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -441,6 +507,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-3415f4d51e5c",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -455,6 +527,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-0ed2e367302c",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -469,6 +547,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-6ba2da4df297",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -483,6 +567,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-bd2d8f387946",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -497,6 +587,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-2e6cf89c89a0",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -511,6 +607,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-86a2adf74581",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -525,6 +627,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-64eb166adac7",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -539,6 +647,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-29fe7fab937a",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -553,6 +667,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-9ecdb592684e",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -567,6 +687,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-0727ad420454",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -581,6 +707,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-70fa0164222d",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -595,6 +727,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-35bb9c8fcbfb",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -609,6 +747,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-0d75ed3f363d",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -623,6 +767,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-40e3c3ff3b97",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -637,6 +787,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-332e4627b6d9",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -651,6 +807,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-9c1afba0b116",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -665,6 +827,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-86956a9f6bc7",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -679,6 +847,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-ec7bbf2f6e09",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -693,6 +867,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-f7f57c7d6ea4",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -707,6 +887,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-42a261f510ae",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -721,6 +907,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-09f514d9216c",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     },
     {
@@ -735,6 +927,12 @@ window.SITE_DATA = {
       "now": {
         "ko": "",
         "en": ""
+      },
+      "id": "alumni-69f3ecd4bbf5",
+      "links": {
+        "github": "",
+        "linkedin": "",
+        "website": ""
       }
     }
   ],
@@ -5142,6 +5340,14 @@ window.SITE_DATA = {
     "seminars_count_one": {
       "ko": "개의 자료",
       "en": "item"
+    },
+    "profile_website": {
+      "ko": "개인 웹사이트",
+      "en": "Website"
+    },
+    "profile_link_empty": {
+      "ko": "링크 미등록",
+      "en": "Link not added"
     }
   },
   "researchSupport": [

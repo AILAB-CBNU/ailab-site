@@ -12,6 +12,7 @@ import base64
 import binascii
 import hashlib
 import hmac
+import ipaddress
 import json
 import logging
 import mimetypes
@@ -19,9 +20,11 @@ import os
 import re
 import secrets
 import shutil
+import struct
 import threading
 import time
 import unicodedata
+import zlib
 from datetime import date, datetime, timezone
 from http.cookies import SimpleCookie
 from http import HTTPStatus
@@ -57,6 +60,8 @@ CONTENT_OVERRIDES_PATH = DATA_DIR / "site-content-overrides.json"
 ADMIN_SESSION_SECONDS = 8 * 60 * 60
 ADMIN_PASSWORD_ITERATIONS = 600_000
 ADMIN_MAX_BODY_BYTES = 2 * 1024 * 1024
+PEOPLE_PHOTO_MAX_BYTES = 2 * 1024 * 1024
+PEOPLE_PHOTO_MAX_DIMENSION = 1200
 ADMIN_PAGES = {
     "index.html",
     "research.html",
@@ -83,6 +88,10 @@ class IngestError(ValueError):
 
 
 class DeletedSeminarError(IngestError):
+    pass
+
+
+class PhotoTooLargeError(IngestError):
     pass
 
 
@@ -202,6 +211,201 @@ def _load_json(path: Path, default: Any) -> Any:
         return default
     except json.JSONDecodeError as exc:
         raise IngestError(f"JSON 형식이 올바르지 않습니다: {path.name}: {exc}") from exc
+
+
+def _known_people_ids() -> set[str]:
+    """The deployed roster owns identities; server overrides never create people."""
+    source = (SITE_DIR / "js" / "data.js").read_text(encoding="utf-8")
+    match = re.search(r"window\.SITE_DATA\s*=\s*(\{.*\})\s*;?\s*$", source, re.DOTALL)
+    if match is None:
+        raise IngestError("구성원 원본 데이터를 읽을 수 없습니다.")
+    data = json.loads(match.group(1))
+    people = [data.get("professor", {}), *data.get("members", []), *data.get("alumni", [])]
+    return {person["id"] for person in people if isinstance(person, dict)
+            and isinstance(person.get("id"), str)
+            and re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", person["id"])}
+
+
+def _normalize_profile_links(value: Any) -> dict[str, str]:
+    names = {"github", "linkedin", "website"}
+    if not isinstance(value, dict) or not set(value).issubset(names):
+        raise IngestError("GitHub, LinkedIn, 웹페이지 링크 형식을 확인해 주세요.")
+    links = {}
+    for name in ("github", "linkedin", "website"):
+        raw = value.get(name, "")
+        if not isinstance(raw, str) or len(raw) > 2048:
+            raise IngestError("링크는 2,048자 이하의 문자열이어야 합니다.")
+        # urlsplit strips some control characters, so reject them before parsing.
+        if any(ord(char) < 32 or ord(char) == 127 for char in unquote(raw)):
+            raise IngestError("링크에 제어 문자를 넣을 수 없습니다.")
+        url = raw.strip()
+        if not url:
+            links[name] = ""
+            continue
+        if any(char.isspace() for char in url) or any(char in url for char in '\\<>"'):
+            raise IngestError("올바른 웹 주소를 입력해 주세요.")
+        try:
+            parsed = urlsplit(url)
+            hostname = (parsed.hostname or "").encode("idna").decode("ascii").lower().rstrip(".")
+            if parsed.scheme not in {"http", "https"} or not hostname or parsed.username is not None or parsed.password is not None:
+                raise ValueError("invalid URL")
+            # Accessing port checks malformed and out-of-range values.
+            if parsed.port is not None and not 1 <= parsed.port <= 65535:
+                raise ValueError("invalid port")
+            try:
+                ipaddress.ip_address(hostname)
+            except ValueError:
+                if len(hostname) > 253 or not all(re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", label)
+                                                 for label in hostname.split(".")):
+                    raise ValueError("invalid hostname")
+        except (ValueError, UnicodeError) as exc:
+            raise IngestError("로그인 정보가 없는 http 또는 https 주소를 입력해 주세요.") from exc
+        if name == "github" and hostname not in {"github.com", "www.github.com"}:
+            raise IngestError("GitHub 링크는 github.com 주소여야 합니다.")
+        if name == "linkedin" and not (hostname == "linkedin.com" or hostname.endswith(".linkedin.com")):
+            raise IngestError("LinkedIn 링크는 linkedin.com 주소여야 합니다.")
+        links[name] = url
+    return links
+
+
+def _read_people_store() -> dict[str, Any]:
+    value = _load_json(DATA_DIR / "people" / "profiles.json", {"version": 1, "profiles": {}})
+    if not isinstance(value, dict) or value.get("version") != 1 or not isinstance(value.get("profiles"), dict):
+        raise IngestError("구성원 설정 파일 형식이 올바르지 않습니다.")
+    result: dict[str, Any] = {"version": 1, "profiles": {}}
+    for person_id, profile in value["profiles"].items():
+        if not isinstance(profile, dict) or not isinstance(person_id, str):
+            raise IngestError("구성원 설정 파일 형식이 올바르지 않습니다.")
+        photo = profile.get("photo", "")
+        if not isinstance(photo, str) or (photo and not re.fullmatch(r"/people-photos/[a-f0-9]{32}\.png", photo)):
+            raise IngestError("구성원 사진 경로가 올바르지 않습니다.")
+        result["profiles"][person_id] = {"links": _normalize_profile_links(profile.get("links", {})), "photo": photo}
+    return result
+
+
+def _public_people_profiles() -> dict[str, Any]:
+    known_ids = _known_people_ids()
+    store = _read_people_store()
+    return {"version": 1, "profiles": {key: value for key, value in store["profiles"].items() if key in known_ids}}
+
+
+def _png_chunk(kind: bytes, content: bytes) -> bytes:
+    return struct.pack(">I", len(content)) + kind + content + struct.pack(">I", zlib.crc32(kind + content) & 0xFFFFFFFF)
+
+
+def _normalize_people_png(body: bytes) -> bytes:
+    """Accept only bounded canvas PNGs and remove all non-pixel metadata."""
+    if len(body) > PEOPLE_PHOTO_MAX_BYTES:
+        raise PhotoTooLargeError("변환된 사진은 2MB 이하여야 합니다.")
+    if not body.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise IngestError("PNG 이미지 형식이 올바르지 않습니다.")
+    offset, header, compressed = 8, None, bytearray()
+    data_started, data_finished, ended = False, False, False
+    while offset < len(body):
+        if offset + 12 > len(body):
+            raise IngestError("PNG 이미지가 손상됐습니다.")
+        size = struct.unpack(">I", body[offset:offset + 4])[0]
+        kind = body[offset + 4:offset + 8]
+        if size > len(body) - offset - 12 or not re.fullmatch(b"[A-Za-z]{4}", kind) or kind[2] & 0x20:
+            raise IngestError("PNG 이미지가 손상됐습니다.")
+        content = body[offset + 8:offset + 8 + size]
+        checksum = struct.unpack(">I", body[offset + 8 + size:offset + 12 + size])[0]
+        if checksum != zlib.crc32(kind + content) & 0xFFFFFFFF:
+            raise IngestError("PNG 이미지 검사에 실패했습니다.")
+        offset += size + 12
+        if header is None and kind != b"IHDR":
+            raise IngestError("PNG 헤더가 올바르지 않습니다.")
+        if kind == b"IHDR":
+            if header is not None or size != 13:
+                raise IngestError("PNG 헤더가 올바르지 않습니다.")
+            width, height, depth, color, compression, filtering, interlace = struct.unpack(">IIBBBBB", content)
+            if not 1 <= width <= PEOPLE_PHOTO_MAX_DIMENSION or not 1 <= height <= PEOPLE_PHOTO_MAX_DIMENSION:
+                raise IngestError("사진의 가로와 세로는 각각 1,200px 이하여야 합니다.")
+            if depth != 8 or color not in {2, 6} or (compression, filtering, interlace) != (0, 0, 0):
+                raise IngestError("관리자 화면에서 사진을 다시 선택해 PNG로 변환해 주세요.")
+            header = content
+        elif kind == b"IDAT":
+            if data_finished:
+                raise IngestError("PNG 데이터 순서가 올바르지 않습니다.")
+            data_started = True
+            compressed.extend(content)
+        elif kind == b"IEND":
+            if size != 0 or not data_started or offset != len(body):
+                raise IngestError("PNG 이미지 끝부분이 올바르지 않습니다.")
+            ended = True
+            break
+        else:
+            if data_started:
+                data_finished = True
+            # Unknown critical chunks cannot be decoded safely; ancillary data is discarded.
+            if not kind[0] & 0x20:
+                raise IngestError("지원하지 않는 PNG 이미지 형식입니다.")
+    if not ended or header is None:
+        raise IngestError("PNG 이미지가 완전하지 않습니다.")
+    stride = width * (4 if color == 6 else 3) + 1
+    expected = stride * height
+    try:
+        decoder = zlib.decompressobj()
+        pixels = decoder.decompress(bytes(compressed), expected + 1)
+        if len(pixels) != expected or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
+            raise ValueError("invalid pixel data length")
+        if any(pixels[row * stride] > 4 for row in range(height)):
+            raise ValueError("invalid row filter")
+    except (ValueError, zlib.error) as exc:
+        raise IngestError("PNG 픽셀 데이터가 올바르지 않습니다.") from exc
+    normalized = b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", header) + _png_chunk(b"IDAT", zlib.compress(pixels)) + _png_chunk(b"IEND", b"")
+    if len(normalized) > PEOPLE_PHOTO_MAX_BYTES:
+        raise PhotoTooLargeError("사진을 더 작은 크기로 선택해 주세요. 최대 크기는 2MB입니다.")
+    return normalized
+
+
+def _remove_people_photo(photo: str) -> None:
+    if not photo:
+        return
+    try:
+        (DATA_DIR / "people" / "photos" / photo.rsplit("/", 1)[-1]).unlink(missing_ok=True)
+    except OSError:
+        # Metadata is the publication authority, so failed cleanup never exposes an old photo.
+        LOG.warning("unused people photo could not be removed; it is no longer public")
+
+
+def _update_people_profile(person_id: str, *, links: dict[str, str] | None = None,
+                           photo: bytes | None = None, clear_photo: bool = False) -> dict[str, Any] | None:
+    with ADMIN_LOCK:
+        if person_id not in _known_people_ids():
+            return None
+        store = _read_people_store()
+        previous = store["profiles"].get(person_id, {"links": _normalize_profile_links({}), "photo": ""})
+        profile = {"links": previous["links"].copy(), "photo": previous["photo"]}
+        new_path = None
+        if links is not None:
+            profile["links"] = links
+        if photo is not None:
+            photos_dir = DATA_DIR / "people" / "photos"
+            photos_dir.mkdir(parents=True, exist_ok=True)
+            new_path = photos_dir / (secrets.token_hex(16) + ".png")
+            temporary = new_path.with_suffix(".tmp")
+            try:
+                with temporary.open("xb") as handle:
+                    handle.write(photo)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                temporary.replace(new_path)
+            finally:
+                temporary.unlink(missing_ok=True)
+            profile["photo"] = "/people-photos/" + new_path.name
+        elif clear_photo:
+            profile["photo"] = ""
+        store["profiles"][person_id] = profile
+        try:
+            _atomic_json(DATA_DIR / "people" / "profiles.json", store)
+        except Exception:
+            if new_path is not None:
+                _remove_people_photo(profile["photo"])
+            raise
+        if profile["photo"] != previous["photo"]:
+            _remove_people_photo(previous["photo"])
+        return profile
 
 
 def _clean_text(value: Any, field: str, max_length: int) -> str:
@@ -558,7 +762,10 @@ class Handler(SimpleHTTPRequestHandler):
         origin = self.headers.get("Origin", "")
         if not origin:
             return True
-        parsed = urlsplit(origin)
+        try:
+            parsed = urlsplit(origin)
+        except ValueError:
+            return False
         scheme = self.headers.get("X-Forwarded-Proto", "http").split(",", 1)[0].strip().lower()
         return (parsed.scheme in {"http", "https"} and parsed.scheme == scheme
                 and parsed.netloc.lower() == self.headers.get("Host", "").lower())
@@ -585,8 +792,101 @@ class Handler(SimpleHTTPRequestHandler):
         with ADMIN_LOCK:
             ADMIN_FAILURES.setdefault(ip, []).append(time.time())
 
+    def _people_admin_request(self, path: str, operation: str) -> None:
+        if not self._origin_allowed():
+            self._json(HTTPStatus.FORBIDDEN, {"error": "origin_not_allowed"})
+            return
+        if not self._require_admin():
+            return
+        pattern = r"/api/admin/people/([a-z0-9][a-z0-9-]{0,79})" + ("/photo" if operation != "links" else "")
+        match = re.fullmatch(pattern, path)
+        if match is None:
+            self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+            return
+        try:
+            person_id = match.group(1)
+            if person_id not in _known_people_ids():
+                self._json(HTTPStatus.NOT_FOUND, {"error": "person_not_found"})
+                return
+            if operation == "links":
+                payload = self._read_json_body(16 * 1024)
+                if not isinstance(payload, dict) or set(payload) != {"links"}:
+                    raise IngestError("links 객체를 보내 주세요.")
+                profile = _update_people_profile(person_id, links=_normalize_profile_links(payload["links"]))
+            elif operation == "photo":
+                if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "image/png":
+                    raise IngestError("관리자 화면에서 선택한 PNG 사진을 업로드해 주세요.")
+                length = int(self.headers.get("Content-Length", "0"))
+                if length > PEOPLE_PHOTO_MAX_BYTES:
+                    raise PhotoTooLargeError("변환된 사진은 2MB 이하여야 합니다.")
+                if length <= 0 or self.headers.get("Transfer-Encoding"):
+                    raise IngestError("사진 요청 크기가 올바르지 않습니다.")
+                body = self.rfile.read(length)
+                if len(body) != length:
+                    raise IngestError("사진 업로드가 완료되지 않았습니다.")
+                profile = _update_people_profile(person_id, photo=_normalize_people_png(body))
+            else:
+                profile = _update_people_profile(person_id, clear_photo=True)
+            if profile is None:
+                self._json(HTTPStatus.NOT_FOUND, {"error": "person_not_found"})
+                return
+            self._json(HTTPStatus.OK, {"ok": True, "profile": profile})
+        except PhotoTooLargeError as exc:
+            self._json(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, {"error": str(exc)})
+        except (IngestError, json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
+            self._json(HTTPStatus.BAD_REQUEST, {"error": str(exc)})
+        except Exception:
+            LOG.exception("unexpected people profile update failure")
+            self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error"})
+
+    def _people_photo(self, path: str, *, head_only: bool = False) -> None:
+        if not re.fullmatch(r"/people-photos/[a-f0-9]{32}\.png", path):
+            self.send_error(HTTPStatus.NOT_FOUND)
+            return
+        try:
+            with ADMIN_LOCK:
+                profiles = _public_people_profiles()["profiles"]
+                if not any(profile["photo"] == path for profile in profiles.values()):
+                    self.send_error(HTTPStatus.NOT_FOUND)
+                    return
+                candidate = DATA_DIR / "people" / "photos" / path.rsplit("/", 1)[-1]
+                if candidate.is_symlink() or not candidate.is_file():
+                    self.send_error(HTTPStatus.NOT_FOUND)
+                    return
+                handle = candidate.open("rb")
+            with handle:
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", str(os.fstat(handle.fileno()).st_size))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.end_headers()
+                if not head_only:
+                    shutil.copyfileobj(handle, self.wfile)
+        except Exception:
+            LOG.exception("unexpected people photo read failure")
+            self.send_error(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def do_HEAD(self) -> None:  # noqa: N802
+        path = unquote(urlsplit(self.path).path)
+        if path.startswith("/people-photos/"):
+            self._people_photo(path, head_only=True)
+            return
+        super().do_HEAD()
+
     def do_GET(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path == "/api/people-profiles":
+            try:
+                with ADMIN_LOCK:
+                    self._json(HTTPStatus.OK, _public_people_profiles())
+            except Exception:
+                LOG.exception("unexpected people profiles read failure")
+                self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error"})
+            return
+        if path.startswith("/people-photos/"):
+            self._people_photo(path)
+            return
         if path == "/api/health":
             self._json(HTTPStatus.OK, {"ok": True, "items": len(_read_index()), "ingest_enabled": bool(UPLOAD_TOKEN)})
             return
@@ -643,6 +943,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith("/api/admin/people/"):
+            self._people_admin_request(path, "photo")
+            return
         if path == "/api/admin/login":
             if not self._origin_allowed():
                 self._json(HTTPStatus.FORBIDDEN, {"error": "origin_not_allowed"})
@@ -713,6 +1016,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_PUT(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith("/api/admin/people/"):
+            self._people_admin_request(path, "links")
+            return
         if path != "/api/admin/content":
             self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
             return
@@ -735,6 +1041,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_DELETE(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith("/api/admin/people/"):
+            self._people_admin_request(path, "clear_photo")
+            return
         if not path.startswith("/api/admin/seminars/"):
             self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
             return
