@@ -390,7 +390,7 @@ main { min-height: 60vh; }
 .people-group h2 { margin-bottom: var(--sp-20); padding-bottom: var(--sp-12); border-bottom: 1px solid var(--color-carbon); }
 .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-24); }
 .person { display: flex; flex-direction: column; gap: 6px; }
-.person .avatar { font-size: 32px; }
+.person .avatar { font-size: 32px; aspect-ratio: 3 / 4; }
 .person .name { font-weight: 600; margin-top: 6px; }
 .person .year, .person .topic { font-size: var(--text-body-sm); letter-spacing: var(--tracking-body-sm); color: var(--color-ash); }
 .person .topic { color: var(--color-graphite); }
@@ -549,7 +549,8 @@ html[lang="en"] .gn-brand .sub { display: none; }
 }
 
 /* Immersive learning field. The sticky stage gives the scene room to unfold. */
-.hero { display:block; height:175svh; min-height:0; padding:0; overflow:visible; background:#050a16; color:#f4f7ff; text-align:center; }
+:root { --hero-scroll-height: 200svh; --hero-scroll-height-mobile: 170svh; }
+.hero { display:block; height:var(--hero-scroll-height); min-height:0; padding:0; overflow:visible; background:#050a16; color:#f4f7ff; text-align:center; }
 .hero-stage { position:sticky; top:0; height:100svh; min-height:620px; width:100%; overflow:hidden; isolation:isolate; background:radial-gradient(ellipse at 50% 80%,#112c51 0%,#080f22 48%,#050a16 83%); }
 .hero-stage::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(5,10,22,.45),transparent 55%,rgba(5,10,22,.3)); z-index:1; }
 .hero .hero-content { position:relative; z-index:2; margin:0 auto; padding:calc(var(--nav-h) + 8svh) 24px 0; max-width:1250px; gap:20px; will-change:transform; }
@@ -577,7 +578,7 @@ html[lang="en"] .hero .display { font-size:clamp(52px,7.6vw,108px); max-width:11
 .project-history { margin-top:56px; border-top:1px solid var(--color-hairline); padding-top:24px; }
 .project-history summary { cursor:pointer; font-size:22px; font-weight:600; margin-bottom:24px; }
 @media(max-width:700px) {
- .hero { height:150svh; }
+ .hero { height:var(--hero-scroll-height-mobile); }
  .hero-stage { min-height:580px; }
  .hero .hero-content { padding-top:calc(var(--nav-h) + 7svh); gap:18px; }
  .hero .hero-content .display { font-size:clamp(46px,10.2vw,70px); }
@@ -682,8 +683,26 @@ a.profile-link:focus-visible { outline: 2px solid #147ce5; outline-offset: 2px; 
 .alumni-list li { grid-template-columns: minmax(240px, .8fr) minmax(0, 1fr); align-items: center; }
 .alumni-identity { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .alumni-list .n { min-width: 0; overflow-wrap: anywhere; }
-.alumni-photo { width: 44px; height: 44px; border-radius: 9px; flex: none; font-size: 16px; }
+.alumni-photo { width: 42px; height: 56px; aspect-ratio:3 / 4; border-radius: 9px; flex: none; font-size: 16px; }
 .alumni-photo[hidden] { display: none; }
+.catalog-toolbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; margin-bottom:36px; }
+.catalog-toolbar .filter-group { display:flex; flex-wrap:wrap; gap:8px; }
+.catalog-toolbar label { color:#627087; font-size:14px; }
+.catalog-toolbar select { padding:8px 12px; margin-left:8px; border:1px solid #d7dee8; border-radius:8px; background:#fff; color:#26364c; }
+.catalog-project { padding-block:28px; }
+.project-status { display:inline-block; margin:0 0 10px; padding:4px 10px; border-radius:20px; font-size:12px; background:#edf0f4; color:#586372; }
+.status-active { background:#e8f3ed; color:#22764a; }.status-planned { background:#eaf1fd; color:#3561a2; }
+.catalog-empty { padding:64px 24px; border:1px solid #e3e7ec; border-radius:14px; color:#6c7787; text-align:center; }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px 24px; margin:24px 0 52px; }
+.gallery-card button { width:100%; padding:0; overflow:hidden; border:0; border-radius:14px; background:#edf0f4; cursor:zoom-in; }
+.gallery-card img { display:block; width:100%; aspect-ratio:4 / 3; object-fit:cover; transition:transform .3s; }
+.gallery-card button:hover img { transform:scale(1.035); }.gallery-card h3 { font-size:20px; margin:8px 0; }
+.gallery-card p { font-size:14px; color:#66758b; }.gallery-card .date { font-size:12px; margin-top:18px; }
+#gallery-lightbox { border:0; border-radius:16px; padding:20px; width:min(1000px,92vw); max-height:92vh; background:#fff; }
+#gallery-lightbox::backdrop { background:#07101cce; }#gallery-lightbox img { display:block; max-width:100%; max-height:75vh; margin:auto; object-fit:contain; }
+#gallery-lightbox p { padding-top:12px; }#gallery-close { display:block; margin:0 0 10px auto; padding:3px 12px; font-size:28px; border:0; cursor:pointer; }
+@media(max-width:800px){.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:520px){.gallery-grid{grid-template-columns:1fr;}.catalog-toolbar{align-items:flex-start;flex-direction:column;}}
 @media (max-width: 600px) {
   .alumni-list li { grid-template-columns: minmax(0, 1fr); gap: 5px; padding-block: 14px; }
   .profile-link { width: 29px; height: 30px; }

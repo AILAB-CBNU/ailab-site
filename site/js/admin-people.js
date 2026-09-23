@@ -28,7 +28,7 @@
     return /^(?:\/people-photos\/[A-Za-z0-9_-]+\.png|\/?assets\/[A-Za-z0-9_./-]+)$/.test(path) ? path : "";
   }
 
-  function photoPng(file) {
+  function photoPng(file, maximumDimension) {
     if (!file || !["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       return Promise.reject(new Error("JPEG, PNG 또는 WebP 이미지 파일을 선택해 주세요."));
     }
@@ -44,7 +44,8 @@
       image.onload = function () {
         URL.revokeObjectURL(objectUrl);
         if (!image.naturalWidth || !image.naturalHeight) { reject(new Error("이미지 크기를 확인할 수 없습니다.")); return; }
-        var scale = Math.min(1, 768 / image.naturalWidth, 768 / image.naturalHeight);
+        var dimension = maximumDimension || 768;
+        var scale = Math.min(1, dimension / image.naturalWidth, dimension / image.naturalHeight);
         var canvas = document.createElement("canvas");
         function encode(attempt) {
           try {
@@ -330,5 +331,5 @@
     };
   }
 
-  window.AILAB_ADMIN_PEOPLE = { create: create };
+  window.AILAB_ADMIN_PEOPLE = { create: create, photoPng: photoPng };
 })();

@@ -8,7 +8,8 @@
     { id: "people", label: "구성원", file: "people.html", eyebrow: "PEOPLE", description: "교수, 연구원, 학생과 졸업생 정보를 편집합니다." },
     { id: "people-profiles", label: "구성원 사진·링크", file: "people.html", eyebrow: "PEOPLE PROFILES", description: "교수·구성원·Alumni의 사진과 GitHub, LinkedIn, 개인 홈페이지 주소를 관리합니다.", manage: "people" },
     { id: "publications", label: "논문", file: "publications.html", eyebrow: "PUBLICATIONS", description: "논문 제목, 저자, 학술지와 관련 링크를 편집합니다." },
-    { id: "projects", label: "과제", file: "projects.html", eyebrow: "PROJECTS", description: "연구 과제명, 기간, 지원기관과 역할을 편집합니다." },
+    { id: "projects", label: "과제 관리", file: "projects.html", eyebrow: "PROJECTS", description: "연구 과제를 추가하고 연도·진행 상태·지원기관을 관리합니다.", manage: "projects" },
+    { id: "gallery", label: "갤러리 관리", file: "gallery.html", eyebrow: "GALLERY", description: "사진과 촬영일·제목·설명을 등록합니다. 업로드 사진은 서버에 저장됩니다.", manage: "gallery" },
     { id: "news", label: "소식", file: "news.html", eyebrow: "NEWS", description: "연구실 소식의 제목, 내용과 분류를 편집합니다." },
     { id: "seminars", label: "세미나 안내", file: "seminars.html", eyebrow: "SEMINARS", description: "세미나 자료실의 안내 문구를 편집합니다. 업로드된 자료는 ‘세미나 자료 관리’에서 관리하세요." },
     { id: "seminar-files", label: "세미나 자료 관리", file: "seminars.html", eyebrow: "SEMINAR MATERIALS", description: "업로드 날짜순으로 자료를 확인하고 잘못 올린 자료를 삭제합니다.", manage: true },
@@ -47,6 +48,7 @@
     loginMessage.textContent = "로그인이 만료되었습니다. 다시 로그인해 주세요.";
     showLogin(true);
   } });
+  var catalogManager = window.AILAB_ADMIN_CATALOG.create({ api: api, onUnauthorized: function () { showLogin(true); } });
 
   function api(url, options) {
     options = options || {};
@@ -66,6 +68,7 @@
 
   function showLogin(configured) {
     peopleManager.reset();
+    catalogManager.reset();
     loginView.hidden = false;
     editorView.hidden = true;
     setupNote.hidden = configured !== false;
@@ -98,6 +101,11 @@
   }
 
   function loadPreview() {
+    if (state.page.manage === "projects" || state.page.manage === "gallery") {
+      document.getElementById("open-page").href = state.page.file;
+      catalogManager.open(state.page.manage);
+      return;
+    }
     if (state.page.manage === "people") {
       document.getElementById("open-page").href = "people.html?lang=ko";
       peopleManager.open();
@@ -118,6 +126,7 @@
   }
 
   function selectPage(id) {
+    if (!catalogManager.canLeave()) return;
     var next = PAGES.find(function (page) { return page.id === id; }) || PAGES[0];
     state.page = next;
     pageList.querySelectorAll("button").forEach(function (button) {
@@ -131,6 +140,8 @@
     document.querySelector(".language-box").hidden = !!next.manage;
     seminarManager.hidden = next.manage !== true;
     document.getElementById("people-manager").hidden = next.manage !== "people";
+    document.getElementById("catalog-manager").hidden = next.manage !== "projects" && next.manage !== "gallery";
+    catalogManager.reset();
     state.confirmDelete = null;
     setDirty(false);
     loadPreview();

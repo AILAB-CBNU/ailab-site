@@ -4879,6 +4879,9 @@ window.SITE_DATA = {
       "ko": "과제",
       "en": "Projects"
     },
+    "nav_gallery": {"ko": "갤러리", "en": "Gallery"},
+    "gallery_h": {"ko": "갤러리", "en": "Gallery"},
+    "gallery_p": {"ko": "연구실의 일상과 함께한 순간들", "en": "Life, events and moments from our lab."},
     "nav_news": {
       "ko": "소식",
       "en": "News"

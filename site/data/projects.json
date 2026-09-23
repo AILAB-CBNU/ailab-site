@@ -1,0 +1,522 @@
+[
+  {
+    "id": "legacy-83e8bab592bc6652",
+    "revision": 1,
+    "title": {
+      "ko": "Big data modeling and open data service development of e-Navigation",
+      "en": "Big data modeling and open data service development of e-Navigation"
+    },
+    "year": 2016,
+    "period": "2016-당시 진행 중",
+    "status": "unknown",
+    "funder": {
+      "ko": "Ministry of Oceans and Fisheries",
+      "en": "Ministry of Oceans and Fisheries"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-914d6d33786e64e5",
+    "revision": 1,
+    "title": {
+      "ko": "Probabilistic graphical models for care-needing person cares",
+      "en": "Probabilistic graphical models for care-needing person cares"
+    },
+    "year": 2015,
+    "period": "2015-당시 진행 중",
+    "status": "unknown",
+    "funder": {
+      "ko": "KRF",
+      "en": "KRF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-9b92cbd5e255994a",
+    "revision": 1,
+    "title": {
+      "ko": "Meta-data construction and Big data service system design for omic databases",
+      "en": "Meta-data construction and Big data service system design for omic databases"
+    },
+    "year": 2015,
+    "period": "2015",
+    "status": "completed",
+    "funder": {
+      "ko": "Korea CDC",
+      "en": "Korea CDC"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-e39b28d7c47a00c5",
+    "revision": 1,
+    "title": {
+      "ko": "Data quality evaluation and control techniques for big biological data",
+      "en": "Data quality evaluation and control techniques for big biological data"
+    },
+    "year": 2014,
+    "period": "2014",
+    "status": "completed",
+    "funder": {
+      "ko": "LINC/KRF",
+      "en": "LINC/KRF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-f4b5ea02060c71a0",
+    "revision": 1,
+    "title": {
+      "ko": "Big Data Service Development for Daily Life",
+      "en": "Big Data Service Development for Daily Life"
+    },
+    "year": 2012,
+    "period": "2012-당시 진행 중",
+    "status": "unknown",
+    "funder": {
+      "ko": "ITRC",
+      "en": "ITRC"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-5f295e051206a277",
+    "revision": 1,
+    "title": {
+      "ko": "Science of Beauty (Generative Design using machine learning technique)",
+      "en": "Science of Beauty (Generative Design using machine learning technique)"
+    },
+    "year": 2011,
+    "period": "2011-2015",
+    "status": "completed",
+    "funder": {
+      "ko": "Korea Research Foundation",
+      "en": "Korea Research Foundation"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-8e4fdeb057c2a3a2",
+    "revision": 1,
+    "title": {
+      "ko": "Self-organizing knowledge evolution technology development for personalized medicine",
+      "en": "Self-organizing knowledge evolution technology development for personalized medicine"
+    },
+    "year": 2008,
+    "period": "2008-2014",
+    "status": "completed",
+    "funder": {
+      "ko": "Korea Research Foundation",
+      "en": "Korea Research Foundation"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-add273c0a6f81d1e",
+    "revision": 1,
+    "title": {
+      "ko": "Disease Pharmacokinetics Simulation, Ministry of Education",
+      "en": "Disease Pharmacokinetics Simulation, Ministry of Education"
+    },
+    "year": 2008,
+    "period": "2008-2011",
+    "status": "completed",
+    "funder": {
+      "ko": "Science and Technoly",
+      "en": "Science and Technoly"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-6aeba23a810f3746",
+    "revision": 1,
+    "title": {
+      "ko": "Development of artificial intelligence component techniques for Distributed integrated systems",
+      "en": "Development of artificial intelligence component techniques for Distributed integrated systems"
+    },
+    "year": 2004,
+    "period": "2004-2008",
+    "status": "completed",
+    "funder": {
+      "ko": "AITrc/KOSEF",
+      "en": "AITrc/KOSEF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-e6213b8a72f3f988",
+    "revision": 1,
+    "title": {
+      "ko": "Ubiquitous urological hospital system for chronic patients",
+      "en": "Ubiquitous urological hospital system for chronic patients"
+    },
+    "year": 2006,
+    "period": "2006-2008",
+    "status": "completed",
+    "funder": {
+      "ko": "ITEP",
+      "en": "ITEP"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-35d66b8b82fef559",
+    "revision": 1,
+    "title": {
+      "ko": "Stereoscopic 3D VR Simulator S/W Development",
+      "en": "Stereoscopic 3D VR Simulator S/W Development"
+    },
+    "year": 2006,
+    "period": "2006",
+    "status": "completed",
+    "funder": {
+      "ko": "Cheongju city/TrueD Inc.",
+      "en": "Cheongju city/TrueD Inc."
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-eb0d10a0c2b6b4ca",
+    "revision": 1,
+    "title": {
+      "ko": "Bioinformatics tool development and analysis for virus disease control",
+      "en": "Bioinformatics tool development and analysis for virus disease control"
+    },
+    "year": 2005,
+    "period": "2005-2008",
+    "status": "completed",
+    "funder": {
+      "ko": "KRF",
+      "en": "KRF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-0a9939810c7a111b",
+    "revision": 1,
+    "title": {
+      "ko": "Ubiquitous healthcare system for Benign Prostatic Hyperplasia patents",
+      "en": "Ubiquitous healthcare system for Benign Prostatic Hyperplasia patents"
+    },
+    "year": 2004,
+    "period": "2004-2006",
+    "status": "completed",
+    "funder": {
+      "ko": "ITEP",
+      "en": "ITEP"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-41e867c0d5504801",
+    "revision": 1,
+    "title": {
+      "ko": "Intelligent u-distributed context-aware middleware system",
+      "en": "Intelligent u-distributed context-aware middleware system"
+    },
+    "year": 2004,
+    "period": "2004-2005",
+    "status": "completed",
+    "funder": {
+      "ko": "Ubiquitous Bioinformation Research Center.",
+      "en": "Ubiquitous Bioinformation Research Center."
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-c51c8480356accf7",
+    "revision": 1,
+    "title": {
+      "ko": "Intelligent SoC(System-on-a-Chip) for Recognition and Learning Engines",
+      "en": "Intelligent SoC(System-on-a-Chip) for Recognition and Learning Engines"
+    },
+    "year": 2003,
+    "period": "2003-2005",
+    "status": "completed",
+    "funder": {
+      "ko": "Forentier/MOST.",
+      "en": "Forentier/MOST."
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-09d11fb1158e74a2",
+    "revision": 1,
+    "title": {
+      "ko": "Agent Systems for Distributed Integrated Systems",
+      "en": "Agent Systems for Distributed Integrated Systems"
+    },
+    "year": 1999,
+    "period": "1999-2004",
+    "status": "completed",
+    "funder": {
+      "ko": "AITrc/KOSEF",
+      "en": "AITrc/KOSEF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-d7368775447dee6b",
+    "revision": 1,
+    "title": {
+      "ko": "Classification Rule Mining for Fuzzy Databases",
+      "en": "Classification Rule Mining for Fuzzy Databases"
+    },
+    "year": 1998,
+    "period": "1998-1999",
+    "status": "completed",
+    "funder": {
+      "ko": "KRF",
+      "en": "KRF"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-ee471d5f5b2afa22",
+    "revision": 1,
+    "title": {
+      "ko": "A Study on Data Mining Techniques for Databases with Fuzzy Data",
+      "en": "A Study on Data Mining Techniques for Databases with Fuzzy Data"
+    },
+    "year": 1998,
+    "period": "1998-2000",
+    "status": "completed",
+    "funder": {
+      "ko": "IITA",
+      "en": "IITA"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-895c9c8bfa0090ba",
+    "revision": 1,
+    "title": {
+      "ko": "Intelligent Scheduling for Subway system",
+      "en": "Intelligent Scheduling for Subway system"
+    },
+    "year": 1996,
+    "period": "1996-1997",
+    "status": "completed",
+    "funder": {
+      "ko": "STEPI",
+      "en": "STEPI"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-f6d23f187902f454",
+    "revision": 1,
+    "title": {
+      "ko": "Development of Control S/W for Voltage Prober, PSI",
+      "en": "Development of Control S/W for Voltage Prober, PSI"
+    },
+    "year": 1996,
+    "period": "1996",
+    "status": "completed",
+    "funder": {
+      "ko": "California",
+      "en": "California"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-f4a311f0b1251cb5",
+    "revision": 1,
+    "title": {
+      "ko": "Evolutionary Petri net models for production systems, INSA de Lyon",
+      "en": "Evolutionary Petri net models for production systems, INSA de Lyon"
+    },
+    "year": 1995,
+    "period": "1995-1996",
+    "status": "completed",
+    "funder": {
+      "ko": "France",
+      "en": "France"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-38faf5a38c0fa362",
+    "revision": 1,
+    "title": {
+      "ko": "Hyrid Systems of Fuzzy Systems and Neural Networks",
+      "en": "Hyrid Systems of Fuzzy Systems and Neural Networks"
+    },
+    "year": 1993,
+    "period": "1993-1994",
+    "status": "completed",
+    "funder": {
+      "ko": "STEPI",
+      "en": "STEPI"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-245b173525d1ebdc",
+    "revision": 1,
+    "title": {
+      "ko": "Rail Vehicle Scheduling System for Steelworks",
+      "en": "Rail Vehicle Scheduling System for Steelworks"
+    },
+    "year": 1991,
+    "period": "1991-1992",
+    "status": "completed",
+    "funder": {
+      "ko": "DaeWoo Engineering Co.",
+      "en": "DaeWoo Engineering Co."
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "legacy-fb435f7c865cbe6e",
+    "revision": 1,
+    "title": {
+      "ko": "Graphical Programming based on Petri Nets",
+      "en": "Graphical Programming based on Petri Nets"
+    },
+    "year": 1990,
+    "period": "1990-1991",
+    "status": "completed",
+    "funder": {
+      "ko": "KAIST",
+      "en": "KAIST"
+    },
+    "description": {
+      "ko": "",
+      "en": ""
+    },
+    "source": ""
+  },
+  {
+    "id": "nrf-2022r1a5a8026986",
+    "revision": 1,
+    "title": {
+      "ko": "한국연구재단 지원 연구",
+      "en": "NRF-supported research"
+    },
+    "year": 2026,
+    "period": "",
+    "status": "unknown",
+    "funder": {
+      "ko": "과학기술정보통신부 · 한국연구재단",
+      "en": "MSIT · National Research Foundation of Korea"
+    },
+    "description": {
+      "ko": "시계열 이상 탐지 및 시계열 예측 연구의 지원 과제로 기재 · 2022R1A5A8026986 (논문 게재 연도 기준)",
+      "en": "Acknowledged in work on time-series anomaly detection and forecasting. · 2022R1A5A8026986 (publication year)"
+    },
+    "source": "https://doi.org/10.1016/j.knosys.2026.115978"
+  },
+  {
+    "id": "iitp-2024-2020-0-01462",
+    "revision": 1,
+    "title": {
+      "ko": "정보통신기획평가원 지원 연구",
+      "en": "IITP-supported research"
+    },
+    "year": 2025,
+    "period": "",
+    "status": "unknown",
+    "funder": {
+      "ko": "정보통신기획평가원 (IITP)",
+      "en": "Institute of Information & Communications Technology Planning & Evaluation"
+    },
+    "description": {
+      "ko": "Transformer 기반 시계열 이상 탐지 논문의 연구 지원 내역 · IITP-2024-2020-0-01462 (논문 게재 연도 기준)",
+      "en": "Acknowledged in the study of Transformer-based time-series anomaly detection. · IITP-2024-2020-0-01462 (publication year)"
+    },
+    "source": "https://pubmed.ncbi.nlm.nih.gov/40285200/"
+  }
+]

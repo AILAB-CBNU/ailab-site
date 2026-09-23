@@ -68,6 +68,7 @@ ADMIN_PAGES = {
     "people.html",
     "publications.html",
     "projects.html",
+    "gallery.html",
     "news.html",
     "seminars.html",
     "resources.html",
@@ -689,6 +690,101 @@ def _watch_inbox() -> None:
         time.sleep(WATCH_INTERVAL)
 
 
+class CatalogConflict(IngestError):
+    pass
+
+
+def _catalog_rows(kind: str) -> list[dict[str, Any]]:
+    path = DATA_DIR / "catalog" / (kind + ".json")
+    if path.exists():
+        return _load_json(path, [])
+    return _load_json(SITE_DIR / "data" / "projects.json", []) if kind == "projects" else []
+
+
+def _catalog_text(value: Any, limit: int, required: bool = False) -> dict[str, str]:
+    if not isinstance(value, dict) or set(value) - {"ko", "en"}:
+        raise IngestError("한국어·영어 텍스트 형식을 확인해 주세요.")
+    result = {language: _clean_text(value.get(language, ""), language, limit) for language in ("ko", "en")}
+    if required and not any(result.values()):
+        raise IngestError("제목을 입력해 주세요.")
+    return result
+
+
+def _catalog_save(kind: str, item_id: str | None, payload: Any) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        raise IngestError("입력 항목을 확인해 주세요.")
+    row = {"title": _catalog_text(payload.get("title"), 240, True),
+           "description": _catalog_text(payload.get("description", {}), 4000)}
+    if kind == "projects":
+        year = payload.get("year")
+        if not isinstance(year, int) or isinstance(year, bool) or not 1900 <= year <= 2200:
+            raise IngestError("연도는 1900~2200 사이로 입력해 주세요.")
+        status = payload.get("status")
+        if status not in {"active", "completed", "planned", "unknown"}:
+            raise IngestError("과제 상태를 선택해 주세요.")
+        row.update(year=year, status=status, period=_clean_text(payload.get("period"), "기간", 100),
+                   funder=_catalog_text(payload.get("funder", {}), 300),
+                   source=_normalize_profile_links({"website": payload.get("source", "")})["website"])
+    else:
+        raw_date = payload.get("date", "")
+        if not isinstance(raw_date, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw_date):
+            raise IngestError("촬영일은 YYYY-MM-DD 형식으로 입력해 주세요.")
+        try:
+            datetime.strptime(raw_date, "%Y-%m-%d")
+        except ValueError:
+            raise IngestError("실제 달력에 있는 날짜를 입력해 주세요.") from None
+        row["date"] = raw_date
+    photo = None
+    if kind == "gallery" and payload.get("image") is not None:
+        raw = payload["image"]
+        if not isinstance(raw, str) or len(raw) > PEOPLE_PHOTO_MAX_BYTES * 4 // 3 + 8:
+            raise IngestError("사진은 변환 후 2MB 이하여야 합니다.")
+        try:
+            photo = _normalize_people_png(base64.b64decode(raw, validate=True))
+        except (ValueError, binascii.Error):
+            raise IngestError("사진 인코딩이 올바르지 않습니다.") from None
+    with ADMIN_LOCK:
+        rows = _catalog_rows(kind)
+        old = next((r for r in rows if r["id"] == item_id), None) if item_id else None
+        if item_id and old is None:
+            raise KeyError("not_found")
+        if old and payload.get("revision") != old.get("revision", 1):
+            raise CatalogConflict("다른 창에서 수정되었습니다. 목록을 새로 불러온 뒤 다시 수정해 주세요.")
+        row["id"] = item_id or secrets.token_hex(16)
+        row["revision"] = old.get("revision", 1) + 1 if old else 1
+        if kind == "gallery":
+            row["photo"] = old["photo"] if old else ""
+            if photo is None and not row["photo"]:
+                raise IngestError("갤러리 사진을 선택해 주세요.")
+        photo_path = None
+        try:
+            if photo is not None:
+                filename = secrets.token_hex(16) + ".png"
+                photo_path = DATA_DIR / "gallery" / "photos" / filename
+                photo_path.parent.mkdir(parents=True, exist_ok=True)
+                with photo_path.open("xb") as handle:
+                    handle.write(photo)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                row["photo"] = "/gallery-photos/" + filename
+            updated = [row if r["id"] == item_id else r for r in rows] if old else [*rows, row]
+            _atomic_json(DATA_DIR / "catalog" / (kind + ".json"), updated)
+        except Exception:
+            if photo_path:
+                photo_path.unlink(missing_ok=True)
+            raise
+        if old and photo_path and old.get("photo"):
+            _remove_gallery_photo(old["photo"])
+        return row
+
+
+def _remove_gallery_photo(photo: str) -> None:
+    try:
+        (DATA_DIR / "gallery" / "photos" / photo.rsplit("/", 1)[-1]).unlink(missing_ok=True)
+    except OSError:
+        LOG.warning("Unused gallery photo is no longer publicly accessible")
+
+
 class Handler(SimpleHTTPRequestHandler):
     server_version = "AILabSeminar/1.0"
 
@@ -869,6 +965,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_HEAD(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith("/gallery-photos/"):
+            self._gallery_photo(path, head_only=True)
+            return
         if path.startswith("/people-photos/"):
             self._people_photo(path, head_only=True)
             return
@@ -876,6 +975,16 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path in {"/api/projects", "/api/gallery"}:
+            try:
+                with ADMIN_LOCK:
+                    self._json(HTTPStatus.OK, _catalog_rows(path.rsplit("/", 1)[-1]))
+            except Exception:
+                self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "catalog_read_failed"})
+            return
+        if path.startswith("/gallery-photos/"):
+            self._gallery_photo(path)
+            return
         if path == "/api/people-profiles":
             try:
                 with ADMIN_LOCK:
@@ -943,6 +1052,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path in {"/api/admin/projects", "/api/admin/gallery"}:
+            self._catalog_request(path, "create")
+            return
         if path.startswith("/api/admin/people/"):
             self._people_admin_request(path, "photo")
             return
@@ -1016,6 +1128,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_PUT(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith(("/api/admin/projects/", "/api/admin/gallery/")):
+            self._catalog_request(path, "update")
+            return
         if path.startswith("/api/admin/people/"):
             self._people_admin_request(path, "links")
             return
@@ -1041,6 +1156,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_DELETE(self) -> None:  # noqa: N802
         path = unquote(urlsplit(self.path).path)
+        if path.startswith(("/api/admin/projects/", "/api/admin/gallery/")):
+            self._catalog_request(path, "delete")
+            return
         if path.startswith("/api/admin/people/"):
             self._people_admin_request(path, "clear_photo")
             return
@@ -1061,6 +1179,69 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception:
             LOG.exception("unexpected seminar deletion failure")
             self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error"})
+
+    def _catalog_request(self, path: str, operation: str) -> None:
+        if not self._origin_allowed():
+            self._json(HTTPStatus.FORBIDDEN, {"error": "origin_not_allowed"})
+            return
+        if not self._require_admin():
+            return
+        match = re.fullmatch(r"/api/admin/(projects|gallery)(?:/([a-z0-9-]{1,80}))?", path)
+        if not match or (operation == "create") != (match.group(2) is None):
+            self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+            return
+        kind, item_id = match.groups()
+        try:
+            payload = self._read_json_body(3 * 1024 * 1024)
+            if not isinstance(payload, dict):
+                raise IngestError("JSON object required")
+            if operation == "delete":
+                with ADMIN_LOCK:
+                    rows = _catalog_rows(kind)
+                    old = next((r for r in rows if r["id"] == item_id), None)
+                    if old is None:
+                        raise KeyError("not_found")
+                    if payload.get("revision") != old.get("revision", 1):
+                        raise CatalogConflict("내용이 변경되었습니다. 새로고침 후 다시 삭제해 주세요.")
+                    _atomic_json(DATA_DIR / "catalog" / (kind + ".json"), [r for r in rows if r["id"] != item_id])
+                    if kind == "gallery":
+                        _remove_gallery_photo(old["photo"])
+                self._json(HTTPStatus.OK, {"ok": True})
+            else:
+                row = _catalog_save(kind, item_id, payload)
+                self._json(HTTPStatus.CREATED if operation == "create" else HTTPStatus.OK, row)
+        except KeyError:
+            self._json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+        except CatalogConflict as exc:
+            self._json(HTTPStatus.CONFLICT, {"error": str(exc)})
+        except (IngestError, ValueError, UnicodeDecodeError) as exc:
+            self._json(HTTPStatus.BAD_REQUEST, {"error": str(exc)})
+        except Exception:
+            LOG.exception("Catalog write failed")
+            self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "catalog_write_failed"})
+
+    def _gallery_photo(self, path: str, *, head_only: bool = False) -> None:
+        if not re.fullmatch(r"/gallery-photos/[a-f0-9]{32}\.png", path):
+            self.send_error(HTTPStatus.NOT_FOUND)
+            return
+        with ADMIN_LOCK:
+            if not any(row.get("photo") == path for row in _catalog_rows("gallery")):
+                self.send_error(HTTPStatus.NOT_FOUND)
+                return
+            candidate = DATA_DIR / "gallery" / "photos" / path.rsplit("/", 1)[-1]
+            if candidate.is_symlink() or not candidate.is_file():
+                self.send_error(HTTPStatus.NOT_FOUND)
+                return
+            handle = candidate.open("rb")
+        with handle:
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "image/png")
+            self.send_header("Content-Length", str(os.fstat(handle.fileno()).st_size))
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.end_headers()
+            if not head_only:
+                shutil.copyfileobj(handle, self.wfile)
 
     def log_message(self, fmt: str, *args: Any) -> None:
         LOG.info("%s - %s", self.client_address[0], fmt % args)

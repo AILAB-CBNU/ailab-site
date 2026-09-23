@@ -70,6 +70,8 @@ def reject_symlink(path: Path, root: Path) -> None:
 
 def public_site_file(path: Path, root: Path) -> bool:
     parts = path.relative_to(root / "site").parts
+    if parts == ("data", "projects.json"):
+        return path.is_file()
     if any(part.startswith(".") or part.lower() in PRIVATE_DIRECTORIES
            or part.lower().endswith("-sync-state") for part in parts):
         return False

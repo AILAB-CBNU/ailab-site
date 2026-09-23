@@ -38,7 +38,7 @@
   var NAV = [
     ["index.html", "nav_home"], ["research.html", "nav_research"], ["people.html", "nav_people"],
     ["publications.html", "nav_publications"], ["projects.html", "nav_projects"],
-    ["news.html", "nav_news"], ["seminars.html", "nav_seminars"],
+    ["news.html", "nav_news"], ["seminars.html", "nav_seminars"], ["gallery.html", "nav_gallery"],
     ["contact.html", "nav_contact"]
   ];
   function currentFile() {
@@ -96,7 +96,7 @@
     el.innerHTML =
       '<footer class="footer"><div class="container">' +
         '<div class="footer-cols">' +
-          col(t("footer_lab"), [["index.html", t("nav_home")], ["seminars.html", t("nav_seminars")], ["contact.html", t("nav_contact")], ["news.html", t("nav_news")]]) +
+          col(t("footer_lab"), [["index.html", t("nav_home")], ["seminars.html", t("nav_seminars")], ["contact.html", t("nav_contact")], ["news.html", t("nav_news")], ["gallery.html", t("nav_gallery")]]) +
           col(t("footer_research"), D.research.map(function (r) { return ["research.html#" + r.id, L(r.title)]; })) +
           col(t("footer_people"), [["people.html", t("nav_people")], ["publications.html", t("nav_publications")], ["projects.html", t("nav_projects")]]) +
           col(t("footer_more"), [[D.lab.deptUrl, t("dept_site"), 1], [D.lab.scholarUrl, t("view_scholar"), 1], ["mailto:" + D.lab.email, t("email_us")], ["admin.html", lang === "ko" ? "관리자" : "Admin"]]) +

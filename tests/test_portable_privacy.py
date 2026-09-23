@@ -9,6 +9,7 @@ from unittest.mock import patch
 from scripts import build_people_addon as people_build
 from scripts import build_discord_addon as discord_build
 from scripts import build_seminar_addon as seminar_build
+from scripts import build_lab_addon as lab_build
 
 SPEC = importlib.util.spec_from_file_location('portable_build', Path(__file__).resolve().parents[1] / 'scripts/build_windows_portable.py')
 build = importlib.util.module_from_spec(SPEC)
@@ -16,6 +17,28 @@ SPEC.loader.exec_module(build)
 
 
 class PortablePrivacyTests(unittest.TestCase):
+    def test_lab_addon_includes_seed_but_excludes_server_catalog_and_photos(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            public = {'site/index.html': '<h1>Public</h1>', 'site/gallery.html': 'Gallery',
+                      'site/data/projects.json': '[]'}
+            public.update({name: '# allowed source' for name in lab_build.INCLUDE_FILES})
+            private = {'seminar-data/catalog/projects.json': 'PRIVATE_PROJECTS',
+                       'seminar-data/catalog/gallery.json': 'PRIVATE_GALLERY',
+                       'seminar-data/gallery/photos/local.png': 'PRIVATE_PHOTO',
+                       'site/data/private.json': 'PRIVATE_JSON',
+                       'site/seminar-data/gallery/photos/local.png': 'PRIVATE_NESTED_PHOTO'}
+            for name, content in (public | private).items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
+            output = root / 'update.zip'
+            lab_build.build_bundle(root, output)
+            with zipfile.ZipFile(output) as archive:
+                self.assertEqual(set(archive.namelist()), set(public))
+                for name in archive.namelist():
+                    self.assertNotIn(b'PRIVATE_', archive.read(name))
+
     def test_live_state_is_replaced_by_fresh_defaults(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
