@@ -10,6 +10,7 @@ from scripts import build_people_addon as people_build
 from scripts import build_discord_addon as discord_build
 from scripts import build_seminar_addon as seminar_build
 from scripts import build_lab_addon as lab_build
+from scripts import build_briefing_addon as briefing_build
 
 SPEC = importlib.util.spec_from_file_location('portable_build', Path(__file__).resolve().parents[1] / 'scripts/build_windows_portable.py')
 build = importlib.util.module_from_spec(SPEC)
@@ -17,6 +18,26 @@ SPEC.loader.exec_module(build)
 
 
 class PortablePrivacyTests(unittest.TestCase):
+    def test_briefing_package_excludes_api_keys_and_personal_tasks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            public = {'site/index.html': '<h1>Public</h1>'}
+            public.update({name: '# allowed source' for name in briefing_build.INCLUDE_FILES})
+            private = {'.env.local': 'PRIVATE_OPENAI_KEY',
+                       'discord-sync-state/briefing-config.json': 'PRIVATE_CONFIG',
+                       'discord-sync-state/briefings/ledger.json': 'PRIVATE_PERSONAL_TASKS',
+                       'logs/discord-sync.log': 'PRIVATE_LOG'}
+            for name, content in (public | private).items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
+            output = root / 'briefing.zip'
+            briefing_build.build_bundle(root, output)
+            with zipfile.ZipFile(output) as archive:
+                self.assertEqual(set(archive.namelist()), set(public))
+                for name in archive.namelist():
+                    self.assertNotIn(b'PRIVATE_', archive.read(name))
+
     def test_lab_addon_includes_seed_but_excludes_server_catalog_and_photos(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

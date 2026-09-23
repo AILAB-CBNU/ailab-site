@@ -323,8 +323,22 @@ def main():
     from discord_sync.gateway import Gateway
     from discord_sync.interactions import InteractiveSeminars
     forms = InteractiveSeminars(Client(config["token"]), config["guild"], channel)
-    gateway = Gateway(config["token"], forms.handle)
+    briefing = None
+    briefing_config = STATE / "briefing-config.json"
+    if briefing_config.exists():
+        settings = json.loads(briefing_config.read_text(encoding="utf-8"))
+        if settings.get("enabled"):
+            from discord_sync.briefing import Briefings
+            briefing = Briefings(Client(config["token"]), config["guild"], settings)
+    def handle_interaction(interaction):
+        if briefing and briefing.handle(interaction):
+            return
+        forms.handle(interaction)
+    gateway = Gateway(config["token"], handle_interaction)
     gateway.start()
+    if briefing:
+        briefing.start()
+        LOG.info("Lab briefings enabled: 09:00 Asia/Seoul. Source=%s", settings["source"])
     LOG.info("Connecting Discord forms. Website must run separately; checking uploads every 15 seconds.")
     was_ready = False
     try:
@@ -367,6 +381,8 @@ def main():
                 LOG.warning("Collection failed (%s); checkpoint retained, retrying in 15 seconds.", type(exc).__name__)
             time.sleep(15)
     finally:
+        if briefing:
+            briefing.close()
         gateway.close()
         forms.close()
         instance_lock.close()

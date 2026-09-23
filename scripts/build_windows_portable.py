@@ -47,6 +47,7 @@ INCLUDE_FILES = (
     "11-INSTALL-AUTO-UPDATE.bat",
     "12-UPDATE-WEBSITE-NOW.bat",
     "13-STOP-AUTO-UPDATE.bat",
+    "14-SETUP-LAB-BRIEFING.bat",
     "scripts/build_teams_app.py",
     "scripts/ingest_seminar.py",
 )

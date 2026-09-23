@@ -19,6 +19,8 @@ DISCORD_RUNTIME_FILES = (
     "discord_sync/app.py",
     "discord_sync/interactions.py",
     "discord_sync/gateway.py",
+    "discord_sync/briefing.py",
+    "discord_sync/setup_briefing.py",
     "discord_sync/vendor/__init__.py",
     "discord_sync/vendor/README.md",
     "discord_sync/vendor/LICENSE.websocket-client",
