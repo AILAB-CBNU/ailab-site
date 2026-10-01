@@ -42,7 +42,9 @@ class PortablePrivacyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             public = {'site/index.html': '<h1>Public</h1>', 'site/gallery.html': 'Gallery',
-                      'site/data/projects.json': '[]'}
+                      'site/data/projects.json': '[]',
+                      'site/data/content-defaults.json': '{"version":1}',
+                      'site/data/projects-refresh-20261002.json': '{"version":1}'}
             public.update({name: '# allowed source' for name in lab_build.INCLUDE_FILES})
             private = {'seminar-data/catalog/projects.json': 'PRIVATE_PROJECTS',
                        'seminar-data/catalog/gallery.json': 'PRIVATE_GALLERY',

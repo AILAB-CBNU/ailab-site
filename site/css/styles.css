@@ -422,6 +422,8 @@ main { min-height: 60vh; }
 .contact-grid dt { font-size: var(--text-body-sm); letter-spacing: var(--tracking-body-sm); color: var(--color-ash); }
 .contact-grid dd { margin: 4px 0 0; }
 .contact-grid .item + .item { margin-top: var(--sp-20); }
+.contact-grid .item[hidden] { display: none; }
+.lab-intro { max-width: 780px; }
 .join-steps { counter-reset: step; display: flex; flex-direction: column; }
 .join-steps li { counter-increment: step; display: grid; grid-template-columns: 36px 1fr; gap: var(--sp-12); padding-block: var(--sp-16); border-top: 1px solid var(--hairline); }
 .join-steps li:last-child { border-bottom: 1px solid var(--hairline); }

@@ -59,6 +59,52 @@ class CatalogTests(unittest.TestCase):
         missing=self.gallery();missing.pop('image')
         self.assertEqual(self.request('/api/admin/gallery','POST',missing)[0],400)
 
+    def install_research_refresh(self, rows, before, after, addition):
+        (app.SITE_DIR / 'data').mkdir(exist_ok=True)
+        app._atomic_json(app.SITE_DIR / 'data/projects-refresh-20261002.json', {
+            'version': 1, 'updates': [{'before': before, 'after': after}], 'additions': [addition]})
+        app._atomic_json(app.DATA_DIR / 'catalog/projects.json', rows)
+
+    def test_research_refresh_updates_unchanged_records_once_and_preserves_deletions(self):
+        before = dict(self.project(), id='current', revision=4)
+        after = dict(before, description={'ko': '최신 연구 내용'}, revision=5)
+        addition = dict(self.project(), id='completed-2022', status='completed', revision=1)
+        self.install_research_refresh([before], before, after, addition)
+        self.assertEqual(self.request('/api/projects')[1], [after, addition])
+        self.assertEqual(self.request('/api/projects')[1], [after, addition])
+        self.assertEqual(self.request('/api/admin/projects/completed-2022', 'DELETE', {'revision': 1})[0], 200)
+        self.assertEqual(self.request('/api/projects')[1], [after])
+        self.assertEqual(self.request('/api/admin/projects/current', 'DELETE', {'revision': 5})[0], 200)
+        self.assertEqual(self.request('/api/projects')[1], [])
+
+    def test_research_refresh_keeps_later_admin_edits_and_does_not_restore_missing_rows(self):
+        before = dict(self.project(), id='current', revision=4)
+        after = dict(before, description={'ko': '최신 연구 내용'}, revision=5)
+        newer = dict(before, title={'ko': '관리자가 다시 수정한 과제'}, revision=5)
+        addition = dict(self.project(), id='completed-2022', status='completed', revision=1)
+        self.install_research_refresh([newer], before, after, addition)
+        self.assertEqual(self.request('/api/projects')[1], [newer, addition])
+        marker = app.DATA_DIR / 'catalog/research-defaults-20261002.applied.json'
+        self.assertEqual(json.loads(marker.read_text())['preserved_admin_edits'], ['current'])
+        marker.unlink()
+        app._atomic_json(app.DATA_DIR / 'catalog/projects.json', [])
+        self.assertEqual(self.request('/api/projects')[1], [addition])
+
+    def test_research_refresh_recovers_after_marker_write_failure_without_duplicate_rows(self):
+        before = dict(self.project(), id='current', revision=4)
+        after = dict(before, description={'ko': '최신 연구 내용'}, revision=5)
+        addition = dict(self.project(), id='completed-2022', status='completed', revision=1)
+        self.install_research_refresh([before], before, after, addition)
+        atomic = app._atomic_json
+        def fail_marker(path, value):
+            if path.name.endswith('.applied.json'):
+                raise OSError('simulated marker failure')
+            atomic(path, value)
+        with patch.object(app, '_atomic_json', side_effect=fail_marker):
+            with self.assertRaises(OSError):
+                app._catalog_rows('projects')
+        self.assertEqual(app._catalog_rows('projects'), [after, addition])
+
     def test_gallery_preserves_pixels_hides_replaced_and_deleted_files(self):
         status, row, _=self.request('/api/admin/gallery','POST',self.gallery())
         self.assertEqual(status,201)

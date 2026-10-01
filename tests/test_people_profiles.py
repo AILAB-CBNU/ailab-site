@@ -131,6 +131,18 @@ class PeopleProfilesTests(unittest.TestCase):
         for person in ("professor-lee", "alumni-kim"):
             self.assertEqual(self.request("/api/admin/people/" + person, "PUT", {"links": {}})[0], 200)
 
+    def test_seed_links_are_editable_and_photo_upload_keeps_them_but_explicit_clear_wins(self):
+        self.roster['members'][0]['links'] = {'github': 'https://github.com/member-han'}
+        self.write_roster()
+        seeded = self.request('/api/people-profiles')[1]['profiles']['member-han']
+        self.assertEqual(seeded['links']['github'], 'https://github.com/member-han')
+        self.assertEqual(seeded['photo'], '')
+        self.assertEqual(self.upload()[1]['profile']['links'], seeded['links'])
+        self.request('/api/admin/people/member-han', 'PUT', {'links': {}})
+        cleared = self.request('/api/people-profiles')[1]['profiles']['member-han']
+        self.assertEqual(cleared['links']['github'], '')
+        self.assertTrue(cleared['photo'])
+
     def test_urls_reject_active_content_credentials_and_fake_service_domains(self):
         invalid = [("website", "javascript:alert(1)"), ("website", "data:text/html,x"),
                    ("website", "https://user:password@example.org/"), ("website", "//example.org/"),

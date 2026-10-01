@@ -62,7 +62,7 @@
     el.innerHTML =
       '<nav class="gn" aria-label="Global">' +
         '<div class="gn-inner">' +
-          '<a class="gn-brand" href="index.html">' + MARK + "<span>" + esc(L(D.lab.short)) + '</span><span class="sub">' + esc(L(D.lab.affiliation)) + "</span></a>" +
+          '<a class="gn-brand" href="index.html">' + MARK + "<span>" + esc(L(D.lab.short)) + '</span><span class="sub">' + esc(L(D.lab.brandAffiliation || D.lab.affiliation)) + "</span></a>" +
           '<div class="gn-links">' + links + "</div>" +
           '<div class="gn-tools">' +
             '<button class="lang-btn" type="button" data-lang-toggle aria-label="Switch language">' + esc(t("lang_switch")) + "</button>" +
@@ -112,6 +112,7 @@
     (root || document).querySelectorAll("[data-i18n]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i18n")); });
     (root || document).querySelectorAll("[data-i18n-placeholder]").forEach(function (n) { n.placeholder = t(n.getAttribute("data-i18n-placeholder")); });
     (root || document).querySelectorAll("[data-lab]").forEach(function (n) { n.textContent = L(D.lab[n.getAttribute("data-lab")]); });
+    (root || document).querySelectorAll("[data-recruitment-email]").forEach(function (n) { n.href = "mailto:" + D.lab.recruitmentEmail; });
     document.title = (document.body.getAttribute("data-title") ? t(document.body.getAttribute("data-title")) + " — " : "") + L(D.lab.name) + " · " + L(D.lab.affiliation);
   }
 
@@ -234,6 +235,8 @@
   var pages = {};
 
   pages.home = function () {
+    var introduction = document.getElementById("home-lab-intro");
+    if (introduction) introduction.textContent = L(D.lab.intro);
     var g = document.getElementById("home-research");
     if (g) g.innerHTML = D.research.map(function (r) {
       return '<li class="research-item" data-reveal>' +
@@ -440,7 +443,7 @@
         '<div class="item"><dt>' + esc(t("address")) + "</dt><dd>" + esc(L(D.lab.address)) + '<br><a class="link" href="' + esc(D.lab.mapUrl) + '" target="_blank" rel="noopener">' + esc(t("open_map")) + "</a></dd></div>" +
       "</div><div>" +
         '<div class="item"><dt>' + esc(t("email")) + '</dt><dd><a href="mailto:' + esc(D.lab.email) + '">' + esc(D.lab.email) + "</a></dd></div>" +
-        '<div class="item"><dt>' + esc(t("phone")) + '</dt><dd><a href="tel:' + esc(D.lab.phone.replace(/-/g, "")) + '">' + esc(D.lab.phone) + "</a></dd></div>" +
+        '<div class="item" hidden><dt>' + esc(t("phone")) + '</dt><dd><a href="tel:' + esc(D.lab.phone.replace(/-/g, "")) + '">' + esc(D.lab.phone) + "</a></dd></div>" +
         '<div class="item"><dt>' + esc(t("role_professor")) + '</dt><dd><a href="tel:' + esc(D.professor.phone.replace(/-/g, "")) + '">' + esc(D.professor.phone) + "</a></dd></div>" +
         '<div class="item"><dt>' + esc(t("office")) + "</dt><dd>" + esc(L(D.professor.office)) + "</dd></div>" +
       "</div>";

@@ -214,7 +214,7 @@ def _load_json(path: Path, default: Any) -> Any:
         raise IngestError(f"JSON 형식이 올바르지 않습니다: {path.name}: {exc}") from exc
 
 
-def _known_people_ids() -> set[str]:
+def _known_people() -> dict[str, dict[str, Any]]:
     """The deployed roster owns identities; server overrides never create people."""
     source = (SITE_DIR / "js" / "data.js").read_text(encoding="utf-8")
     match = re.search(r"window\.SITE_DATA\s*=\s*(\{.*\})\s*;?\s*$", source, re.DOTALL)
@@ -222,9 +222,13 @@ def _known_people_ids() -> set[str]:
         raise IngestError("구성원 원본 데이터를 읽을 수 없습니다.")
     data = json.loads(match.group(1))
     people = [data.get("professor", {}), *data.get("members", []), *data.get("alumni", [])]
-    return {person["id"] for person in people if isinstance(person, dict)
+    return {person["id"]: person for person in people if isinstance(person, dict)
             and isinstance(person.get("id"), str)
             and re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", person["id"])}
+
+
+def _known_people_ids() -> set[str]:
+    return set(_known_people())
 
 
 def _normalize_profile_links(value: Any) -> dict[str, str]:
@@ -285,9 +289,17 @@ def _read_people_store() -> dict[str, Any]:
 
 
 def _public_people_profiles() -> dict[str, Any]:
-    known_ids = _known_people_ids()
+    people = _known_people()
     store = _read_people_store()
-    return {"version": 1, "profiles": {key: value for key, value in store["profiles"].items() if key in known_ids}}
+    profiles = {}
+    for key, person in people.items():
+        if key in store["profiles"]:
+            profiles[key] = store["profiles"][key]
+        else:
+            links = _normalize_profile_links(person.get("links", {}))
+            if any(links.values()):
+                profiles[key] = {"links": links, "photo": ""}
+    return {"version": 1, "profiles": profiles}
 
 
 def _png_chunk(kind: bytes, content: bytes) -> bytes:
@@ -373,10 +385,11 @@ def _remove_people_photo(photo: str) -> None:
 def _update_people_profile(person_id: str, *, links: dict[str, str] | None = None,
                            photo: bytes | None = None, clear_photo: bool = False) -> dict[str, Any] | None:
     with ADMIN_LOCK:
-        if person_id not in _known_people_ids():
+        people = _known_people()
+        if person_id not in people:
             return None
         store = _read_people_store()
-        previous = store["profiles"].get(person_id, {"links": _normalize_profile_links({}), "photo": ""})
+        previous = store["profiles"].get(person_id, {"links": _normalize_profile_links(people[person_id].get("links", {})), "photo": ""})
         profile = {"links": previous["links"].copy(), "photo": previous["photo"]}
         new_path = None
         if links is not None:
@@ -695,10 +708,41 @@ class CatalogConflict(IngestError):
 
 
 def _catalog_rows(kind: str) -> list[dict[str, Any]]:
-    path = DATA_DIR / "catalog" / (kind + ".json")
-    if path.exists():
-        return _load_json(path, [])
-    return _load_json(SITE_DIR / "data" / "projects.json", []) if kind == "projects" else []
+    with ADMIN_LOCK:
+        path = DATA_DIR / "catalog" / (kind + ".json")
+        if not path.exists():
+            return _load_json(SITE_DIR / "data" / "projects.json", []) if kind == "projects" else []
+        rows = _load_json(path, [])
+        if kind != "projects":
+            return rows
+        # Apply the open-lab update once, only to records unchanged since capture.
+        # A newer admin edit or an earlier deletion always wins over this update.
+        marker = DATA_DIR / "catalog" / "research-defaults-20261002.applied.json"
+        migration_path = SITE_DIR / "data" / "projects-refresh-20261002.json"
+        if marker.exists() or not migration_path.exists():
+            return rows
+        migration = _load_json(migration_path, {})
+        if migration.get("version") != 1:
+            return rows
+        replacements = {change["before"]["id"]: change for change in migration["updates"]}
+        updated = []
+        skipped = []
+        for row in rows:
+            change = replacements.get(row["id"])
+            if change and row == change["before"]:
+                updated.append(change["after"])
+            else:
+                updated.append(row)
+                if change and row != change["after"]:
+                    skipped.append(row["id"])
+        ids = {row["id"] for row in updated}
+        updated.extend(row for row in migration["additions"] if row["id"] not in ids)
+        if updated != rows:
+            _atomic_json(path, updated)
+        _atomic_json(marker, {"version": 1, "preserved_admin_edits": skipped})
+        if skipped:
+            LOG.info("Research defaults: preserved %d newer admin edits", len(skipped))
+        return updated
 
 
 def _catalog_text(value: Any, limit: int, required: bool = False) -> dict[str, str]:

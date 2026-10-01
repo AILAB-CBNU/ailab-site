@@ -6,17 +6,33 @@
   var editorMode = params.get("cms-edit") === "1";
   var pageFile = location.pathname.split("/").pop() || "index.html";
   var overrides = { version: 1, global: { ko: {}, en: {} }, pages: {} };
+  var defaults = { version: 1, global: { ko: {}, en: {} }, pages: {} };
   var scheduled = false;
 
   function language() {
     return document.documentElement.lang === "en" ? "en" : "ko";
   }
 
+  function mapFrom(source, scope) {
+    var lang = language();
+    if (scope === "global") return (source.global && source.global[lang]) || {};
+    var page = source.pages && source.pages[pageFile];
+    return (page && page[lang]) || {};
+  }
+
   function mapFor(scope) {
     var lang = language();
-    if (scope === "global") return (overrides.global && overrides.global[lang]) || {};
-    var page = overrides.pages && overrides.pages[pageFile];
-    return (page && page[lang]) || {};
+    if (scope === "global") {
+      overrides.global = overrides.global || {};
+      return overrides.global[lang] || (overrides.global[lang] = {});
+    }
+    overrides.pages = overrides.pages || {};
+    var page = overrides.pages[pageFile] || (overrides.pages[pageFile] = {});
+    return page[lang] || (page[lang] = {});
+  }
+  function baseline(scope, key, fallback) {
+    var map = mapFrom(defaults, scope);
+    return Object.prototype.hasOwnProperty.call(map, key) ? map[key] : fallback;
   }
 
   function roots() {
@@ -94,8 +110,9 @@
       span.setAttribute("data-cms-scope", rootInfo.scope);
       span.setAttribute("data-cms-region", rootInfo.region);
       span.setAttribute("data-cms-key", key);
-      span.setAttribute("data-cms-original", pieces.value);
-      span.textContent = Object.prototype.hasOwnProperty.call(map, key) ? map[key] : pieces.value;
+      var original = baseline(rootInfo.scope, key, pieces.value);
+      span.setAttribute("data-cms-original", original);
+      span.textContent = Object.prototype.hasOwnProperty.call(map, key) ? map[key] : original;
       var fragment = document.createDocumentFragment();
       if (pieces.leading) fragment.appendChild(document.createTextNode(pieces.leading));
       fragment.appendChild(span);
@@ -117,8 +134,9 @@
       anchor.setAttribute("data-cms-scope", rootInfo.scope);
       anchor.setAttribute("data-cms-region", rootInfo.region);
       if (!anchor.hasAttribute("data-cms-original-href")) anchor.setAttribute("data-cms-original-href", anchor.getAttribute("href"));
+      anchor.setAttribute("data-cms-original-href", baseline(rootInfo.scope, key, anchor.getAttribute("data-cms-original-href")));
       var value = Object.prototype.hasOwnProperty.call(map, key) ? map[key] : anchor.getAttribute("data-cms-original-href");
-      if (safeHref(value)) anchor.setAttribute("href", value);
+      if (value === "" || safeHref(value)) anchor.setAttribute("href", value);
     });
     rootInfo.node.querySelectorAll("[placeholder]").forEach(function (input) {
       var key = elementPath(input, rootInfo.node) + "@placeholder";
@@ -126,7 +144,8 @@
       input.setAttribute("data-cms-scope", rootInfo.scope);
       input.setAttribute("data-cms-region", rootInfo.region);
       if (!input.hasAttribute("data-cms-original-placeholder")) input.setAttribute("data-cms-original-placeholder", input.getAttribute("placeholder"));
-      if (Object.prototype.hasOwnProperty.call(map, key)) input.setAttribute("placeholder", map[key]);
+      input.setAttribute("data-cms-original-placeholder", baseline(rootInfo.scope, key, input.getAttribute("data-cms-original-placeholder")));
+      input.setAttribute("placeholder", Object.prototype.hasOwnProperty.call(map, key) ? map[key] : input.getAttribute("data-cms-original-placeholder"));
     });
   }
 
@@ -134,6 +153,7 @@
     document.querySelectorAll("[data-cms-node='text']").forEach(function (span) {
       var map = mapFor(span.getAttribute("data-cms-scope"));
       var key = span.getAttribute("data-cms-key");
+      span.setAttribute("data-cms-original", baseline(span.getAttribute("data-cms-scope"), key, span.getAttribute("data-cms-original")));
       var value = Object.prototype.hasOwnProperty.call(map, key) ? map[key] : span.getAttribute("data-cms-original");
       if (span.textContent !== value) span.textContent = value;
     });
@@ -231,9 +251,13 @@
     document.head.appendChild(style);
   }
 
-  fetch("/api/content-overrides", { credentials: "same-origin", cache: "no-store" })
-    .then(function (response) { return response.ok ? response.json() : overrides; })
-    .then(function (value) { overrides = value || overrides; schedule(); })
+  Promise.all([
+    fetch("data/content-defaults.json", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.json() : defaults; }).catch(function () { return defaults; }),
+    fetch("/api/content-overrides", { credentials: "same-origin", cache: "no-store" })
+      .then(function (response) { return response.ok ? response.json() : overrides; }).catch(function () { return overrides; })
+  ])
+    .then(function (values) { defaults = values[0] || defaults; overrides = values[1] || overrides; schedule(); })
     .catch(schedule);
 
   document.addEventListener("ailab:rendered", schedule);

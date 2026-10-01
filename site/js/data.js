@@ -14,102 +14,127 @@ window.SITE_DATA = {
       "en": "School of Computer Science, Chungbuk National University"
     },
     "tagline": {
-      "ko": "기계학습의 새로운 가능성을 탐구합니다.",
-      "en": "Exploring new possibilities in machine learning."
+      "ko": "인공지능의 새로운 가능성을 탐구합니다.",
+      "en": "Exploring new possibilities in Artificial Intelligence."
     },
     "intro": {
-      "ko": "기계학습, 소프트컴퓨팅, 데이터마이닝과 지능형 정보시스템을 연구합니다. 데이터의 패턴을 이해하고 실제 문제를 해결하는 인공지능을 만듭니다.",
-      "en": "We study machine learning, soft computing, data mining and intelligent information systems to understand patterns in data and solve real-world problems."
+      "ko": "다양한 분야에서 인공지능 알고리즘의 적용과 개선 방안을 연구합니다. 시계열 데이터, 적응형 AI, 피지컬 AI, AI 에이전트와 음성 인식을 중심으로 연구를 진행합니다.",
+      "en": "We study how to apply and improve AI algorithms across diverse fields. Our current research focuses on time series, adaptive AI, physical AI, agentic AI and automatic speech recognition."
     },
     "address": {
       "ko": "충청북도 청주시 서원구 충대로 1, 충북대학교 S4-1동 305호 인공지능연구실 (28644)",
       "en": "AI Lab, Room 305, S4-1, Chungbuk National University, 1 Chungdae-ro, Seowon-gu, Cheongju 28644, Korea"
     },
     "email": "kmlee@cbnu.ac.kr",
-    "phone": "070-7010-2263",
-    "mapUrl": "https://map.naver.com/p/search/충북대학교%20S4-1동",
+    "phone": "043-261-2263",
+    "mapUrl": "https://map.naver.com/p/search/%EC%B6%A9%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90%EC%A0%84%EC%9E%90%EC%A0%95%EB%B3%B4%EB%8C%80%ED%95%993%EA%B4%80",
     "scholarUrl": "https://scholar.google.com/citations?user=4qj0mIEAAAAJ",
-    "deptUrl": "https://software.cbnu.ac.kr/"
+    "deptUrl": "https://software.cbnu.ac.kr/",
+    "brandAffiliation": {
+      "ko": "CBNU",
+      "en": "CBNU"
+    },
+    "recruitmentEmail": "merrybad@chungbuk.ac.kr"
   },
   "research": [
     {
-      "id": "machine-learning",
+      "id": "time-series",
       "title": {
-        "ko": "기계학습과 딥러닝",
-        "en": "Machine learning & deep learning"
+        "ko": "시계열 데이터",
+        "en": "Time Series"
       },
       "summary": {
-        "ko": "데이터의 표현을 학습하고 분류·인식·예측 문제를 해결합니다.",
-        "en": "Learning representations of data for classification, recognition and prediction."
+        "ko": "시간에 따라 변하는 데이터의 패턴을 분석하고 이상을 탐지하며 미래를 예측합니다.",
+        "en": "Analyzing temporal patterns, detecting anomalies and forecasting future behavior."
       },
       "detail": {
-        "ko": "신경망 구조 탐색, 지식 증류, 비전문가를 위한 자동 기계학습 플랫폼과 의료영상 분류 등을 연구합니다.",
-        "en": "Research includes neural architecture search, knowledge distillation, automated machine learning for non-experts and medical image classification."
+        "ko": "스마트팩토리의 시계열 이상 탐지와 스마트팜 환경 요인의 예측을 연구합니다. 시계열 예측 모델과 이상 탐지 방법을 개발하고 실제 데이터에 적용합니다.",
+        "en": "We develop forecasting and anomaly detection methods, with applications to smart-factory data and environmental factors in smart farms."
       },
       "keywords": [
-        "Deep learning",
-        "AutoML",
+        "Time-series forecasting",
+        "Anomaly detection",
+        "Smart factories"
+      ]
+    },
+    {
+      "id": "adaptive-ai",
+      "title": {
+        "ko": "적응형 AI",
+        "en": "Adaptive AI"
+      },
+      "summary": {
+        "ko": "변화하는 환경과 제약에 맞춰 인공지능 모델의 적용과 개선 방법을 연구합니다.",
+        "en": "Adapting AI models to changing environments and practical constraints."
+      },
+      "detail": {
+        "ko": "모델 경량화, 하드웨어에 적합한 모델 탐색과 지식 증류를 연구합니다. 산업 현장의 수요·공급·품질 변동에 대응하는 적응형 에이전트도 다룹니다.",
+        "en": "Our work includes model compression, hardware-aware model search and knowledge distillation, as well as adaptive agents responding to demand, supply and quality changes."
+      },
+      "keywords": [
+        "Model compression",
+        "Hardware-aware AI",
         "Knowledge distillation"
       ]
     },
     {
-      "id": "neuromorphic",
+      "id": "physical-ai",
       "title": {
-        "ko": "뉴로모픽 인공지능",
-        "en": "Neuromorphic intelligence"
+        "ko": "피지컬 AI",
+        "en": "Physical AI"
       },
       "summary": {
-        "ko": "신경의 신호 전달 방식에서 영감을 얻은 스파이킹 신경망을 연구합니다.",
-        "en": "Studying spiking neural networks inspired by neural signaling."
+        "ko": "실제 환경에서 활용할 수 있는 인공지능 알고리즘과 구현 방법을 연구합니다.",
+        "en": "Studying AI algorithms and implementations for real-world environments."
       },
       "detail": {
-        "ko": "스파이킹 신경망의 지도학습, STDP 사전학습, 뉴로모픽 프로세서와 딥러닝 프레임워크에서의 실행 방법을 연구합니다.",
-        "en": "Research includes supervised spiking learning, STDP pre-training and execution on neuromorphic processors and deep learning frameworks."
+        "ko": "인공지능 시스템반도체 융합연구센터 과제를 통해 피지컬 AI와 하드웨어에 적합한 모델을 연구합니다.",
+        "en": "Through the AI System Semiconductor Convergence Research Center project, we study physical AI and models suited to their hardware."
       },
       "keywords": [
-        "Spiking neural networks",
-        "STDP",
-        "Neuromorphic computing"
+        "Physical AI",
+        "AI systems",
+        "Hardware-aware models"
       ]
     },
     {
-      "id": "data-mining",
+      "id": "agentic-ai",
       "title": {
-        "ko": "데이터마이닝과 지능형 시스템",
-        "en": "Data mining & intelligent systems"
+        "ko": "AI 에이전트",
+        "en": "Agentic AI"
       },
       "summary": {
-        "ko": "대규모 데이터에서 지식을 발견하고 실제 서비스로 연결합니다.",
-        "en": "Discovering knowledge in large datasets and connecting it to real services."
+        "ko": "복잡한 문제에 대응하는 AI 에이전트와 멀티 에이전트 시스템을 연구합니다.",
+        "en": "Developing AI agents and multi-agent systems for complex tasks."
       },
       "detail": {
-        "ko": "빅데이터 분석, 블록체인 기반 데이터 공유, 해양 교통 데이터 처리, 바이오정보학과 의료정보 서비스를 다룹니다.",
-        "en": "Topics include big data analysis, blockchain-based data sharing, maritime traffic data, bioinformatics and medical information services."
+        "ko": "산업 현장에서 수요·공급·품질 변동을 함께 고려하는 복합 적응형 멀티 에이전트를 개발합니다. 교내 정보 제공용 LLM 챗봇 Cubot 개발 경험을 바탕으로 지능형 서비스도 연구합니다.",
+        "en": "We develop adaptive multi-agent systems that jointly address demand, supply and quality changes in industrial settings. Our intelligent-service work also includes Cubot, an LLM chatbot for campus information."
       },
       "keywords": [
-        "Big data",
-        "Data mining",
-        "Intelligent services"
+        "Multi-agent systems",
+        "Adaptive agents",
+        "LLM chatbots"
       ]
     },
     {
-      "id": "soft-computing",
+      "id": "speech-recognition",
       "title": {
-        "ko": "소프트컴퓨팅",
-        "en": "Soft computing"
+        "ko": "음성 인식",
+        "en": "Automatic Speech Recognition"
       },
       "summary": {
-        "ko": "불확실한 정보를 다루는 추론과 최적화 방법을 연구합니다.",
-        "en": "Reasoning and optimization methods for uncertain information."
+        "ko": "음성을 텍스트로 변환하고 교신 환경에서 화자를 구분하는 기술을 연구합니다.",
+        "en": "Transcribing speech and distinguishing speakers in communication environments."
       },
       "detail": {
-        "ko": "퍼지 시스템, 유전자 알고리즘, 진화 연산과 의사결정 기법을 이용해 복잡한 문제의 해법을 탐색합니다.",
-        "en": "Exploring solutions to complex problems through fuzzy systems, genetic algorithms, evolutionary computation and decision-making methods."
+        "ko": "차세대 디지털 VTS 국제표준서비스 및 장비 개발 과제에서 무선 해양 교신 환경의 음성 인식과 화자 분리를 연구합니다.",
+        "en": "Within the next-generation digital VTS services and equipment project, we study speech recognition and speaker separation for maritime radio communications."
       },
       "keywords": [
-        "Fuzzy systems",
-        "Evolutionary computation",
-        "Optimization"
+        "Speech recognition",
+        "Speaker separation",
+        "Maritime radio"
       ]
     }
   ],
@@ -125,12 +150,12 @@ window.SITE_DATA = {
     "email": "kmlee@cbnu.ac.kr",
     "phone": "043-261-2263",
     "office": {
-      "ko": "S4-1동 305호",
-      "en": "Room 305, S4-1"
+      "ko": "S4-1동 325호",
+      "en": "Room 325, S4-1"
     },
     "photo": "assets/people/kmlee.png",
     "bio": {
-      "ko": "KAIST에서 전산학 학사·석사·박사 학위를 받았습니다. 프랑스 INSA de Lyon 박사후연구원과 실리콘밸리 Park Scientific Instrument 연구원을 거쳐 충북대학교 교수로 재직했습니다. 콜로라도대학교 덴버캠퍼스 방문교수, 인디애나대학교 방문학자로 연구했으며, 데이터마이닝·기계학습·소프트컴퓨팅·빅데이터 처리·지능형 서비스 시스템을 연구합니다.",
+      "ko": "KAIST에서 전산학 학사·석사·박사 학위를 받았습니다.\n프랑스 INSA de Lyon 박사후연구원과 실리콘밸리 Park Scientific Instrument 연구원을 거쳐 충북대학교 교수로 재직했습니다.\n콜로라도대학교 덴버캠퍼스 방문교수, 인디애나대학교 방문학자로 연구했으며, 데이터마이닝·기계학습·소프트컴퓨팅·빅데이터 처리·지능형 서비스 시스템을 연구합니다.",
       "en": "Keon Myung Lee received his B.S., M.S. and Ph.D. in computer science from KAIST. His career includes INSA de Lyon, Park Scientific Instrument in Silicon Valley, and Chungbuk National University, with visiting appointments at the University of Colorado Denver and Indiana University. His research spans data mining, machine learning, soft computing, big data processing and intelligent service systems."
     },
     "education": [
@@ -358,15 +383,15 @@ window.SITE_DATA = {
       },
       "role": "intern",
       "year": {
-        "ko": "학부연구생",
-        "en": "Undergraduate researcher"
+        "ko": "학부연구생, 2025.09 ~",
+        "en": "Undergraduate researcher 2025.09~"
       },
       "topic": "",
       "email": "",
       "photo": "",
       "links": {
-        "github": "",
-        "linkedin": "",
+        "github": "https://github.com/dolphin1404",
+        "linkedin": "https://www.linkedin.com/in/kyumin-lee-hf/",
         "website": ""
       }
     },
@@ -378,13 +403,10 @@ window.SITE_DATA = {
       },
       "role": "intern",
       "year": {
-        "ko": "학부연구생",
-        "en": "Undergraduate researcher"
+        "ko": "학부연구생, 2026.09 ~",
+        "en": "Undergraduate researcher 2026.09~"
       },
-      "topic": {
-        "ko": "정보통신공학부",
-        "en": "School of Information and Communication Engineering"
-      },
+      "topic": "",
       "email": "",
       "photo": "",
       "links": {
@@ -947,7 +969,8 @@ window.SITE_DATA = {
       "link": "https://doi.org/10.3390/biomimetics11060426",
       "doi": "10.3390/biomimetics11060426",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "time-series"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -961,7 +984,8 @@ window.SITE_DATA = {
       "link": "https://doi.org/10.1016/j.knosys.2026.115978",
       "doi": "10.1016/j.knosys.2026.115978",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "time-series"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -975,7 +999,8 @@ window.SITE_DATA = {
       "link": "https://doi.org/10.3390/s25082510",
       "doi": "10.3390/s25082510",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "time-series"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -1017,7 +1042,8 @@ window.SITE_DATA = {
       "link": "https://doi.org/10.3390/app132111938",
       "doi": "10.3390/app132111938",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "time-series"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -1031,7 +1057,8 @@ window.SITE_DATA = {
       "link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6880907",
       "doi": "",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "adaptive-ai"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -1045,7 +1072,8 @@ window.SITE_DATA = {
       "link": "https://arxiv.org/abs/2509.12650",
       "doi": "10.48550/arXiv.2509.12650",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "time-series"
       ],
       "verifiedAt": "2026-09-22"
     },
@@ -1082,7 +1110,8 @@ window.SITE_DATA = {
       "link": "",
       "doi": "",
       "areas": [
-        "machine-learning"
+        "machine-learning",
+        "adaptive-ai"
       ],
       "citation": "KM Lee, CS Han, \"Towards Diversity: Neural Architecture Search with Diverse Structure\", 한국콘텐츠학회 ICCC 논문집, 2020"
     },
@@ -1095,7 +1124,8 @@ window.SITE_DATA = {
       "link": "",
       "doi": "",
       "areas": [
-        "data-mining"
+        "data-mining",
+        "adaptive-ai"
       ],
       "citation": "KM Lee, CS Han, \"Channel-Wise Attention and Channel Combination for Knowledge Distillation\", Proceedings of the International Conference on Research in Adaptive and Convergent Systems, 2020"
     },
@@ -4537,7 +4567,7 @@ window.SITE_DATA = {
         "en": "Professor Lee receives a ministerial commendation"
       },
       "body": {
-        "ko": "소프트웨어학부는 이건명 교수의 소프트웨어산업인의 날 과학기술정보통신부 장관 표창 수상 소식을 소개했습니다. 날짜는 학과 보도 제목에 기재된 날짜입니다.",
+        "ko": "소프트웨어산업인의 날 과학기술정보통신부 장관 표창 수상했습니다. ",
         "en": "The School of Computer Science reported Professor Lee’s ministerial commendation at Software Industry Day. The date follows the department’s news heading."
       },
       "source": "https://software.cbnu.ac.kr/index.php?document_srl=1150599&listStyle=viewer&mid=sub050601&page=5",
@@ -4552,7 +4582,7 @@ window.SITE_DATA = {
         "en": "Professor Lee elected 29th president of KIIS"
       },
       "body": {
-        "ko": "충북대학교 소프트웨어학부가 이건명 교수의 한국지능시스템학회 제29대 회장 선출 소식을 발표했습니다.",
+        "ko": "한국지능시스템학회 제29대 회장으로 선출되었습니다.",
         "en": "The School of Computer Science announced Professor Lee’s election as the 29th president of the Korean Institute of Intelligent Systems."
       },
       "source": "https://software.cbnu.ac.kr/sub050601/1150541",
@@ -4582,7 +4612,7 @@ window.SITE_DATA = {
         "en": "Participation in the AI and bias book discussion"
       },
       "body": {
-        "ko": "이건명 교수는 충북대학교 인권센터 북콘서트에서 공동 저자들과 함께 AI 시대의 다양성과 편견 문제를 논의했습니다.",
+        "ko": "충북대학교 인권센터 북콘서트에서 공동 저자들과 함께 AI 시대의 다양성과 편견 문제를 논의했습니다.",
         "en": "Professor Lee joined fellow authors at CBNU’s Human Rights Center book event to discuss diversity and bias in AI."
       },
       "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=548&nttNo=159443",
@@ -4612,7 +4642,7 @@ window.SITE_DATA = {
         "en": "Cooperation agreement on AI education and gender innovation"
       },
       "body": {
-        "ko": "이건명 교수가 SW중심대학사업단장으로 한국과학기술젠더혁신센터와의 협약식에 참석했습니다. 두 기관은 AI·SW 교육 공유, 인재 양성 및 성차 연구 협력을 추진하기로 했습니다.",
+        "ko": "SW중심대학사업단장으로 한국과학기술젠더혁신센터와의 협약식에 참석했으며, 두 기관은 AI·SW 교육 공유, 인재 양성 및 성차 연구 협력을 추진하기로 했습니다.",
         "en": "Professor Keon Myung Lee attended the agreement ceremony as director of CBNU’s SW-centered University project. The partners agreed to cooperate on AI and software education, talent development and research on gender differences."
       },
       "source": "https://www.cbnu.ac.kr/www/selectBbsNttView.do?bbsNo=14&key=548&nttNo=152744&pageIndex=68&pageUnit=10&searchCnd=all",
@@ -4627,7 +4657,7 @@ window.SITE_DATA = {
         "en": "Keynote on data equity and gender innovation"
       },
       "body": {
-        "ko": "이건명 교수가 제137차 양성평등정책포럼에서 데이터 형평성의 역할을 주제로 발표했습니다. 데이터의 수집·관리·분석 단계에서 편향을 점검할 필요성을 다뤘습니다.",
+        "ko": "제137차 양성평등정책포럼에서 데이터 형평성의 역할을 주제로 발표했습니다. 데이터의 수집·관리·분석 단계에서 편향을 점검할 필요성을 다뤘습니다.",
         "en": "Professor Keon Myung Lee presented the role of data equity at the 137th Gender Equality Policy Forum. He discussed the need to examine bias in data collection, management and analysis."
       },
       "source": "https://www.kwdi.re.kr/plaza/pressView.do?idx=132441",
@@ -4879,9 +4909,18 @@ window.SITE_DATA = {
       "ko": "과제",
       "en": "Projects"
     },
-    "nav_gallery": {"ko": "갤러리", "en": "Gallery"},
-    "gallery_h": {"ko": "갤러리", "en": "Gallery"},
-    "gallery_p": {"ko": "연구실의 일상과 함께한 순간들", "en": "Life, events and moments from our lab."},
+    "nav_gallery": {
+      "ko": "갤러리",
+      "en": "Gallery"
+    },
+    "gallery_h": {
+      "ko": "갤러리",
+      "en": "Gallery"
+    },
+    "gallery_p": {
+      "ko": "연구실의 일상과 함께한 순간들",
+      "en": "Life, events and moments from our lab."
+    },
     "nav_news": {
       "ko": "소식",
       "en": "News"
@@ -4911,8 +4950,8 @@ window.SITE_DATA = {
       "en": "Research"
     },
     "home_research_p": {
-      "ko": "실제 시스템에서 동작하는 기계학습을 네 갈래로 연구합니다.",
-      "en": "Four threads of machine learning that run in real systems."
+      "ko": "다양한 분야에서 인공지능 알고리즘의 적용과 개선 방안을 연구합니다. 시계열 데이터, 적응형 AI, 피지컬 AI, AI 에이전트와 음성 인식을 중심으로 연구를 진행합니다.",
+      "en": "We study how to apply and improve AI algorithms across diverse fields. Our current research focuses on time series, adaptive AI, physical AI, agentic AI and automatic speech recognition."
     },
     "home_news_h": {
       "ko": "수상과 소식",
@@ -5063,8 +5102,8 @@ window.SITE_DATA = {
       "en": "Projects"
     },
     "projects_p": {
-      "ko": "정부·산업체와 함께한 연구의 기록",
-      "en": "A record of research with government and industry"
+      "ko": "진행 중인 연구와 완료된 과제",
+      "en": "Current research and completed projects"
     },
     "status_active": {
       "ko": "진행 중",
@@ -5144,8 +5183,8 @@ window.SITE_DATA = {
         "en": "Email your research interests and CV."
       },
       {
-        "ko": "모집 여부와 지원 절차는 교수님께 문의해 주세요.",
-        "en": "Contact the professor for current openings and application procedures."
+        "ko": "모집 여부와 지원 절차는 랩장 정선우에게 이메일로 문의해 주세요.",
+        "en": "Email Sun Woo Jeong, the lab representative, about current openings and application procedures."
       }
     ],
     "dept_site": {
@@ -5383,6 +5422,10 @@ window.SITE_DATA = {
     "seminars_fallback_p": {
       "ko": "아래 네 줄을 각각 한 줄씩 작성하고 파일을 같은 새 메시지에 첨부하면 입력 창 없이 등록됩니다. 첫 줄은 # 세미나이며 기존 #세미나도 지원합니다.",
       "en": "Write each of the four lines below on its own line and attach your files to the same new message to publish without the form. Keep the Korean labels. Both # 세미나 and #세미나 are supported."
+    },
+    "recruitment_email": {
+      "ko": "랩장에게 이메일 보내기",
+      "en": "Email the lab representative"
     }
   },
   "researchSupport": [

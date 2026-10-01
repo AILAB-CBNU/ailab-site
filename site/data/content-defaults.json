@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "global": {
+    "ko": {
+      "footer[0]/div[0]/div[1]/p[0]/text[0]": "충청북도 청주시 서원구 충대로 1, 충북대학교 S4-1동 305호 인공지능연구실 (28644) · 043-261-2263",
+      "brand/sub/text[0]": "CBNU"
+    },
+    "en": {
+      "footer[0]/div[0]/div[1]/p[0]/text[0]": "AI Lab, Room 305, S4-1, Chungbuk National University, 1 Chungdae-ro, Seowon-gu, Cheongju 28644, Korea · 043-261-2263",
+      "brand/sub/text[0]": "CBNU"
+    }
+  },
+  "pages": {
+    "index.html": {
+      "ko": {
+        "#hero-introduction/p[1]/text[0]": "인공지능의 새로운 가능성을 탐구합니다."
+      },
+      "en": {
+        "#hero-introduction/p[1]/text[0]": "Exploring new possibilities in Artificial Intelligence."
+      }
+    },
+    "research.html": {
+      "ko": {},
+      "en": {}
+    },
+    "people.html": {
+      "ko": {
+        "header[0]/div[0]/p[0]/text[0]": "인공지능 연구실",
+        "#prof-card/div[1]/p[1]/text[0]": "KAIST에서 전산학 학사·석사·박사 학위를 받았습니다.\n프랑스 INSA de Lyon 박사후연구원과 실리콘밸리 Park Scientific Instrument 연구원을 거쳐 충북대학교 교수로 재직했습니다.\n콜로라도대학교 덴버캠퍼스 방문교수, 인디애나대학교 방문학자로 연구했으며, 데이터마이닝·기계학습·소프트컴퓨팅·빅데이터 처리·지능형 서비스 시스템을 연구합니다.",
+        "#member-song-yong-hwi/div[3]/text[0]": "",
+        "#member-lee-gyu-min/div[2]/text[0]": "학부연구생, 2025.09 ~",
+        "#member-song-yong-hwi/div[2]/text[0]": "학부연구생, 2026.09 ~",
+        "#prof-card/div[1]/div[0]/span[1]/text[0]": "연구실 S4-1동 325호"
+      },
+      "en": {
+        "#prof-card/div[1]/p[1]/text[0]": "Keon Myung Lee received his B.S., M.S. and Ph.D. in computer science from KAIST. His career includes INSA de Lyon, Park Scientific Instrument in Silicon Valley, and Chungbuk National University, with visiting appointments at the University of Colorado Denver and Indiana University. His research spans data mining, machine learning, soft computing, big data processing and intelligent service systems.",
+        "#member-lee-gyu-min/div[2]/text[0]": "Undergraduate researcher 2025.09~",
+        "#member-song-yong-hwi/div[2]/text[0]": "Undergraduate researcher 2026.09~",
+        "#member-song-yong-hwi/div[3]/text[0]": "",
+        "#prof-card/div[1]/div[0]/span[1]/text[0]": "Office Room 325, S4-1"
+      }
+    },
+    "publications.html": {
+      "ko": {},
+      "en": {}
+    },
+    "projects.html": {
+      "ko": {
+        "#nrf-2022R1A5A8026986/p[2]/text[0]": "시계열 이상 탐지 및 시계열 예측 연구",
+        "#iitp-2024-2020-0-01462/p[2]/text[0]": "Transformer 기반 시계열 이상 탐지"
+      },
+      "en": {}
+    },
+    "news.html": {
+      "ko": {
+        "#news-0479c0a83733/div[0]/p[0]/text[0]": "소프트웨어산업인의 날 과학기술정보통신부 장관 표창 수상했습니다. ",
+        "#news-1a37a5458517/div[0]/p[0]/text[0]": "한국지능시스템학회 제29대 회장으로 선출되었습니다.",
+        "#news-c5ac6484f5b2/div[0]/p[0]/text[0]": "충북대학교 인권센터 북콘서트에서 공동 저자들과 함께 AI 시대의 다양성과 편견 문제를 논의했습니다.",
+        "#news-7e9f6fbc61e7/div[0]/p[0]/text[0]": "SW중심대학사업단장으로 한국과학기술젠더혁신센터와의 협약식에 참석했으며, 두 기관은 AI·SW 교육 공유, 인재 양성 및 성차 연구 협력을 추진하기로 했습니다.",
+        "#news-1d8955c1feb2/div[0]/p[0]/text[0]": "제137차 양성평등정책포럼에서 데이터 형평성의 역할을 주제로 발표했습니다. 데이터의 수집·관리·분석 단계에서 편향을 점검할 필요성을 다뤘습니다."
+      },
+      "en": {}
+    },
+    "seminars.html": {
+      "ko": {},
+      "en": {}
+    },
+    "contact.html": {
+      "ko": {
+        "#contact-info/div[0]/div[0]/dd[0]/text[0]": "충청북도 청주시 서원구 충대로 1, 전자정보대학3관 305호 인공지능연구실 (28644)",
+        "#contact-info/div[1]/div[1]/dd[0]/a[0]/text[0]": "",
+        "#contact-info/div[1]/div[1]/dt[0]/text[0]": "",
+        "#contact-info/div[1]/div[3]/dd[0]/text[0]": "S4-1동 325호, 305호",
+        "#contact-info/div[0]/div[0]/dd[0]/a[0]@href": "https://map.naver.com/p/search/%EC%B6%A9%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90%EC%A0%84%EC%9E%90%EC%A0%95%EB%B3%B4%EB%8C%80%ED%95%993%EA%B4%80",
+        "#contact-info/div[1]/div[1]/dd[0]/a[0]@href": ""
+      },
+      "en": {}
+    },
+    "gallery.html": {
+      "ko": {},
+      "en": {}
+    }
+  }
+}

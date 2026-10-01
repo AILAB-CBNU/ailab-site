@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "updates": [
+    {
+      "before": {
+        "title": {
+          "ko": "수요·공급망·품질 변동 통합 대응 자율형 생산계획 최적화 AI 에이전트",
+          "en": "Autonomous AI Agent for Integrated Demand, Supply Chain, and Quality Variability-Responsive Production Planning Optimization"
+        },
+        "description": {
+          "ko": "",
+          "en": ""
+        },
+        "year": 2026,
+        "status": "active",
+        "period": "2026.04-2028.12.31",
+        "funder": {
+          "ko": "한국산업기술진흥원",
+          "en": "Korea Institute for Advancement of Technology"
+        },
+        "source": "",
+        "id": "75003725e694b280dd5dbecf10e6183a",
+        "revision": 1
+      },
+      "after": {
+        "title": {
+          "ko": "수요·공급망·품질 변동 통합 대응 자율형 생산계획 최적화 AI 에이전트",
+          "en": "Autonomous AI Agent for Integrated Demand, Supply Chain, and Quality Variability-Responsive Production Planning Optimization"
+        },
+        "description": {
+          "ko": "산업현장 문제해결형 산업 AI에이전트기술개발: 수요·공급·품질 변동 등 복합 적응형 멀티 에이전트 개발. 2026.04.01부터 수행.",
+          "en": "Industrial AI agent technology development: adaptive multi-agent systems addressing demand, supply and quality changes. Research work from April 1, 2026."
+        },
+        "year": 2026,
+        "status": "active",
+        "period": "2026.04-2028.12.31",
+        "funder": {
+          "ko": "산업통상부 · 한국산업기술진흥원",
+          "en": "Ministry of Trade and Industry · Korea Institute for Advancement of Technology"
+        },
+        "source": "",
+        "id": "75003725e694b280dd5dbecf10e6183a",
+        "revision": 2
+      }
+    },
+    {
+      "before": {
+        "title": {
+          "ko": "차세대 디지털 VTS 국제표준 서비스 및 장비 개발",
+          "en": ""
+        },
+        "description": {
+          "ko": "",
+          "en": ""
+        },
+        "year": 2025,
+        "status": "active",
+        "period": "2025-2029",
+        "funder": {
+          "ko": "해양수산과학기술진흥원",
+          "en": ""
+        },
+        "source": "",
+        "id": "e2316a0c387fc6ad108495962e0adc00",
+        "revision": 2
+      },
+      "after": {
+        "title": {
+          "ko": "차세대 디지털 VTS 국제표준 서비스 및 장비 개발",
+          "en": "Next-generation Digital VTS International Standard Services and Equipment"
+        },
+        "description": {
+          "ko": "무선 해양 교신 환경에서 음성 인식 및 화자 분리 연구. 2026.04.01부터 수행.",
+          "en": "Speech recognition and speaker separation for maritime radio communications. Research work from April 1, 2026."
+        },
+        "year": 2025,
+        "status": "active",
+        "period": "2025-2029",
+        "funder": {
+          "ko": "해양경찰청 · 해양수산과학기술진흥원",
+          "en": "Korea Coast Guard · Korea Institute of Marine Science & Technology Promotion"
+        },
+        "source": "",
+        "id": "e2316a0c387fc6ad108495962e0adc00",
+        "revision": 3
+      }
+    },
+    {
+      "before": {
+        "title": {
+          "ko": "충북대 선도연구기관 인공지능 시스템 반도체 RLRC",
+          "en": "CBNU RLRC"
+        },
+        "description": {
+          "ko": "",
+          "en": ""
+        },
+        "year": 2022,
+        "status": "active",
+        "period": "2022-",
+        "funder": {
+          "ko": "한국연구재단",
+          "en": "National Research Foundation of Korea (NRF)"
+        },
+        "source": "",
+        "id": "5f9c6c78986e01c06e6435f94116c014",
+        "revision": 4
+      },
+      "after": {
+        "title": {
+          "ko": "충북대 선도연구기관 인공지능 시스템 반도체 RLRC",
+          "en": "CBNU AI System Semiconductor Convergence Research Center (RLRC)"
+        },
+        "description": {
+          "ko": "모델 경량화, 하드웨어에 적합한 모델 탐색, 지식 증류, 피지컬 AI 연구.",
+          "en": "Model compression, hardware-aware model search, knowledge distillation and physical AI."
+        },
+        "year": 2022,
+        "status": "active",
+        "period": "2022.06.01–",
+        "funder": {
+          "ko": "과학기술정보통신부 · 한국연구재단",
+          "en": "MSIT · National Research Foundation of Korea"
+        },
+        "source": "",
+        "id": "5f9c6c78986e01c06e6435f94116c014",
+        "revision": 5
+      }
+    }
+  ],
+  "additions": [
+    {
+      "id": "sw-centered-university-2019",
+      "revision": 1,
+      "year": 2019,
+      "period": "2019.03.01–2024.12.31",
+      "status": "completed",
+      "title": {
+        "ko": "SW중심대학사업",
+        "en": "Software-centered University Program"
+      },
+      "funder": {
+        "ko": "과학기술정보통신부",
+        "en": "Ministry of Science and ICT"
+      },
+      "description": {
+        "ko": "교내 정보 제공용 LLM 챗봇 Cubot 개발.",
+        "en": "Development of Cubot, an LLM chatbot for campus information."
+      },
+      "source": ""
+    },
+    {
+      "id": "grand-ict-2020",
+      "revision": 1,
+      "year": 2020,
+      "period": "2020.07.01–2023.12.31",
+      "status": "completed",
+      "title": {
+        "ko": "Grand ICT 연구센터",
+        "en": "Grand ICT Research Center"
+      },
+      "funder": {
+        "ko": "과학기술정보통신부",
+        "en": "Ministry of Science and ICT"
+      },
+      "description": {
+        "ko": "스마트팩토리 시계열 데이터 이상 탐지 연구.",
+        "en": "Time-series anomaly detection for smart factories."
+      },
+      "source": ""
+    },
+    {
+      "id": "hydrogen-smart-farming-2022",
+      "revision": 1,
+      "year": 2022,
+      "period": "2022.06.01–2023.12.31",
+      "status": "completed",
+      "title": {
+        "ko": "수소에너지 농업현장 활용 실증 및 적용 확대",
+        "en": "Demonstration and Expansion of Hydrogen Energy Use in Agriculture"
+      },
+      "funder": {
+        "ko": "농촌진흥청",
+        "en": "Rural Development Administration"
+      },
+      "description": {
+        "ko": "스마트팜 환경 요인 시계열 데이터 예측, 작물 분류 연구.",
+        "en": "Forecasting time-series environmental factors in smart farms and classifying crops."
+      },
+      "source": ""
+    }
+  ]
+}
