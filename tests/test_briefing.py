@@ -2,7 +2,7 @@ import copy
 import json
 import tempfile
 import unittest
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -159,6 +159,69 @@ class BriefingTests(unittest.TestCase):
             reload = Briefings(self.client, '1', self.config, self.temp.name)
             reload.tick(datetime(2026, 9, 23, 12, tzinfo=KST))
             self.assertEqual(reload.state['attempts']['2026-09-22']['count'], 3)
+
+    def test_weekends_skip_collection_model_and_all_deliveries_in_kst(self):
+        with patch.object(self.client, 'get') as get, patch('discord_sync.briefing.collect_day') as collect:
+            # UTC Friday evening is already Saturday in Korea.
+            for now in (datetime(2026, 9, 25, 23, tzinfo=timezone.utc),
+                        datetime(2026, 9, 26, 9, tzinfo=KST), datetime(2026, 9, 27, 12, tzinfo=KST)):
+                self.bot.tick(now)
+            get.assert_not_called()
+            collect.assert_not_called()
+        self.assertEqual(self.calls, 0)
+        self.assertEqual(self.client.posts, [])
+        self.assertEqual(self.bot.state['attempts'], {})
+
+    def test_monday_combines_friday_to_sunday_and_restart_does_not_repeat(self):
+        days = []
+        def collect(client, channel, day):
+            days.append(day)
+            message = dict(MESSAGES[0], id=str(100 + day.day), timestamp=day.isoformat() + 'T08:00:00Z')
+            return [message]
+        def model(messages, tasks):
+            return {'summary': [{'text': '회의 일정 논의', 'source_id': messages[0]['id']}],
+                    'questions': [], 'items': [], 'updates': []}
+        self.bot.summarizer = model
+        with patch('discord_sync.briefing.collect_day', side_effect=collect):
+            self.bot.tick(datetime(2026, 9, 28, 9, tzinfo=KST))
+            self.bot.tick(datetime(2026, 9, 28, 12, tzinfo=KST))
+            reload = Briefings(self.client, '1', self.config, self.temp.name, model)
+            reload.tick(datetime(2026, 9, 28, 13, tzinfo=KST))
+        self.assertEqual(days, [date(2026, 9, n) for n in (25, 26, 27)])
+        record = self.bot.state['days']['2026-09-27']
+        self.assertEqual(record['covered_days'], ['2026-09-25', '2026-09-26', '2026-09-27'])
+        public = [p for route, p in self.client.posts if route == '/channels/3/messages']
+        self.assertEqual(len(public), 1)
+        self.assertIn('2026-09-28', public[0]['content'])
+        self.assertIn('대화 3건', public[0]['content'])
+
+    def test_monday_respects_first_setup_date_and_prior_daily_reports(self):
+        for first_day, processed, expected in (
+            ('2026-09-26', {}, [26, 27]),
+            ('2026-09-22', {'2026-09-25': {'complete': True}}, [26, 27]),
+        ):
+            with self.subTest(first_day=first_day):
+                self.bot.config['start_date'] = first_day
+                self.bot.state['days'] = processed
+                self.bot.state['attempts'] = {}
+                self.bot.next_attempt = 0
+                with patch('discord_sync.briefing.collect_day', return_value=MESSAGES) as collect:
+                    self.bot.tick(datetime(2026, 9, 28, 9, tzinfo=KST))
+                self.assertEqual([c.args[2] for c in collect.call_args_list], [date(2026, 9, n) for n in expected])
+
+    def test_daily_override_keeps_previous_single_day_schedule(self):
+        self.bot.config['weekdays_only'] = False
+        with patch('discord_sync.briefing.collect_day', return_value=MESSAGES) as collect:
+            self.bot.tick(datetime(2026, 9, 26, 9, tzinfo=KST))
+        collect.assert_called_once_with(self.client, '2', date(2026, 9, 25))
+        self.assertTrue(self.bot.state['days']['2026-09-25']['complete'])
+
+    def test_combined_weekend_limit_stops_before_model_or_delivery(self):
+        messages = [dict(MESSAGES[0], content='x' * 40000)]
+        with patch('discord_sync.briefing.collect_day', return_value=messages), self.assertRaisesRegex(RuntimeError, '100000'):
+            self.bot.tick(datetime(2026, 9, 28, 9, tzinfo=KST))
+        self.assertEqual(self.calls, 0)
+        self.assertEqual(self.client.posts, [])
 
     def test_collection_boundaries_bot_exclusion_and_secret_redaction(self):
         day = date(2026, 9, 22)

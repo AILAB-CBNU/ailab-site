@@ -8,8 +8,8 @@ else:
     import build_lab_addon as lab
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "dist" / "ailab-briefing-update-20260923.zip"
-INCLUDE_FILES = lab.INCLUDE_FILES + ("14-SETUP-LAB-BRIEFING.bat", "docs/lab-briefing.md")
+OUTPUT = ROOT / "dist" / "ailab-briefing-weekdays-update-20261001.zip"
+INCLUDE_FILES = lab.INCLUDE_FILES + ("14-SETUP-LAB-BRIEFING.bat", "docs/lab-briefing.md", "docs/discord-channel-guide.md")
 
 
 def build_bundle(root, output):

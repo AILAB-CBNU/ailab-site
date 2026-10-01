@@ -16,7 +16,7 @@ def main():
         raise RuntimeError("Run 09-SETUP-DISCORD.bat first")
     config = json.loads(app.CONFIG.read_text(encoding="utf-8"))
     client = app.Client(config["token"])
-    print("Daily lab briefing setup (09:00 Korea time). Ctrl+C cancels.")
+    print("Weekday lab briefing setup (Mon-Fri, 09:00 Korea time). Ctrl+C cancels.")
     print("Only the selected lounge's text is sent to OpenAI. Files and DMs are not collected.")
     source = input(f"Lounge channel ID [{DEFAULT_SOURCE}]: ").strip() or DEFAULT_SOURCE
     if not snowflake(source):
@@ -27,7 +27,7 @@ def main():
     destination = input("Briefing channel ID (blank: create/reuse lab-briefing): ").strip()
     if not destination:
         channels = client.get(f"/guilds/{config['guild']}/channels")
-        existing = next((c for c in channels if c.get("name") in ("lab-briefing", "☀️・아침-브리핑") and c.get("type") == 0), None)
+        existing = next((c for c in channels if c.get("name") in ("lab-briefing", "☀️・아침-브리핑", "☀️・아침-요약") and c.get("type") == 0), None)
         if existing:
             destination = existing["id"]
         else:
@@ -38,7 +38,7 @@ def main():
             destination = client.post(f"/guilds/{config['guild']}/channels", {
                 "name": "lab-briefing", "type": 0, "parent_id": info.get("parent_id"),
                 "permission_overwrites": info.get("permission_overwrites", []),
-                "topic": "매일 오전 9시(KST) 전날 라운지 요약과 공동 일정. 개인 할 일은 DM 또는 ‘내 할 일’ 버튼에서 확인합니다. AI 정리는 원문을 확인해 주세요."})["id"]
+                "topic": "평일 오전 9시에 연구실 대화와 일정을 정리합니다. 월요일에는 금요일부터 일요일까지의 대화를 모아 안내합니다. 개인 할 일은 개인 메시지 또는 ‘내 할 일’ 버튼에서 본인만 확인합니다."})["id"]
     if not snowflake(destination) or destination == source:
         raise ValueError("Use a separate valid briefing channel")
     target = client.get(f"/channels/{destination}")
@@ -74,9 +74,10 @@ def main():
         raise RuntimeError("Existing briefing channels differ. Back up and migrate the private ledger before changing channels.")
     first_day = old.get("start_date") or datetime.now(KST).date().isoformat()
     app.atomic_json(old_path, {"enabled": True, "source": source, "destination": destination,
-                              "model": model, "start_date": first_day,
+                              "model": model, "start_date": first_day, "weekdays_only": True,
                               "audience_signature": audience_signature(info, target)})
-    print("Saved. Restart 10-START-DISCORD-SYNC.bat. First report covers today, sent tomorrow at 09:00 KST.")
+    print("Saved. Restart 10-START-DISCORD-SYNC.bat. Reports start on the next weekday at 09:00 KST.")
+    print("Monday includes Friday-Sunday conversations, starting from the first setup date.")
     print("The server and 10 window must stay running. Credentials are NOT included in GitHub updates.")
 
 

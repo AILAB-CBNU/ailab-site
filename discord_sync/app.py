@@ -338,7 +338,8 @@ def main():
     gateway.start()
     if briefing:
         briefing.start()
-        LOG.info("Lab briefings enabled: 09:00 Asia/Seoul. Source=%s", settings["source"])
+        LOG.info("Lab briefings enabled: %s 09:00 Asia/Seoul. Source=%s",
+                 "Mon-Fri" if settings.get("weekdays_only", True) else "Daily", settings["source"])
     LOG.info("Connecting Discord forms. Website must run separately; checking uploads every 15 seconds.")
     was_ready = False
     try:

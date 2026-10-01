@@ -1,4 +1,4 @@
-"""09:00 KST lab briefings; private task ledger, bounded AI extraction, no tools."""
+"""Weekday 09:00 KST briefings; private task ledger, bounded extraction, no tools."""
 from __future__ import annotations
 
 import hashlib
@@ -264,15 +264,25 @@ class Briefings:
                        and (owner is None or t["owner_id"] == owner)],
                       key=lambda t: (t["due"] or "9999", t["title"]))
 
-    def prepare(self, day):
+    def prepare(self, day, start_day=None):
         key = day.isoformat()
+        start_day = max(start_day or day, date.fromisoformat(self.config["start_date"]))
         with self.lock:
             if key in self.state["days"]:
                 return
             tasks = json.loads(json.dumps(self.state["tasks"]))
-        messages = collect_day(self.client, self.config["source"], day)
+            covered = {d for k, record in self.state["days"].items() if record.get("complete")
+                       for d in record.get("covered_days", [k])}
+        days = [start_day + timedelta(days=n) for n in range((day - start_day).days + 1)
+                if (start_day + timedelta(days=n)).isoformat() not in covered]
+        messages = []
+        for part_day in days:
+            messages.extend(collect_day(self.client, self.config["source"], part_day))
+        if sum(len(m["content"]) for m in messages) > 100000:
+            raise RuntimeError("Briefing conversation exceeds 100000 characters; no partial summary published")
         result = extract_day(self.summarizer, messages, tasks)
         today = (day + timedelta(days=1)).isoformat()
+        period = " · ".join(d.isoformat() for d in days) or key
         with self.lock:
             for r in result["updates"]:
                 t = self.state["tasks"].get(r["task_id"])
@@ -282,20 +292,21 @@ class Briefings:
                 identity = json.dumps([item[k] for k in ("title", "owner_id", "due", "kind")], ensure_ascii=False)
                 task_id = hashlib.sha256(identity.encode()).hexdigest()[:20]
                 self.state["tasks"].setdefault(task_id, dict(item, status="open", created=key))
-            public = [f"☀️ 연구실 아침 브리핑 · {today}", f"전날({key}) 라운지 대화 {len(messages)}건 · 한국 시간 기준", "", "**공통 논의·결정**"]
+            public = [f"☀️ 연구실 아침 브리핑 · {today}", f"{period} 연구실 대화 {len(messages)}건 · 한국 시간 기준", "", "**공통 논의·결정**"]
             public += [f"• {safe(r['text'])} <{self.source_link(r['source_id'])}>" for r in result["summary"]] or ["• 새로운 공통 논의가 없습니다."]
             public += ["", "**다가오는 공동 일정·미완료 공통 항목**"]
             public += [self.item_line(t) for t in self.active("team", today)] or ["• 등록된 공동 일정이 없습니다."]
             if result["questions"]:
                 public += ["", "**확인 필요**"] + [f"• {safe(r['text'])} <{self.source_link(r['source_id'])}>" for r in result["questions"]]
-            public += ["", "AI 정리입니다. 원문 링크에서 확인해 주세요. 개인 할 일은 DM 또는 아래 ‘내 할 일’에서 확인합니다."]
+            public += ["", "각 항목의 링크에서 원문을 확인할 수 있습니다. 개인 할 일은 개인 메시지(DM) 또는 아래 ‘내 할 일’에서 확인합니다."]
             deliveries = [{"target": "public", "parts": chunks(public), "sent": {}}]
             owners = sorted({t["owner_id"] for t in self.active("personal", today)})
             for owner in owners:
                 lines = [f"📌 나의 연구실 할 일 · {today}", "완료/제외한 항목은 다음 리마인드에서 빠집니다."]
                 lines += [self.item_line(t) for t in self.active("personal", today, owner)]
                 deliveries.append({"target": owner, "parts": chunks(lines), "sent": {}})
-            self.state["days"][key] = {"deliveries": deliveries, "complete": False}
+            self.state["days"][key] = {"deliveries": deliveries, "complete": False,
+                                       "covered_days": [d.isoformat() for d in days]}
             self.save()
 
     def deliver(self, day):
@@ -381,6 +392,9 @@ class Briefings:
 
     def tick(self, now=None):
         now = (now or datetime.now(KST)).astimezone(KST)
+        weekdays_only = self.config.get("weekdays_only", True)
+        if weekdays_only and now.weekday() >= 5:
+            return
         if now.hour < 9 or now.timestamp() < self.next_attempt:
             return
         day = now.date() - timedelta(days=1)
@@ -409,7 +423,8 @@ class Briefings:
             raise RuntimeError("Channel permissions changed; rerun briefing setup to review audience")
         if not signature and channel_info[0].get("permission_overwrites", []) != channel_info[1].get("permission_overwrites", []):
             raise RuntimeError("Channel permissions differ; rerun briefing setup")
-        self.prepare(day)
+        start_day = now.date() - timedelta(days=3) if weekdays_only and now.weekday() == 0 else day
+        self.prepare(day, start_day)
         self.deliver(day)
 
     def start(self):
