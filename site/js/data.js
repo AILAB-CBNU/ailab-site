@@ -376,26 +376,6 @@ window.SITE_DATA = {
       }
     },
     {
-      "id": "lee-gyu-min",
-      "name": {
-        "ko": "이규민",
-        "en": "이규민"
-      },
-      "role": "intern",
-      "year": {
-        "ko": "학부연구생, 2025.09 ~",
-        "en": "Undergraduate researcher 2025.09~"
-      },
-      "topic": "",
-      "email": "",
-      "photo": "",
-      "links": {
-        "github": "https://github.com/dolphin1404",
-        "linkedin": "https://www.linkedin.com/in/kyumin-lee-hf/",
-        "website": ""
-      }
-    },
-    {
       "id": "song-yong-hwi",
       "name": {
         "ko": "송용휘",
@@ -417,6 +397,27 @@ window.SITE_DATA = {
     }
   ],
   "alumni": [
+    {
+      "id": "lee-gyu-min",
+      "name": {
+        "ko": "이규민",
+        "en": "이규민"
+      },
+      "degree": {
+        "ko": "학부연구생 2025.09 ~ 2026.10",
+        "en": "Undergraduate researcher 25.09~26.10"
+      },
+      "now": {
+        "ko": "한국보건의료정보원",
+        "en": "KHIS"
+      },
+      "photo": "",
+      "links": {
+        "github": "https://github.com/dolphin1404",
+        "linkedin": "https://www.linkedin.com/in/kyumin-lee-hf/",
+        "website": ""
+      }
+    },
     {
       "name": {
         "ko": "손봉기",

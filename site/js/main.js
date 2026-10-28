@@ -325,9 +325,35 @@
       }).join("");
     }
     var al = document.getElementById("alumni-list");
-    if (al) al.innerHTML = D.alumni.map(function (a) {
-      return '<li id="' + esc(a.id) + '"><div class="alumni-identity"><span class="avatar alumni-photo" data-person-photo="' + esc(a.id) + '" data-cms-ignore' + (profilePhoto(a) ? '' : ' hidden') + '>' + avatarContent(a) + '</span><span class="n">' + esc(L(a.name)) + profileLinks(a) + '</span></div><span><span class="m">' + esc(L(a.degree)) + "</span>" + (L(a.now) ? " · " + esc(L(a.now)) : "") + "</span></li>";
-    }).join("");
+    if (al) {
+      var state = pages.people.state || (pages.people.state = { alumniVisible: 4 });
+      var more = document.getElementById("alumni-more");
+      al.innerHTML = D.alumni.map(function (a, index) {
+        return '<li id="' + esc(a.id) + '"' + (index >= state.alumniVisible ? ' hidden' : '') + '><div class="alumni-identity"><span class="avatar alumni-photo" data-person-photo="' + esc(a.id) + '" data-cms-ignore' + (profilePhoto(a) ? '' : ' hidden') + '>' + avatarContent(a) + '</span><span class="n">' + esc(L(a.name)) + profileLinks(a) + '</span></div><span><span class="m">' + esc(L(a.degree)) + "</span>" + (L(a.now) ? " · " + esc(L(a.now)) : "") + "</span></li>";
+      }).join("");
+      function showAlumni() {
+        Array.prototype.forEach.call(al.children, function (row, index) { row.hidden = index >= state.alumniVisible; });
+        if (more) more.hidden = state.alumniVisible >= D.alumni.length;
+      }
+      pages.people.revealHash = function (scroll) {
+        var id;
+        try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+        var index = D.alumni.findIndex(function (a) { return a.id === id || "member-" + a.id === id; });
+        if (index < 0) return;
+        state.alumniVisible = Math.max(state.alumniVisible, 4 + Math.ceil(Math.max(0, index + 1 - 4) / 8) * 8);
+        showAlumni();
+        if (scroll) document.getElementById(D.alumni[index].id).scrollIntoView({ block: "start" });
+      };
+      if (more) {
+        more.textContent = lang === "ko" ? "더보기" : "Show more";
+        more.onclick = function () {
+          state.alumniVisible += 8;
+          showAlumni();
+        };
+      }
+      pages.people.revealHash(false);
+      showAlumni();
+    }
   };
 
   pages.publications = function () {
@@ -511,6 +537,7 @@
   renderAll();
   setupTransitions();
   window.AILAB = { t: t, L: L, get lang() { return lang; }, setLang: setLang, render: renderAll };
+  window.addEventListener("hashchange", function () { if (pages.people.revealHash) pages.people.revealHash(true); });
   loadPeopleProfiles();
   window.addEventListener("focus", loadPeopleProfiles);
   document.addEventListener("visibilitychange", function () { if (!document.hidden) loadPeopleProfiles(); });

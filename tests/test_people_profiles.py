@@ -114,6 +114,34 @@ class PeopleProfilesTests(unittest.TestCase):
         self.assertEqual(self.request("/people/profiles.json")[0], 404)
         self.assertEqual(self.request("/seminar-data/people/profiles.json")[0], 404)
 
+    def test_member_move_to_alumni_preserves_profile_without_server_restart(self):
+        status, value, _ = self.upload()
+        self.assertEqual(status, 200)
+        photo = value["profile"]["photo"]
+        links = {"github": "https://github.com/han", "linkedin": "https://www.linkedin.com/in/han",
+                 "website": "https://example.org/han"}
+        status, value, _ = self.request("/api/admin/people/member-han", "PUT", {"links": links})
+        self.assertEqual(status, 200)
+        expected = {"links": links, "photo": photo}
+        self.assertEqual(value["profile"], expected)
+        status, image, _ = self.request(photo, authenticated=False)
+        self.assertEqual(status, 200)
+
+        self.roster["alumni"].append(self.roster["members"].pop())
+        self.write_roster()
+
+        status, value, _ = self.request("/api/people-profiles", authenticated=False)
+        self.assertEqual(status, 200)
+        self.assertEqual(value["profiles"]["member-han"], expected)
+        self.assertEqual(self.request(photo, authenticated=False)[0:2], (200, image))
+        updated_links = {**links, "website": "https://example.org/alumni/han"}
+        status, value, _ = self.request("/api/admin/people/member-han", "PUT", {"links": updated_links})
+        self.assertEqual(status, 200)
+        expected = {"links": updated_links, "photo": photo}
+        self.assertEqual(value["profile"], expected)
+        self.assertEqual(self.request("/api/people-profiles", authenticated=False)[1]["profiles"]["member-han"], expected)
+        self.assertEqual(self.request(photo, authenticated=False)[0:2], (200, image))
+
     def test_mutations_require_admin_and_same_origin_and_known_id(self):
         for method, suffix, body, kind in [("PUT", "", {"links": {}}, None),
                                             ("POST", "/photo", png(), "image/png"),

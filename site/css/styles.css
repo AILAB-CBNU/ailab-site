@@ -683,6 +683,8 @@ a.profile-link:focus-visible { outline: 2px solid #147ce5; outline-offset: 2px; 
 .prof-card .profile-link svg { width: 18px; height: 18px; }
 .person .name { margin-top: 8px; }
 .alumni-list li { grid-template-columns: minmax(240px, .8fr) minmax(0, 1fr); align-items: center; }
+.alumni-list li[hidden], .alumni-more[hidden] { display: none; }
+.alumni-more { margin-top: var(--sp-24); }
 .alumni-identity { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .alumni-list .n { min-width: 0; overflow-wrap: anywhere; }
 .alumni-photo { width: 42px; height: 56px; aspect-ratio:3 / 4; border-radius: 9px; flex: none; font-size: 16px; }
